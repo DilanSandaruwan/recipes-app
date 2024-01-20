@@ -1,4 +1,4 @@
-package com.gtp01.group01.android.recipesmobileapp
+package com.gtp01.group01.android.recipesmobileapp.feature.main
 
 import android.os.Bundle
 import android.view.Menu
@@ -7,6 +7,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.gtp01.group01.android.recipesmobileapp.R
 import com.gtp01.group01.android.recipesmobileapp.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
