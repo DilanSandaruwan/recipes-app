@@ -2,4 +2,24 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+
+    <!--<color name="colorPrimary">#0099ff</color>
+    <color name="colorPrimaryDark">#0099ff</color>
+    <color name="colorAccent">#D81B60</color>-->
+    <color name="separator_color">#504E4E</color>
+    <color name="colorError">#FF0057</color>
+    <color name="round_icon_stroke_color">#FF3700B3</color>
+    <color name="colorPrimary">#1a3852</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <!-- Define your custom colors here -->
+    <color name="your_primary_color">#FF5722</color>
+    <color name="your_primary_dark_color">#E64A19</color>
+    <color name="your_accent_color">#FFC107</color>
+    <color name="transparent">#80C0B1B1</color>
+    <color name="lavender">#8692f7</color>
+    <color name="grey">#424141</color>
+    <color name="teal_200">#8692f7</color>
+    <color name="teal_700">#ff424242</color>
 </resources>
