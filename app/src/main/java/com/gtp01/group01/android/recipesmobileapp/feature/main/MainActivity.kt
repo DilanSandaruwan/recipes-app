@@ -15,6 +15,8 @@ import com.firebase.ui.auth.IdpResponse
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.gtp01.group01.android.recipesmobileapp.R
+import com.gtp01.group01.android.recipesmobileapp.constant.AuthProviders
+import com.gtp01.group01.android.recipesmobileapp.constant.AuthProviders.providers
 import com.gtp01.group01.android.recipesmobileapp.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.Arrays
@@ -23,7 +25,7 @@ import java.util.Arrays
 class MainActivity : AppCompatActivity() {
 
 
-    lateinit var providers: List<AuthUI.IdpConfig>
+  //private lateinit var providers: List<AuthUI.IdpConfig>
     private val MY_REQUEST_CODE: Int = 7117
     private lateinit var binding: ActivityMainBinding
     private lateinit var bottomNavView: BottomNavigationView
@@ -32,12 +34,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
 
-        providers = Arrays.asList<AuthUI.IdpConfig>(
-            AuthUI.IdpConfig.EmailBuilder().build(),
-            AuthUI.IdpConfig.FacebookBuilder().build(),
-            AuthUI.IdpConfig.GoogleBuilder().build(),
-            AuthUI.IdpConfig.PhoneBuilder().build()
-        )
+        // Access the list of providers
+         AuthProviders.providers
 
         showSignInOptions()
 

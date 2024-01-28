@@ -8,10 +8,13 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.firebase.ui.auth.AuthUI
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.gtp01.group01.android.recipesmobileapp.R
+import com.gtp01.group01.android.recipesmobileapp.constant.AuthProviders
+import com.gtp01.group01.android.recipesmobileapp.constant.AuthUtils
 import com.gtp01.group01.android.recipesmobileapp.databinding.FragmentProfileBinding
 
 import dagger.hilt.android.AndroidEntryPoint
@@ -22,6 +25,8 @@ class ProfileFragment : Fragment() {
     private lateinit var viewModel : ProfileViewModel
     private lateinit var binding: FragmentProfileBinding
     lateinit var mGoogleSignInClient: GoogleSignInClient
+    lateinit var providers: List<AuthUI.IdpConfig>
+    private val MY_REQUEST_CODE: Int = 7117
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -30,13 +35,30 @@ class ProfileFragment : Fragment() {
         viewModel = ViewModelProvider(requireActivity())[ProfileViewModel::class.java]
         binding = FragmentProfileBinding.inflate(inflater, container, false)
         return binding.root
+
+
+
+
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
-
+        // Access the list of providers
+        val providers = AuthProviders.providers
+        //Event
+        binding.logout.setOnClickListener {
+            // Signout
+            AuthUI.getInstance().signOut(requireContext())
+                .addOnCompleteListener {
+                    // Redirect to the sign-in options after successful sign-out
+                    AuthUtils.showSignInOptions(requireActivity(), MY_REQUEST_CODE, providers)
+                }
+                .addOnFailureListener { e ->
+                    Toast.makeText(requireContext(), e.message, Toast.LENGTH_SHORT).show()
+                }
+        }
 
     }   }
 
