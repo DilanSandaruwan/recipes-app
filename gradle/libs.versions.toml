@@ -37,6 +37,7 @@ espressoContrib = "3.5.1"
 firebaseBom = "32.7.1"
 firebaseCrashlyticsPlugin = "2.9.9"
 firebasePerfPlugin = "1.4.2"
+firebaseUiAuth = "22.0.0"
 fragmentTesting = "1.6.2"
 gmsPlugin = "4.4.0"
 googleOss = "17.0.1"
@@ -147,6 +148,7 @@ firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.r
 firebase-cloud-messaging = { group = "com.google.firebase", name = "firebase-messaging-ktx" }
 firebase-crashlytics = { group = "com.google.firebase", name = "firebase-crashlytics-ktx" }
 firebase-performance = { group = "com.google.firebase", name = "firebase-perf-ktx" }
+
 google-oss-licenses = { group = "com.google.android.gms", name = "play-services-oss-licenses", version.ref = "googleOss" }
 google-oss-licenses-plugin = { group = "com.google.android.gms", name = "oss-licenses-plugin", version.ref = "googleOssPlugin" }
 google-services = { module = "com.google.gms:google-services", version.ref = "googleServices" }

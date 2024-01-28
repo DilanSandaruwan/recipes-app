@@ -117,5 +117,13 @@ implementation(libs.androidx.core.testing)
     implementation(platform("com.google.firebase:firebase-bom:32.7.1"))
     //noinspection UseTomlInstead
     implementation("com.google.firebase:firebase-analytics")
+    implementation ("com.firebaseui:firebase-ui-auth:8.0.2")
 
+    // Required only if Facebook login support is required
+    // Find the latest Facebook SDK releases here: https://github.com/facebook/facebook-android-sdk/blob/master/CHANGELOG.md
+    implementation ("com.facebook.android:facebook-login:8.1.0")
+
+
+    implementation ("com.google.firebase:firebase-auth:22.3.1")
+    implementation ("com.google.firebase:firebase-core:21.1.1")
 }

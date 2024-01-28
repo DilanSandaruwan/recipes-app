@@ -1,27 +1,62 @@
 package com.gtp01.group01.android.recipesmobileapp.feature.main
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
+import android.widget.Toast
+
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
+import com.firebase.ui.auth.AuthUI
+import com.firebase.ui.auth.IdpResponse
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.auth.FirebaseAuth
 import com.gtp01.group01.android.recipesmobileapp.R
 import com.gtp01.group01.android.recipesmobileapp.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
+import java.util.Arrays
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
+
+    lateinit var providers: List<AuthUI.IdpConfig>
+    private val MY_REQUEST_CODE: Int = 7117
     private lateinit var binding: ActivityMainBinding
     private lateinit var bottomNavView: BottomNavigationView
     private lateinit var menu: Menu
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+
+        providers = Arrays.asList<AuthUI.IdpConfig>(
+            AuthUI.IdpConfig.EmailBuilder().build(),
+            AuthUI.IdpConfig.FacebookBuilder().build(),
+            AuthUI.IdpConfig.GoogleBuilder().build(),
+            AuthUI.IdpConfig.PhoneBuilder().build()
+        )
+
+        showSignInOptions()
+
         // Initialize the app and UI
         initViews()
+    }
+
+
+
+
+
+    private fun showSignInOptions() {
+
+        startActivityForResult(
+            AuthUI.getInstance().createSignInIntentBuilder()
+                .setAvailableProviders(providers)
+                .setTheme(R.style.MyTheme)
+                .build(), MY_REQUEST_CODE
+        )
     }
 
     /**
