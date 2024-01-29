@@ -1,6 +1,5 @@
 package com.gtp01.group01.android.recipesmobileapp.feature.my_profile
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,18 +8,12 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.firebase.ui.auth.AuthUI
-import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInClient
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import com.gtp01.group01.android.recipesmobileapp.R
 import com.gtp01.group01.android.recipesmobileapp.constant.AuthProviders
 import com.gtp01.group01.android.recipesmobileapp.constant.AuthUtils
 import com.gtp01.group01.android.recipesmobileapp.constant.ConstantRequestCode.MY_REQUEST_CODE
 import com.gtp01.group01.android.recipesmobileapp.databinding.FragmentProfileBinding
-import com.gtp01.group01.android.recipesmobileapp.feature.main.MainActivity
-
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

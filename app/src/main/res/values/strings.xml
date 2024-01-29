@@ -88,4 +88,5 @@
     </string>
     <string name="enter_the_email">Enter The Email</string>
     <string name="logout">Logout</string>
+    <string name="username_placeholder">Username Placeholder</string>
 </resources>
