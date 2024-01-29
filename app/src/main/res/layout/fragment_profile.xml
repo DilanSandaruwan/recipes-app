@@ -8,15 +8,25 @@
     tools:context=".feature.my_profile.ProfileFragment">
 
     <!-- TODO: Update blank fragment layout -->
+    <TextView
+        android:id="@+id/usernameTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Username Placeholder"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/btnLogout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/logout"
+        android:id="@+id/btnLogout"
         android:layout_width="167dp"
         android:layout_height="65dp"
         android:background="@android:color/black"
         android:foreground="?android:attr/selectableItemBackground"
         android:padding="10dp"
-        android:text="Logout"
+        android:text="@string/logout"
         android:textColor="@android:color/holo_orange_light"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"

@@ -34,9 +34,12 @@ converterGson = "2.9.0"
 coreTesting = "2.2.0"
 dependencyGuard = "0.4.3"
 espressoContrib = "3.5.1"
+firebaseAuth = "22.3.1"
 firebaseBom = "32.7.1"
+firebaseCore = "21.1.1"
 firebaseCrashlyticsPlugin = "2.9.9"
 firebasePerfPlugin = "1.4.2"
+firebaseui-firebaseUiAuth = "8.0.2"
 firebaseUiAuth = "22.0.0"
 fragmentTesting = "1.6.2"
 gmsPlugin = "4.4.0"
@@ -144,11 +147,14 @@ coil-kt-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "
 coil-kt-svg = { group = "io.coil-kt", name = "coil-svg", version.ref = "coil" }
 converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "converterGson" }
 firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics-ktx" }
+firebase-auth = { module = "com.google.firebase:firebase-auth", version.ref = "firebaseAuth" }
 firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebaseBom" }
 firebase-cloud-messaging = { group = "com.google.firebase", name = "firebase-messaging-ktx" }
+firebase-core = { module = "com.google.firebase:firebase-core", version.ref = "firebaseCore" }
 firebase-crashlytics = { group = "com.google.firebase", name = "firebase-crashlytics-ktx" }
 firebase-performance = { group = "com.google.firebase", name = "firebase-perf-ktx" }
 
+firebase-ui-auth = { module = "com.firebaseui:firebase-ui-auth", version.ref = "firebaseui-firebaseUiAuth" }
 google-oss-licenses = { group = "com.google.android.gms", name = "play-services-oss-licenses", version.ref = "googleOss" }
 google-oss-licenses-plugin = { group = "com.google.android.gms", name = "oss-licenses-plugin", version.ref = "googleOssPlugin" }
 google-services = { module = "com.google.gms:google-services", version.ref = "googleServices" }

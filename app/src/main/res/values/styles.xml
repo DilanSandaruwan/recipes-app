@@ -13,9 +13,6 @@
         <item name="android:windowBackground">@android:color/white</item>
     </style>
 
-    <string name="facebook_application_id" translatable="false">APP_ID</string>
-    <!-- Facebook Application ID, prefixed by 'fb'. Enables Chrome Custom tabs. -->
-    <string name="facebook_login_protocol_scheme" translatable="false">fbAPP_ID</string>
 
     <style name="MaterialCardViewStyle" parent="Widget.MaterialComponents.CardView">
         <item name="shapeAppearanceOverlay">@style/CutShape</item>

@@ -12,21 +12,23 @@ import com.firebase.ui.auth.AuthUI
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.gtp01.group01.android.recipesmobileapp.R
 import com.gtp01.group01.android.recipesmobileapp.constant.AuthProviders
 import com.gtp01.group01.android.recipesmobileapp.constant.AuthUtils
+import com.gtp01.group01.android.recipesmobileapp.constant.ConstantRequestCode.MY_REQUEST_CODE
 import com.gtp01.group01.android.recipesmobileapp.databinding.FragmentProfileBinding
+import com.gtp01.group01.android.recipesmobileapp.feature.main.MainActivity
 
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 
 class ProfileFragment : Fragment() {
-    private lateinit var viewModel : ProfileViewModel
+    private lateinit var viewModel: ProfileViewModel
     private lateinit var binding: FragmentProfileBinding
-    lateinit var mGoogleSignInClient: GoogleSignInClient
-    lateinit var providers: List<AuthUI.IdpConfig>
-    private val MY_REQUEST_CODE: Int = 7117
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -36,19 +38,16 @@ class ProfileFragment : Fragment() {
         binding = FragmentProfileBinding.inflate(inflater, container, false)
         return binding.root
 
-
-
-
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val currentUser: FirebaseUser? = FirebaseAuth.getInstance().currentUser
         // Access the list of providers
         val providers = AuthProviders.providers
         //Event
-        binding.logout.setOnClickListener {
+        binding.btnLogout.setOnClickListener {
             // Signout
             AuthUI.getInstance().signOut(requireContext())
                 .addOnCompleteListener {
@@ -60,6 +59,29 @@ class ProfileFragment : Fragment() {
                 }
         }
 
-    }   }
+        if (currentUser != null) {
+            val username = currentUser.displayName
+            // Now 'username' contains the display name of the currently logged-in user
+
+            // You can set the username to your TextView or wherever you want to display it
+            binding.usernameTextView.text = username
+        } else {
+            // Handle the case where no user is logged in
+            binding.usernameTextView.text = "Guest User" // Placeholder text for the username
+
+            // Example: Show a Toast message
+            Toast.makeText(
+                requireContext(),
+                "Please log in to view your profile",
+                Toast.LENGTH_SHORT
+            ).show()
+
+            // Example: Redirect to the login screen (assuming you have a LoginActivity)
+
+        }
+
+
+    }
+}
 
 
