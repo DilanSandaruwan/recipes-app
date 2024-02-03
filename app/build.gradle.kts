@@ -75,6 +75,7 @@ dependencies {
     implementation(libs.androidx.preference.ktx)
 
     //  ———  retrofit ——— //
+
     implementation(libs.retrofit.core)
 implementation(libs.converter.gson)
 
@@ -114,6 +115,11 @@ implementation(libs.androidx.core.testing)
     // ——— Coroutine Test ——— //
     implementation(libs.kotlinx.coroutines.test)
 
+
+    // Import the Firebase BoM
+    implementation(platform("com.google.firebase:firebase-bom:32.7.1"))
+    //noinspection UseTomlInstead
+    implementation("com.google.firebase:firebase-analytics")
 //services for handling user authentication
     implementation (libs.firebase.ui.auth)
     implementation (libs.firebase.auth)

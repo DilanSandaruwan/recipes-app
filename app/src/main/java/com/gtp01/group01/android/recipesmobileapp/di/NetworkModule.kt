@@ -1,6 +1,10 @@
 package com.gtp01.group01.android.recipesmobileapp.di
 
+import android.util.Log
 import com.gtp01.group01.android.recipesmobileapp.constant.ConstantNetworkService
+import com.gtp01.group01.android.recipesmobileapp.repository.AuthRepository
+import com.gtp01.group01.android.recipesmobileapp.sources.ApiImpl
+import com.gtp01.group01.android.recipesmobileapp.sources.AuthApiService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -24,7 +28,7 @@ object NetworkModule {
     @Singleton
     @Provides
     fun provideBaseUrl(): String {
-        return ConstantNetworkService.BASE_URL.value
+        return ConstantNetworkService.BASE_URL
     }
 
     /**
@@ -73,4 +77,26 @@ object NetworkModule {
             .client(okHttpClient)
             .build()
     }
+
+    @Singleton
+    @Provides
+    fun provideAuthApiService(retrofit: Retrofit): AuthApiService {
+        return retrofit.create(AuthApiService::class.java)
+    }
+
+    @Singleton
+    @Provides
+    fun provideGithubRepository(authApiService: AuthApiService): AuthRepository {
+        try {
+            val authRepo = AuthRepository(authApiService)
+            logMessage( "Repository provided")
+            return authRepo
+        } catch (e: Exception) {
+            logMessage( "NetworkError while providing bRepository: ${e.message}")
+            throw e  // Re-throw the exception for higher-level error handling
+        } }
+
+        private fun logMessage(message: String) {
+            Log.d("NetworkModule", message)
+        }
 }

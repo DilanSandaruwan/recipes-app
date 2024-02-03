@@ -9,6 +9,7 @@ object AuthUtils {
         activity.startActivityForResult(
             AuthUI.getInstance().createSignInIntentBuilder()
                 .setAvailableProviders(providers)
+                .setIsSmartLockEnabled(false)
                 .setTheme(R.style.MyTheme)
                 .build(), requestCode
         )

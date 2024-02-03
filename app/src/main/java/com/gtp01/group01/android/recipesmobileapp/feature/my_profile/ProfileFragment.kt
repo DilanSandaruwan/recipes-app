@@ -1,6 +1,7 @@
 package com.gtp01.group01.android.recipesmobileapp.feature.my_profile
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,8 +14,16 @@ import com.google.firebase.auth.FirebaseUser
 import com.gtp01.group01.android.recipesmobileapp.constant.AuthProviders
 import com.gtp01.group01.android.recipesmobileapp.constant.AuthUtils
 import com.gtp01.group01.android.recipesmobileapp.constant.ConstantRequestCode.MY_REQUEST_CODE
+import com.gtp01.group01.android.recipesmobileapp.data.AuthUser
 import com.gtp01.group01.android.recipesmobileapp.databinding.FragmentProfileBinding
+import com.gtp01.group01.android.recipesmobileapp.repository.AuthRepository
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import okhttp3.Call
+import okhttp3.Callback
+import okhttp3.ResponseBody
 
 @AndroidEntryPoint
 
@@ -31,14 +40,28 @@ class ProfileFragment : Fragment() {
         binding = FragmentProfileBinding.inflate(inflater, container, false)
         return binding.root
 
+
+
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         val currentUser: FirebaseUser? = FirebaseAuth.getInstance().currentUser
+
         // Access the list of providers
         val providers = AuthProviders.providers
+
+       binding.btnSaveUser.setOnClickListener{
+           // val authUser = AuthUser(1, "user@example.com", "John Doe")
+
+            viewModel.saveUser()
+           Log.d("ProfileFragment", "Save User button clicked")
+
+        }
+
+
         //Event
         binding.btnLogout.setOnClickListener {
             // Signout
@@ -49,15 +72,21 @@ class ProfileFragment : Fragment() {
                 }
                 .addOnFailureListener { e ->
                     Toast.makeText(requireContext(), e.message, Toast.LENGTH_SHORT).show()
+                    Log.e("ProfileFragment", "Sign-out failed: ${e.message}")
                 }
         }
 
         if (currentUser != null) {
-            val username = currentUser.displayName
+
+            val userId = currentUser.uid
+            val userEmail = currentUser.email
+            val userDisplayName = currentUser.displayName
             // Now 'username' contains the display name of the currently logged-in user
 
             // You can set the username to your TextView or wherever you want to display it
-            binding.usernameTextView.text = username
+            binding.usernameTextView.text = userDisplayName
+
+            Log.d("ProfileFragment", "Username: $userDisplayName,$userEmail,$userId")
         } else {
             // Handle the case where no user is logged in
             binding.usernameTextView.text = "Guest User" // Placeholder text for the username
