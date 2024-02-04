@@ -1,6 +1,5 @@
 package com.gtp01.group01.android.recipesmobileapp.feature.my_profile
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

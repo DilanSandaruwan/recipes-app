@@ -2,18 +2,25 @@ package com.gtp01.group01.android.recipesmobileapp.repository
 
 import android.util.Log
 
-import com.gtp01.group01.android.recipesmobileapp.constant.ReceipeResponse
 import com.gtp01.group01.android.recipesmobileapp.data.AuthUser
-import com.gtp01.group01.android.recipesmobileapp.sources.ApiImpl
 import com.gtp01.group01.android.recipesmobileapp.sources.AuthApiService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.Response
 
 import javax.inject.Inject
-
+/**
+ * Repository for handling authentication-related data operations.
+ *
+ * @property authApiService The authentication API service responsible for communication with the backend.
+ */
 class AuthRepository @Inject constructor(private val authApiService: AuthApiService) {
-
+    /**
+     * Save user details to the backend.
+     *
+     * @param authUser The [AuthUser] object containing user details.
+     * @return A [Response] indicating the success or failure of the save operation.
+     */
     suspend fun saveUser(authUser: AuthUser): Response<AuthUser> {
         return withContext(Dispatchers.IO) {
             try {

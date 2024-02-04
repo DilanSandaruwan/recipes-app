@@ -3,7 +3,6 @@ package com.gtp01.group01.android.recipesmobileapp.di
 import android.util.Log
 import com.gtp01.group01.android.recipesmobileapp.constant.ConstantNetworkService
 import com.gtp01.group01.android.recipesmobileapp.repository.AuthRepository
-import com.gtp01.group01.android.recipesmobileapp.sources.ApiImpl
 import com.gtp01.group01.android.recipesmobileapp.sources.AuthApiService
 import dagger.Module
 import dagger.Provides
@@ -77,16 +76,27 @@ object NetworkModule {
             .client(okHttpClient)
             .build()
     }
-
+    /**
+     * Provides an instance of the [AuthApiService] using the provided [Retrofit] instance.
+     *
+     * @param retrofit The Retrofit instance used for creating the [AuthApiService].
+     * @return An instance of [AuthApiService] for making API requests related to user authentication.
+     */
     @Singleton
     @Provides
     fun provideAuthApiService(retrofit: Retrofit): AuthApiService {
         return retrofit.create(AuthApiService::class.java)
     }
-
+    /**
+     * Provides an instance of [AuthRepository] using the provided [AuthApiService].
+     *
+     * @param authApiService The [AuthApiService] instance used for creating the [AuthRepository].
+     * @return An instance of [AuthRepository] for handling user authentication-related operations.
+     * @throws Exception if an error occurs during the creation of [AuthRepository].
+     */
     @Singleton
     @Provides
-    fun provideGithubRepository(authApiService: AuthApiService): AuthRepository {
+    fun provideAuthRepository(authApiService: AuthApiService): AuthRepository {
         try {
             val authRepo = AuthRepository(authApiService)
             logMessage( "Repository provided")
@@ -95,7 +105,11 @@ object NetworkModule {
             logMessage( "NetworkError while providing bRepository: ${e.message}")
             throw e  // Re-throw the exception for higher-level error handling
         } }
-
+    /**
+     * Logs a message to indicate the status or action taken within the network module.
+     *
+     * @param message The message to be logged.
+     */
         private fun logMessage(message: String) {
             Log.d("NetworkModule", message)
         }
