@@ -16,9 +16,13 @@ import com.gtp01.group01.android.recipesmobileapp.constant.AuthUtils
 import com.gtp01.group01.android.recipesmobileapp.constant.ConstantRequestCode.MY_REQUEST_CODE
 import com.gtp01.group01.android.recipesmobileapp.databinding.FragmentProfileBinding
 import dagger.hilt.android.AndroidEntryPoint
-
+/**
+ * Fragment to display and manage user profile information.
+ *
+ * This fragment is responsible for showing user details retrieved from Firebase Authentication
+ * and initiating the process of saving user information to the backend through the ViewModel.
+ */
 @AndroidEntryPoint
-
 class ProfileFragment : Fragment() {
     private lateinit var viewModel: ProfileViewModel
     private lateinit var binding: FragmentProfileBinding
@@ -49,6 +53,8 @@ class ProfileFragment : Fragment() {
                 // Redirect to the sign-in options after successful sign-out
                 AuthUtils.showSignInOptions(requireActivity(), MY_REQUEST_CODE, providers)
             }.addOnFailureListener { e ->
+                // Log the error for debugging purposes
+                // Show a Toast on sign-out failure
                 Toast.makeText(requireContext(), e.message, Toast.LENGTH_SHORT).show()
                 Log.e("ProfileFragment", "Sign-out failed: ${e.message}")
             }
@@ -72,7 +78,7 @@ class ProfileFragment : Fragment() {
         } else {
             // Handle the case where no user is logged in
             binding.usernameTextView.text = "Guest User" // Placeholder text for the username
-            // Example: Show a Toast message
+            // Example:
             Toast.makeText(
                 requireContext(), "Please log in to view your profile", Toast.LENGTH_SHORT
             ).show()

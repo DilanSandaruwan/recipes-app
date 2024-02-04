@@ -18,7 +18,7 @@ interface AuthApiService {
      * @return A [Response] indicating the success or failure of the save operation.
      */
     @Headers("Accept: application/json; utf-8")
-    @POST(ConstantNetworkService.REPOSITORIES_ENDPOINT)
+    @POST(ConstantNetworkService.AUTH_DETAIL_USER_ENDPOINT)
     suspend fun saveUser(@Body authUser: AuthUser)
     : Response<AuthUser>
 

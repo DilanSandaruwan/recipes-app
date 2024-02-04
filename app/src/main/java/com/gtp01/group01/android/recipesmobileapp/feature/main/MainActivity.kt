@@ -19,7 +19,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var bottomNavView: BottomNavigationView
     private lateinit var menu: Menu
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         // Access the list of providers
@@ -41,7 +40,6 @@ class MainActivity : AppCompatActivity() {
      * @see MY_REQUEST_CODE
      */
     private fun showSignInOptions() {
-
         startActivityForResult(
             // Set the available authentication providers (e.g., email/password, Google, etc.)
             AuthUI.getInstance().createSignInIntentBuilder()
@@ -52,7 +50,6 @@ class MainActivity : AppCompatActivity() {
             MY_REQUEST_CODE// Pass the request code to identify the result in onActivityResult
         )
     }
-
     /**
      * Initialize the UI components and setup navigation.
      */
@@ -78,6 +75,4 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
-
-
 }

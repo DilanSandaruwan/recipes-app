@@ -8,7 +8,7 @@ object ConstantNetworkService {
      */
     const val  BASE_URL= "http://ec2-52-207-150-55.compute-1.amazonaws.com:5000"
     /**
-     * Endpoint for user-related API requests.
+     * Endpoint for user authorization-related save new user API requests.
      */
-    const val REPOSITORIES_ENDPOINT ="/api/v1/user"
+    const val AUTH_DETAIL_USER_ENDPOINT ="/api/v1/user"
 }
