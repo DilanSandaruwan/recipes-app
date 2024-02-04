@@ -1,6 +1,7 @@
 package com.gtp01.group01.android.recipesmobileapp.feature.my_profile
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,66 +16,73 @@ import com.gtp01.group01.android.recipesmobileapp.constant.AuthUtils
 import com.gtp01.group01.android.recipesmobileapp.constant.ConstantRequestCode.MY_REQUEST_CODE
 import com.gtp01.group01.android.recipesmobileapp.databinding.FragmentProfileBinding
 import dagger.hilt.android.AndroidEntryPoint
-
+/**
+ * Fragment to display and manage user profile information.
+ *
+ * This fragment is responsible for showing user details retrieved from Firebase Authentication
+ * and initiating the process of saving user information to the backend through the ViewModel.
+ */
 @AndroidEntryPoint
-
 class ProfileFragment : Fragment() {
     private lateinit var viewModel: ProfileViewModel
     private lateinit var binding: FragmentProfileBinding
 
+    // Current authenticated user obtained from Firebase Authentication
+    val currentUser: FirebaseUser? = FirebaseAuth.getInstance().currentUser
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         // Inflate the layout for this fragment using view binding
         viewModel = ViewModelProvider(requireActivity())[ProfileViewModel::class.java]
         binding = FragmentProfileBinding.inflate(inflater, container, false)
         return binding.root
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        val currentUser: FirebaseUser? = FirebaseAuth.getInstance().currentUser
         // Access the list of providers
         val providers = AuthProviders.providers
-        //Event
+        // Call the saveUser function to initiate the user-saving process
+        viewModel.saveUser()
+
+        viewUserDetails()
+        // Sign-out from Firebase Authentication
         binding.btnLogout.setOnClickListener {
             // Signout
-            AuthUI.getInstance().signOut(requireContext())
-                .addOnCompleteListener {
-                    // Redirect to the sign-in options after successful sign-out
-                    AuthUtils.showSignInOptions(requireActivity(), MY_REQUEST_CODE, providers)
-                }
-                .addOnFailureListener { e ->
-                    Toast.makeText(requireContext(), e.message, Toast.LENGTH_SHORT).show()
-                }
+            AuthUI.getInstance().signOut(requireContext()).addOnCompleteListener {
+                // Redirect to the sign-in options after successful sign-out
+                AuthUtils.showSignInOptions(requireActivity(), MY_REQUEST_CODE, providers)
+            }.addOnFailureListener { e ->
+                // Log the error for debugging purposes
+                // Show a Toast on sign-out failure
+                Toast.makeText(requireContext(), e.message, Toast.LENGTH_SHORT).show()
+                Log.e("ProfileFragment", "Sign-out failed: ${e.message}")
+            }
         }
+    }
 
+    /**
+     * Display user details on the UI.
+     * If the user is authenticated, show their display name, email, and UID.
+     * If not authenticated, display a placeholder message for a guest user.
+     */
+    private fun viewUserDetails() {
         if (currentUser != null) {
-            val username = currentUser.displayName
+            val userId = currentUser.uid
+            val userEmail = currentUser.email
+            val userDisplayName = currentUser.displayName
             // Now 'username' contains the display name of the currently logged-in user
-
             // You can set the username to your TextView or wherever you want to display it
-            binding.usernameTextView.text = username
+            binding.usernameTextView.text = userDisplayName
+            Log.d("ProfileFragment", "Username: $userDisplayName,$userEmail,$userId")
         } else {
             // Handle the case where no user is logged in
             binding.usernameTextView.text = "Guest User" // Placeholder text for the username
-
-            // Example: Show a Toast message
+            // Example:
             Toast.makeText(
-                requireContext(),
-                "Please log in to view your profile",
-                Toast.LENGTH_SHORT
+                requireContext(), "Please log in to view your profile", Toast.LENGTH_SHORT
             ).show()
-
             // Example: Redirect to the login screen (assuming you have a LoginActivity)
-
         }
-
-
     }
 }
-
-

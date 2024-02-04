@@ -1,9 +1,14 @@
 package com.gtp01.group01.android.recipesmobileapp.constant
-
-enum class ConstantNetworkService(val value: String) {
+/**
+ * Object containing constants related to the application's network service, including base URL and endpoints.
+ */
+object ConstantNetworkService {
     /**
      * The base URL of the application's API. This URL is used to make network requests.
      */
-    BASE_URL("https://api.github.com/search/"),
-
+    const val  BASE_URL= "http://ec2-52-207-150-55.compute-1.amazonaws.com:5000"
+    /**
+     * Endpoint for user authorization-related save new user API requests.
+     */
+    const val AUTH_DETAIL_USER_ENDPOINT ="/api/v1/user"
 }

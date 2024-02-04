@@ -24,8 +24,7 @@ android {
         release {
             isMinifyEnabled = false
             proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
+                getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
             )
         }
     }
@@ -75,12 +74,13 @@ dependencies {
     implementation(libs.androidx.preference.ktx)
 
     //  ———  retrofit ——— //
+
     implementation(libs.retrofit.core)
-implementation(libs.converter.gson)
+    implementation(libs.converter.gson)
 
     //  ———  coroutines ——— //
-   implementation(libs.kotlinx.coroutines.core)
-   implementation(libs.kotlinx.coroutines.android)
+    implementation(libs.kotlinx.coroutines.core)
+    implementation(libs.kotlinx.coroutines.android)
 
     //  ———  Image Library ——— //
     implementation(libs.coil.kt)
@@ -98,24 +98,24 @@ implementation(libs.converter.gson)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.test.espresso.core)
- androidTestImplementation(libs.androidx.espresso.contrib)
+    androidTestImplementation(libs.androidx.espresso.contrib)
     androidTestImplementation(libs.hamcrest)
 
     // ——— Mockito for Test ——— //
-     testImplementation(libs.mockito.core)
-  androidTestImplementation(libs.mockito.android)
+    testImplementation(libs.mockito.core)
+    androidTestImplementation(libs.mockito.android)
 
-implementation(libs.androidx.core.testing)
- androidTestImplementation(libs.androidx.fragment.testing)
+    implementation(libs.androidx.core.testing)
+    androidTestImplementation(libs.androidx.fragment.testing)
 
     // ——— Room DB Test ——— //
-   testImplementation(libs.androidx.room.testing)
+    testImplementation(libs.androidx.room.testing)
 
     // ——— Coroutine Test ——— //
     implementation(libs.kotlinx.coroutines.test)
 
-//services for handling user authentication
-    implementation (libs.firebase.ui.auth)
-    implementation (libs.firebase.auth)
-    implementation (libs.firebase.core)
+    //services for handling user authentication
+    implementation(libs.firebase.ui.auth)
+    implementation(libs.firebase.auth)
+    implementation(libs.firebase.core)
 }
