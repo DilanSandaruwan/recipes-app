@@ -9,7 +9,6 @@ import androidx.navigation.ui.setupWithNavController
 import com.firebase.ui.auth.AuthUI
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.gtp01.group01.android.recipesmobileapp.R
-import com.gtp01.group01.android.recipesmobileapp.constant.AuthProviders
 import com.gtp01.group01.android.recipesmobileapp.constant.AuthProviders.providers
 import com.gtp01.group01.android.recipesmobileapp.constant.ConstantRequestCode.MY_REQUEST_CODE
 import com.gtp01.group01.android.recipesmobileapp.databinding.ActivityMainBinding
@@ -20,10 +19,11 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var bottomNavView: BottomNavigationView
     private lateinit var menu: Menu
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         // Access the list of providers
-         providers
+        providers
         showSignInOptions()
         // Initialize the app and UI
         initViews()
@@ -48,7 +48,8 @@ class MainActivity : AppCompatActivity() {
                 .setAvailableProviders(providers)
                 // Set a custom theme for the authentication UI (optional)
                 .setTheme(R.style.MyTheme)
-                .build(), MY_REQUEST_CODE// Pass the request code to identify the result in onActivityResult
+                .build(),
+            MY_REQUEST_CODE// Pass the request code to identify the result in onActivityResult
         )
     }
 

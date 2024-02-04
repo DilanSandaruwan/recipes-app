@@ -15,30 +15,32 @@ import javax.inject.Inject
 class ProfileViewModel  @Inject constructor(private  val authRepository: AuthRepository
 ): ViewModel(){
 
-   private val _saveUserResult = MutableLiveData<Boolean>()
-   val saveUserResult: LiveData<Boolean> get() = _saveUserResult
+    private val _saveUserResult = MutableLiveData<Boolean>()
 
-   fun saveUser() {
-      viewModelScope.launch {
-         val currentUser = FirebaseAuth.getInstance().currentUser
+    /**
+     * Save the user details to the backend using the [authRepository].
+     * Retrieves the current authenticated user's details from Firebase Authentication
+     * and creates an [AuthUser] object to store in the backend.
+     */
+    fun saveUser() {
+        viewModelScope.launch {
+            val currentUser = FirebaseAuth.getInstance().currentUser
 
-         if (currentUser != null) {
-            // Create an AuthUser object with the retrieved details
-            val authUser = AuthUser(
-               iduser = 1, // You might get this ID from Firebase or another source
-               email = currentUser.email.orEmpty(),
-               fullname = currentUser.displayName.orEmpty()
-            )
+            if (currentUser != null) {
+                // Create an AuthUser object with the retrieved details
+                val authUser = AuthUser(
+                    iduser = 1, // You might get this ID from Firebase or another source
+                    email = currentUser.email.orEmpty(),
+                    fullname = currentUser.displayName.orEmpty()
+                )
 
-            // Save the user details using the AuthRepository
-            val response = authRepository.saveUser(authUser)
-            _saveUserResult.value = response.isSuccessful
-         } else {
-            // Handle the case where the user is not authenticated
-            _saveUserResult.value = false
-         }
-      }
-      }
-   }
-
-
+                // Save the user details using the AuthRepository
+                val response = authRepository.saveUser(authUser)
+                _saveUserResult.value = response.isSuccessful
+            } else {
+                // Handle the case where the user is not authenticated
+                _saveUserResult.value = false
+            }
+        }
+    }
+}
