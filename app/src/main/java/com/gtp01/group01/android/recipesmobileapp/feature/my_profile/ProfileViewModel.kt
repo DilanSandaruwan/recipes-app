@@ -25,7 +25,6 @@ class ProfileViewModel  @Inject constructor(private  val authRepository: AuthRep
     fun saveUser() {
         viewModelScope.launch {
             val currentUser = FirebaseAuth.getInstance().currentUser
-
             if (currentUser != null) {
                 // Create an AuthUser object with the retrieved details
                 val authUser = AuthUser(
