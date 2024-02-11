@@ -11,7 +11,9 @@ import com.gtp01.group01.android.recipesmobileapp.R
 import com.gtp01.group01.android.recipesmobileapp.databinding.FragmentIngredientsBinding
 import com.gtp01.group01.android.recipesmobileapp.databinding.FragmentProfileBinding
 import com.gtp01.group01.android.recipesmobileapp.feature.my_profile.ProfileViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class IngredientsFragment : Fragment() {
     private lateinit var binding: FragmentIngredientsBinding
     private lateinit var viewModel: IngredientsViewModel
@@ -31,10 +33,6 @@ class IngredientsFragment : Fragment() {
 
 
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
 
-
-    }
 
 }

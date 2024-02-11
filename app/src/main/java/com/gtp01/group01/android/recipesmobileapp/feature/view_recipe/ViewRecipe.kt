@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import com.google.android.material.tabs.TabLayoutMediator
 import com.gtp01.group01.android.recipesmobileapp.R
 import com.gtp01.group01.android.recipesmobileapp.databinding.FragmentViewRecipeBinding
@@ -16,15 +17,15 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class ViewRecipe : Fragment() {
 
-    private var binding: FragmentViewRecipeBinding? = null
+    private lateinit var binding: FragmentViewRecipeBinding
     private lateinit var viewModel: ViewRecipeViewModel
-    private val tabTitles = arrayListOf("Ingredients","Instructions")
+    private val tabTitles = arrayListOf("Instructions","Ingredients")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentViewRecipeBinding.inflate(inflater, container, false)
-        return binding?.root
+        binding = FragmentViewRecipeBinding.inflate(layoutInflater)
+        return binding.root
 
 
     }
@@ -34,28 +35,32 @@ class ViewRecipe : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(this)[ViewRecipeViewModel::class.java]
-
-
         setUpTabLayoutWithViewPager()
 
     }
 
     private fun setUpTabLayoutWithViewPager() {
-        binding?.viewpager?.adapter = ViewPagerAdapter(this)
-        binding?.let {
-            TabLayoutMediator(it.tabLayout, binding!!.viewpager){
-                tab,position->
+        binding.viewpager.adapter = ViewPagerAdapter(this)
+
+            TabLayoutMediator(binding.tabLayout, binding.viewpager){ tab,position->
+
                 tab.text= tabTitles[position]
 
             }.attach()
+        for (i in 0..2){
+
+            val textView = LayoutInflater.from(requireContext()).inflate(R.layout.tab_title,null)
+            as TextView
+            binding.tabLayout.getTabAt(i)?.customView = textView
         }
-    }
+        }
+
 
     override fun onDestroyView() {
         super.onDestroyView()
         // Release resources or references to avoid memory leaks
         // For example, set bindings to null
-        binding = null
+
         // Log that the view has been destroyed
         logMessage("View destroyed")
     }

@@ -7,26 +7,26 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.gtp01.group01.android.recipesmobileapp.R
+import com.gtp01.group01.android.recipesmobileapp.databinding.FragmentIngredientsBinding
+import com.gtp01.group01.android.recipesmobileapp.databinding.FragmentInstructionBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class InstructionFragment : Fragment() {
 
-    companion object {
-        fun newInstance() = InstructionFragment()
-    }
-
+private lateinit var binding : FragmentInstructionBinding
     private lateinit var viewModel: InstructionViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_instruction, container, false)
+        binding = FragmentInstructionBinding.inflate(layoutInflater)
+        viewModel = ViewModelProvider(this).get(InstructionViewModel::class.java)
+        return binding.root
+
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(InstructionViewModel::class.java)
-        // TODO: Use the ViewModel
-    }
+
 
 }
