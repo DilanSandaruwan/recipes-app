@@ -10,7 +10,7 @@ object ConstantNetworkService {
     /**
      * Endpoint for user authorization-related save new user API requests.
      */
-    const val AUTH_DETAIL_USER_ENDPOINT = "/api/v1/user"
+    const val AUTH_DETAIL_USER_ENDPOINT ="/api/v1/user"
 
     /***
      * Endpoints for Add New Recipe
