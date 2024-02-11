@@ -113,6 +113,8 @@ dependencies {
 
     // ——— Coroutine Test ——— //
     implementation(libs.kotlinx.coroutines.test)
+    //crop image library
+    implementation ("com.makeramen:roundedimageview:2.3.0")
 
     //services for handling user authentication
     implementation(libs.firebase.ui.auth)

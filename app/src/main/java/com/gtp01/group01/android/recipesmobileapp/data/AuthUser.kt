@@ -9,10 +9,7 @@ package com.gtp01.group01.android.recipesmobileapp.data
  */
 
 data class AuthUser(
-
-
     val iduser: Int,
     val email: String,
     val fullname: String
-
 )
