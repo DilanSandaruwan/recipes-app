@@ -34,4 +34,14 @@
         android:name="com.gtp01.group01.android.recipesmobileapp.feature.view_recipe.ViewRecipe"
         android:label="fragment_view_recipe"
         tools:layout="@layout/fragment_view_recipe" />
+    <fragment
+        android:id="@+id/ingredientsFragment"
+        android:name="com.gtp01.group01.android.recipesmobileapp.feature.view_recipe.recipe_details.IngredientsFragment"
+        android:label="Ingredients"
+        tools:layout="@layout/fragment_ingredients" />
+    <fragment
+        android:id="@+id/instructionFragment"
+        android:name="com.gtp01.group01.android.recipesmobileapp.feature.view_recipe.recipe_details.InstructionFragment"
+        android:label="Instruction"
+        tools:layout="@layout/fragment_instruction" />
 </navigation>
