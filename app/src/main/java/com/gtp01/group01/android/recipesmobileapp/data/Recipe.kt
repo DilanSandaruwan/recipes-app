@@ -13,7 +13,7 @@ data class Recipe (
     val serving: Int,
     val photo: String?, // Nullable if photo is optional
     val categories: List<FoodCategory>,
-    val isActive: Boolean,
+    val isActive: Int, // Change type to Int
     val likeCount: Int,
     val hasLike: Boolean,
     val hasFavorite: Boolean

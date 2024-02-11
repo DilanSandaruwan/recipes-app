@@ -2,10 +2,13 @@ package com.gtp01.group01.android.recipesmobileapp.sources
 
 import com.gtp01.group01.android.recipesmobileapp.constant.ConstantNetworkService
 import com.gtp01.group01.android.recipesmobileapp.data.AuthUser
+import com.gtp01.group01.android.recipesmobileapp.data.Recipe
 import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.GET
 import retrofit2.http.Headers
 import retrofit2.http.POST
+import retrofit2.http.Path
 
 /**
  * Interface representing the authentication API service.
@@ -21,5 +24,11 @@ interface AuthApiService {
     @POST(ConstantNetworkService.AUTH_DETAIL_USER_ENDPOINT)
     suspend fun saveUser(@Body authUser: AuthUser)
     : Response<AuthUser>
+    @Headers("Accept: application/json; utf-8")
+    @GET(ConstantNetworkService.RECIPE_DETAIL_BY_RECIPE_NAME_ENDPOINT)
+    suspend fun getRecipeDetail(
+        @Path("idLoggedUser") idLoggedUser: Int,
+        @Path("recipename") recipeName: String
+    ): Response<List<Recipe>>
 
 }

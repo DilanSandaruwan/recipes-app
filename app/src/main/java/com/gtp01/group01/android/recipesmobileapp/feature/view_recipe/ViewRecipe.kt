@@ -1,5 +1,6 @@
 package com.gtp01.group01.android.recipesmobileapp.feature.view_recipe
 
+import android.content.ContentValues
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.util.Log
@@ -36,11 +37,19 @@ class ViewRecipe : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(this)[ViewRecipeViewModel::class.java]
         setUpTabLayoutWithViewPager()
+        val idLoggedUser = 10
+        val recipeName = "Spaghetti Bolognese"
+
+        // Log the request parameters
+        Log.d(ContentValues.TAG, "Fetching recipe details for user id: $idLoggedUser, recipe name: $recipeName")
+
+        // Make the network request to fetch recipe details
+        viewModel.fetchRecipeDetail(idLoggedUser, recipeName)
 
     }
 
     private fun setUpTabLayoutWithViewPager() {
-        binding.viewpager.adapter = ViewPagerAdapter(this)
+        this.binding.viewpager.adapter = ViewPagerAdapter(this)
 
             TabLayoutMediator(binding.tabLayout, binding.viewpager){ tab,position->
 
