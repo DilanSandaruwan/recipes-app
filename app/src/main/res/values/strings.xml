@@ -38,4 +38,11 @@
     <string name="save">Save</string>
     <string name="update">Update</string>
     <string name="delete">Delete</string>
+    <string name="desc_caregory_item">Caregory Item</string>
+    <string name="sample_category_name">Sushi</string>
+    <string name="desc_ingredient_01">Ingredient 01</string>
+    <string name="add_ingredient">Add Ingredient</string>
+    <string name="add_instruction">Add Instruction</string>
+    <string name="desc_add_new_ingredient">Add new ingredient</string>
+    <string name="desc_instructions">Instructions</string>
 </resources>

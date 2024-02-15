@@ -53,6 +53,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginTop="10dp"
+            android:paddingBottom="@dimen/bottom_navigation_height"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -74,15 +75,19 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/hint_recipe_name"
-                        app:endIconMode="clear_text">
+                        app:endIconMode="clear_text"
+                        app:hintTextColor="@color/black">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content" />
+                            android:layout_height="wrap_content"
+                            android:background="@null"
+                            android:inputType="textPersonName" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <View style="@style/ViewSeparator" />
 
+                    <!-- serving portion count -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -116,6 +121,7 @@
                             <com.google.android.material.textfield.TextInputEditText
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
+                                android:background="@null"
                                 android:digits="@string/validity_digits"
                                 android:gravity="center"
                                 android:inputType="numberSigned"
@@ -137,6 +143,7 @@
 
                     <View style="@style/ViewSeparator" />
 
+                    <!-- estimated time -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -170,6 +177,7 @@
                             <com.google.android.material.textfield.TextInputEditText
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
+                                android:background="@null"
                                 android:digits="@string/validity_digits"
                                 android:gravity="center"
                                 android:inputType="numberSigned"
@@ -190,6 +198,7 @@
 
                     <View style="@style/ViewSeparator" />
 
+                    <!-- categories -->
                     <com.google.android.material.textview.MaterialTextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -200,23 +209,111 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
-                        android:orientation="horizontal" />
+                        android:orientation="horizontal"
+                        tools:listitem="@layout/layout_category_item" />
 
                     <View style="@style/ViewSeparator" />
 
+                    <!-- ingredients -->
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/ingredients"
+                            android:textStyle="bold" />
+
+                        <ImageView
+                            android:id="@+id/ivInfoIngredient"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_marginStart="10dp"
+                            android:contentDescription="@string/desc_instructions"
+                            android:src="@drawable/ico_info_circle" />
+
+                    </LinearLayout>
+
                     <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/mtvInfoIngredient"
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp"
+                        android:layout_marginBottom="10dp" />
+
+                    <LinearLayout
+                        android:id="@+id/lytLinearIngredients"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/ingredients"
-                        android:textStyle="bold" />
+                        android:orientation="vertical">
+
+                        <com.google.android.material.button.MaterialButton
+                            style="@style/Widget.Material3.Button.TextButton.Icon"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="0dp"
+                            android:contentDescription="@string/desc_add_new_ingredient"
+                            android:text="@string/add_ingredient"
+                            android:textColor="@color/md_theme_primary"
+                            android:theme="@style/Theme.RecipesMobileApp"
+                            app:icon="@drawable/ico_increment"
+                            app:iconGravity="textStart"
+                            app:iconTint="@color/md_theme_primary"
+                            app:strokeColor="@color/md_theme_primary"
+                            app:strokeWidth="3dp" />
+                    </LinearLayout>
 
                     <View style="@style/ViewSeparator" />
 
+                    <!-- instructions -->
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/instructions"
+                            android:textStyle="bold" />
+
+                        <ImageView
+                            android:id="@+id/ivInfoInstruction"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_marginStart="10dp"
+                            android:contentDescription="@string/desc_instructions"
+                            android:src="@drawable/ico_info_circle" />
+                    </LinearLayout>
+
                     <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/mtvInfoInstruction"
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp"
+                        android:layout_marginBottom="10dp" />
+
+                    <LinearLayout
+                        android:id="@+id/lytLinearInstructions"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/instructions"
-                        android:textStyle="bold" />
+                        android:orientation="vertical">
+
+                        <com.google.android.material.button.MaterialButton
+                            style="@style/Widget.Material3.Button.TextButton.Dialog.Icon"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="0dp"
+                            android:contentDescription="@string/desc_add_new_ingredient"
+                            android:text="@string/add_ingredient"
+                            android:textColor="@color/md_theme_primary"
+                            android:theme="@style/Theme.RecipesMobileApp"
+                            app:icon="@drawable/ico_increment"
+                            app:iconGravity="textStart"
+                            app:iconTint="@color/md_theme_primary"
+                            app:strokeColor="@color/md_theme_primary"
+                            app:strokeWidth="3dp" />
+                    </LinearLayout>
 
                     <View style="@style/ViewSeparator" />
 
