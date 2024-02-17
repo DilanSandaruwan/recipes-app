@@ -1,7 +1,6 @@
 package com.gtp01.group01.android.recipesmobileapp.shared.model
 
-import android.os.Parcelable
-import kotlinx.parcelize.Parcelize
+import com.google.gson.annotations.SerializedName
 
 /**
  * Represents a recipe.
@@ -23,32 +22,32 @@ import kotlinx.parcelize.Parcelize
  * @property hasLike Indicates whether the current logged in user has liked the recipe. Return true if user has liked the recipe.
  * @property hasFavorite Indicates whether the current logged in user has marked the recipe as favorite. Return true if user has marked as favorite.
  */
-@Parcelize
+
 data class Recipe(
-    val idrecipe: Int,
-    val owner: User,
-    val recipeName: String,
-    val ingredients: String,
-    val instruction: String,
-    val preparationTime: Int,
-    val calory: Int,
-    val protein: Int,
-    val carbs: Int,
-    val serving: Int,
-    val photo: String?,
-    val categories: List<FoodCategory>,
-    val isActive: Int,
-    val likeCount: Int,
-    val hasLike: Boolean,
-    val hasFavorite: Boolean
-) : Parcelable
+    @SerializedName("idrecipe") val idRecipe: Int,
+    @SerializedName("owner") val owner: User,
+    @SerializedName("recipeName") val recipeName: String,
+    @SerializedName("ingredients") val ingredients: String,
+    @SerializedName("instruction") val instruction: String,
+    @SerializedName("preparationTime") val preparationTime: Int,
+    @SerializedName("calory") val calorie: Int,
+    @SerializedName("protein") val protein: Int,
+    @SerializedName("carbs") val carbs: Int,
+    @SerializedName("serving") val serving: Int,
+    @SerializedName("photo") val photo: String?,
+    @SerializedName("categories") val categories: List<FoodCategory>,
+    @SerializedName("isActive") val isActive: Int,
+    @SerializedName("likeCount") val likeCount: Int,
+    @SerializedName("hasLike") val hasLike: Boolean,
+    @SerializedName("hasFavorite") val hasFavorite: Boolean
+)
 
 /**
  * Represents a list of recipes.
  *
  * @property recipes The list of recipes.
  */
-@Parcelize
+
 data class RecipeList(
-    val recipes: List<Recipe>
-) : Parcelable
+    @SerializedName("recipes") val recipes: List<Recipe>
+)

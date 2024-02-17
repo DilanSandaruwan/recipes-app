@@ -1,7 +1,6 @@
 package com.gtp01.group01.android.recipesmobileapp.shared.model
 
-import android.os.Parcelable
-import kotlinx.parcelize.Parcelize
+import com.google.gson.annotations.SerializedName
 
 /**
  * Represents a user.
@@ -13,12 +12,11 @@ import kotlinx.parcelize.Parcelize
  * @property preferDuration The duration in minutes for recipe preparation preferred by the user.
  * @property preferCalory The calorie intake preferred by the user.
  */
-@Parcelize
 data class User(
-    val iduser: Int,
-    val email: String,
-    val fullname: String,
-    val preferCategories: List<FoodCategory>,
-    val preferDuration: Int,
-    val preferCalory: Int
-) : Parcelable
+    @SerializedName("iduser") val idUser: Int,
+    @SerializedName("email") val email: String,
+    @SerializedName("fullname") val fullName: String,
+    @SerializedName("preferCategories") val preferCategories: List<FoodCategory>,
+    @SerializedName("preferDuration") val preferDuration: Int,
+    @SerializedName("preferCalory") val preferCalorie: Int
+)
