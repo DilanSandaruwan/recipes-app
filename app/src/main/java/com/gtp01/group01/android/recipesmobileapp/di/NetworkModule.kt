@@ -3,7 +3,9 @@ package com.gtp01.group01.android.recipesmobileapp.di
 import android.util.Log
 import com.gtp01.group01.android.recipesmobileapp.constant.ConstantNetworkService
 import com.gtp01.group01.android.recipesmobileapp.repository.AuthRepository
+import com.gtp01.group01.android.recipesmobileapp.repository.RecipeManagementRepository
 import com.gtp01.group01.android.recipesmobileapp.sources.AuthApiService
+import com.gtp01.group01.android.recipesmobileapp.sources.RecipeManagementApiService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -76,6 +78,7 @@ object NetworkModule {
             .client(okHttpClient)
             .build()
     }
+
     /**
      * Provides an instance of the [AuthApiService] using the provided [Retrofit] instance.
      *
@@ -87,6 +90,7 @@ object NetworkModule {
     fun provideAuthApiService(retrofit: Retrofit): AuthApiService {
         return retrofit.create(AuthApiService::class.java)
     }
+
     /**
      * Provides an instance of [AuthRepository] using the provided [AuthApiService].
      *
@@ -99,18 +103,52 @@ object NetworkModule {
     fun provideAuthRepository(authApiService: AuthApiService): AuthRepository {
         try {
             val authRepo = AuthRepository(authApiService)
-            logMessage( "Repository provided")
+            logMessage("Repository provided")
             return authRepo
         } catch (e: Exception) {
-            logMessage( "NetworkError while providing bRepository: ${e.message}")
+            logMessage("NetworkError while providing bRepository: ${e.message}")
             throw e  // Re-throw the exception for higher-level error handling
-        } }
+        }
+    }
+
     /**
      * Logs a message to indicate the status or action taken within the network module.
      *
      * @param message The message to be logged.
      */
-        private fun logMessage(message: String) {
-            Log.d("NetworkModule", message)
+    private fun logMessage(message: String) {
+        Log.d("NetworkModule", message)
+    }
+
+    /**
+     * Provides an instance of [RecipeManagementApiService].
+     *
+     * @param retrofit The Retrofit instance used for creating the API service.
+     * @return An instance of [RecipeManagementApiService].
+     */
+    @Singleton
+    @Provides
+    fun provideRecipeManagementApiService(retrofit: Retrofit): RecipeManagementApiService {
+        return retrofit.create(RecipeManagementApiService::class.java)
+    }
+
+    /**
+     * Provides an instance of [RecipeManagementRepository].
+     *
+     * @param recipeManagementApiService The [RecipeManagementApiService] instance used by the repository.
+     * @return An instance of [RecipeManagementRepository].
+     * @throws Exception If an error occurs while creating the repository.
+     */
+    @Singleton
+    @Provides
+    fun provideRecipeManagementRepository(recipeManagementApiService: RecipeManagementApiService): RecipeManagementRepository {
+        try {
+            val recRepo = RecipeManagementRepository(recipeManagementApiService)
+            logMessage("Repository provided")
+            return recRepo
+        } catch (e: Exception) {
+            logMessage("NetworkError while providing bRepository: ${e.message}")
+            throw e  // Re-throw the exception for higher-level error handling
         }
+    }
 }
