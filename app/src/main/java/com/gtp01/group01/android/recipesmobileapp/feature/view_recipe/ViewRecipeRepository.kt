@@ -1,8 +1,8 @@
 package com.gtp01.group01.android.recipesmobileapp.feature.view_recipe
 
 import android.util.Log
-import com.gtp01.group01.android.recipesmobileapp.data.Recipe
-import com.gtp01.group01.android.recipesmobileapp.sources.AuthApiService
+import com.gtp01.group01.android.recipesmobileapp.shared.model.Recipe
+import com.gtp01.group01.android.recipesmobileapp.shared.sources.AuthApiService
 import javax.inject.Inject
 
 class ViewRecipeRepository @Inject constructor(private val authApiService: AuthApiService) {

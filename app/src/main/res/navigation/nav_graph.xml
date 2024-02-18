@@ -31,7 +31,7 @@
         tools:layout="@layout/fragment_recipe_add" />
     <fragment
         android:id="@+id/viewRecipe"
-        android:name="com.gtp01.group01.android.recipesmobileapp.feature.view_recipe.ViewRecipe"
+        android:name="com.gtp01.group01.android.recipesmobileapp.feature.view_recipe.recipe_details.ViewRecipe"
         android:label="fragment_view_recipe"
         tools:layout="@layout/fragment_view_recipe" />
     <fragment
