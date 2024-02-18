@@ -14,6 +14,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayoutMediator
 import com.gtp01.group01.android.recipesmobileapp.R
 import com.gtp01.group01.android.recipesmobileapp.databinding.FragmentViewRecipeBinding
+import com.gtp01.group01.android.recipesmobileapp.feature.view_recipe.recipe_details.InstructionFragment.Companion.TAG
 import com.gtp01.group01.android.recipesmobileapp.shared.common.Result
 import com.gtp01.group01.android.recipesmobileapp.shared.common.gone
 import com.gtp01.group01.android.recipesmobileapp.shared.common.show
@@ -25,7 +26,7 @@ class ViewRecipe : Fragment() {
 
     private lateinit var binding: FragmentViewRecipeBinding
     private lateinit var viewModel: ViewRecipeViewModel
-    private val tabTitles = arrayListOf("Instructions","Ingredients")
+    private val tabTitles = arrayListOf("Instructions", "Ingredients")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -37,7 +38,6 @@ class ViewRecipe : Fragment() {
     }
 
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(this)[ViewRecipeViewModel::class.java]
@@ -46,21 +46,25 @@ class ViewRecipe : Fragment() {
         val recipeName = "Spaghetti Bolognese"
 
         // Log the request parameters
-        Log.d(ContentValues.TAG, "Fetching recipe details for user id: $idLoggedUser, recipe name: $recipeName")
+        Log.d(
+            ContentValues.TAG,
+            "Fetching recipe details for user id: $idLoggedUser, recipe name: $recipeName"
+        )
 
         // Make the network request to fetch recipe details
         viewModel.fetchRecipeDetail(idLoggedUser, recipeName)
 
         initObservers()
 
-binding.appBar.setExpanded(true,true)
-binding.collapsingToolbarLayout.apply { title = "$recipeName"
+        binding.appBar.setExpanded(true, true)
+        binding.collapsingToolbarLayout.apply {
+            title = "$recipeName"
 
 
 
-    setCollapsedTitleTextColor(Color.WHITE)
-setExpandedTitleColor(Color.WHITE)}
-
+            setCollapsedTitleTextColor(Color.WHITE)
+            setExpandedTitleColor(Color.WHITE)
+        }
 
 
     }
@@ -68,27 +72,28 @@ setExpandedTitleColor(Color.WHITE)}
     private fun setUpTabLayoutWithViewPager() {
         this.binding.viewpager.adapter = ViewPagerAdapter(this)
 
-            TabLayoutMediator(binding.tabLayout, binding.viewpager){ tab,position->
+        TabLayoutMediator(binding.tabLayout, binding.viewpager) { tab, position ->
 
-                tab.text= tabTitles[position]
+            tab.text = tabTitles[position]
 
-            }.attach()
-        for (i in 0..2){
+        }.attach()
+        for (i in 0..2) {
 
-            val textView = LayoutInflater.from(requireContext()).inflate(R.layout.tab_title,null)
-            as TextView
+            val textView = LayoutInflater.from(requireContext()).inflate(R.layout.tab_title, null)
+                    as TextView
             binding.tabLayout.getTabAt(i)?.customView = textView
         }
-        }
+    }
 
-    private fun initObservers(){
+    private fun initObservers() {
 
 
-        viewModel.recipeDetails.observe(viewLifecycleOwner){result ->
+        viewModel.recipeDetails.observe(viewLifecycleOwner) { result ->
             when (result) {
                 is Result.Loading -> {
                     binding.progressBar.show()
                 }
+
                 is Result.Success<*> -> {
                     binding.progressBar.gone()
                     val data = result.result
@@ -99,20 +104,27 @@ setExpandedTitleColor(Color.WHITE)}
                             // Assuming you want to display the instruction from the first recipe in the list
 
                             val recipe_name = recipes[0].recipeName
-                           val carbs = recipes[0].carbs
+                            val carbs = recipes[0].carbs
                             val calorie = recipes[0].calory
                             val likes = recipes[0].likeCount
+                            val protein = recipes[0].protein
+                            val time = recipes[0].preparationTime
                             val formattedCarbs = "Carbs: $carbs"
                             val formattedCalorie = "Calorie: $calorie"
-                            val formattedProtein = "Protein: $calorie"
-
+                            val formattedProtein = "Protein: $protein"
+                            // Access user's full name
+                            val userName = recipes[0].owner.fullname
                             val formattedLikes = "Likes: $likes"
-                            binding.tvLikeCount.text= formattedLikes
+                            val formattedTime = "Time: $time"
+                            binding.tvLikeCount.text = formattedLikes
                             binding.tvRecipeName.text = recipe_name
                             binding.carbsTextView.text = formattedCarbs
                             binding.calorieTextView.text = formattedCalorie
                             binding.proteinTextView.text = formattedProtein
-
+                            // Set user's full name to appropriate TextView
+                            binding.tvUserName.text = userName
+                            binding.tvTime.text = formattedTime
+                            Log.d(TAG, "Formatted time: ${binding.tvTime.text}")
                         } else {
                             // Handle case where no recipes are returned
                             Log.d(InstructionFragment.TAG, "No recipes found")
@@ -121,6 +133,7 @@ setExpandedTitleColor(Color.WHITE)}
                         }
                     }
                 }
+
                 is Result.Failure -> {
                     binding.progressBar.gone()
                     Snackbar.make(binding.root, result.error, Snackbar.LENGTH_LONG).show()
@@ -129,6 +142,7 @@ setExpandedTitleColor(Color.WHITE)}
         }
 
     }
+
     override fun onDestroyView() {
         super.onDestroyView()
         // Release resources or references to avoid memory leaks
@@ -137,6 +151,7 @@ setExpandedTitleColor(Color.WHITE)}
         // Log that the view has been destroyed
         logMessage("View destroyed")
     }
+
     private fun logMessage(message: String) {
         Log.d("ViewRecipeFragment", message)
     }

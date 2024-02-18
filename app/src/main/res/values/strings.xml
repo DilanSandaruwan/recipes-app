@@ -29,6 +29,8 @@
     <string name="carbs">Carbs</string>
     <string name="calorie">Calorie</string>
     <string name="protein">Protein</string>
+    <string name="time">Time</string>
+    <string name="likecount">LikeCount</string>
     <string name="desc_back_button">Back Button</string>
     <string name="title_add_new_recipe">Add New Recipe</string>
     <string name="hint_recipe_name">Recipe Name</string>

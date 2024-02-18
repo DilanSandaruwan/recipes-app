@@ -12,13 +12,15 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.gtp01.group01.android.recipesmobileapp.databinding.FragmentIngredientsBinding
+import com.gtp01.group01.android.recipesmobileapp.shared.common.Result.Success
+import com.gtp01.group01.android.recipesmobileapp.shared.model.Recipe
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class IngredientsFragment : Fragment() {
     private lateinit var binding: FragmentIngredientsBinding
     private lateinit var viewModel: ViewRecipeViewModel
-    private lateinit var ingredientsAdapter: IngredientsAdapter
+    private lateinit var adapter: IngredientsAdapter
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -26,7 +28,10 @@ class IngredientsFragment : Fragment() {
 
 
         binding = FragmentIngredientsBinding.inflate(layoutInflater)
-
+        binding.ingredientsRecyclerView.apply {
+            layoutManager = LinearLayoutManager(context)
+            hasFixedSize()
+        }
         return binding.root
 
     }
@@ -36,25 +41,27 @@ class IngredientsFragment : Fragment() {
 
         // Initialize the ViewModel
         viewModel = ViewModelProvider(this).get(ViewRecipeViewModel::class.java)
-
-        viewModel.fetchRecipeDetail(idLoggedUser = 1, recipeName = "Spaghetti Bolognese")
         initObservers()
-        binding.ingredientsRecyclerView.apply {
-            layoutManager= LinearLayoutManager(requireContext())
-            ingredientsAdapter = IngredientsAdapter(requireContext(), null)
-            binding.ingredientsRecyclerView.adapter = ingredientsAdapter
-        }
+        viewModel.fetchRecipeDetail(idLoggedUser = 1, recipeName = "Spaghetti Bolognese")
+
+        viewModel.recipeDetails.observe(viewLifecycleOwner) { recipeDetail ->
+            // Ensure recipeDetail is not null
+
+        // Set layout manager for RecyclerView
+      //  binding.ingredientsRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+
+
 
         // Observe ingredients LiveData
 
-    }
+    } }
 
 
 
 
 
 
-    private fun initObservers(){
+   private fun initObservers(){
 
 
         viewModel.recipeDetails.observe(viewLifecycleOwner){result ->
@@ -62,11 +69,31 @@ class IngredientsFragment : Fragment() {
                 is Result.Loading->{
                     binding.progressBar.show()
                 }
-                is Result.Success<*> ->{
+                is Success<*> ->{
                     binding.progressBar.gone()
-                    val ingredients = result.result
-                    val myRecycleViewAdapter = IngredientsAdapter(requireContext(), ingredients)
-                    binding.ingredientsRecyclerView.adapter = myRecycleViewAdapter
+                    val data = result.result
+
+                    if (data is List<*>) {
+                        val recipes = data.filterIsInstance<Recipe>()
+                        if (recipes.isNotEmpty()) {
+                            // Assuming you want to display the instruction from the first recipe in the list
+                            val ingreadients = recipes[0].ingredients
+                           // val formattedIngreadients = ingreadients.replace("\\n", "\n")
+                            Log.d(TAG, "Recipe ingreadients fetched: $ingreadients")
+                           adapter= IngredientsAdapter(requireContext(), ingreadients)
+                            binding.ingredientsRecyclerView.adapter = adapter
+
+                        } else {
+                            // Handle case where no recipes are returned
+                            Log.d(TAG, "No recipes found")
+                            // You can show a message indicating no recipes found here
+                            // binding.textView3.text = "No recipes found"
+                        }
+                    }
+
+                   // val ingredients = result.result
+                   // val myRecycleViewAdapter = IngredientsAdapter(requireContext(), ingredients)
+                   // binding.ingredientsRecyclerView.adapter = myRecycleViewAdapter
                 }
 
                 is Result.Failure->{
@@ -80,6 +107,6 @@ class IngredientsFragment : Fragment() {
 
     }
     companion object {
-        private val TAG = "IngredientsFragment"
+        private val TAG = "Ingradientsfragment"
     }
 }
