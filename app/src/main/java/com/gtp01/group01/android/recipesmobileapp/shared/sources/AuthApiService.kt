@@ -1,8 +1,8 @@
-package com.gtp01.group01.android.recipesmobileapp.sources
+package com.gtp01.group01.android.recipesmobileapp.shared.sources
 
 import com.gtp01.group01.android.recipesmobileapp.constant.ConstantNetworkService
-import com.gtp01.group01.android.recipesmobileapp.data.AuthUser
-import com.gtp01.group01.android.recipesmobileapp.data.Recipe
+import com.gtp01.group01.android.recipesmobileapp.shared.model.AuthUser
+import com.gtp01.group01.android.recipesmobileapp.shared.model.Recipe
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET

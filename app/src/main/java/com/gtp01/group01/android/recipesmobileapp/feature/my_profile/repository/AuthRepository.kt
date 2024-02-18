@@ -1,9 +1,9 @@
-package com.gtp01.group01.android.recipesmobileapp.repository
+package com.gtp01.group01.android.recipesmobileapp.feature.my_profile.repository
 
 import android.util.Log
 
-import com.gtp01.group01.android.recipesmobileapp.data.AuthUser
-import com.gtp01.group01.android.recipesmobileapp.sources.AuthApiService
+import com.gtp01.group01.android.recipesmobileapp.shared.model.AuthUser
+import com.gtp01.group01.android.recipesmobileapp.shared.sources.AuthApiService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.Response

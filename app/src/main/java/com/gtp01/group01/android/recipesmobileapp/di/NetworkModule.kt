@@ -3,9 +3,7 @@ package com.gtp01.group01.android.recipesmobileapp.di
 import android.util.Log
 import com.gtp01.group01.android.recipesmobileapp.constant.ConstantNetworkService
 import com.gtp01.group01.android.recipesmobileapp.repository.AuthRepository
-import com.gtp01.group01.android.recipesmobileapp.repository.RecipeManagementRepository
 import com.gtp01.group01.android.recipesmobileapp.sources.AuthApiService
-import com.gtp01.group01.android.recipesmobileapp.sources.RecipeManagementApiService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -78,7 +76,6 @@ object NetworkModule {
             .client(okHttpClient)
             .build()
     }
-
     /**
      * Provides an instance of the [AuthApiService] using the provided [Retrofit] instance.
      *
@@ -90,7 +87,6 @@ object NetworkModule {
     fun provideAuthApiService(retrofit: Retrofit): AuthApiService {
         return retrofit.create(AuthApiService::class.java)
     }
-
     /**
      * Provides an instance of [AuthRepository] using the provided [AuthApiService].
      *
@@ -103,14 +99,12 @@ object NetworkModule {
     fun provideAuthRepository(authApiService: AuthApiService): AuthRepository {
         try {
             val authRepo = AuthRepository(authApiService)
-            logMessage("Repository provided")
+            logMessage( "Repository provided")
             return authRepo
         } catch (e: Exception) {
-            logMessage("NetworkError while providing bRepository: ${e.message}")
+            logMessage( "NetworkError while providing bRepository: ${e.message}")
             throw e  // Re-throw the exception for higher-level error handling
-        }
-    }
-
+        } }
     /**
      * Logs a message to indicate the status or action taken within the network module.
      *

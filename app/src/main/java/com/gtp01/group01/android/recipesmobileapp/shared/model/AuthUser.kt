@@ -1,4 +1,4 @@
-package com.gtp01.group01.android.recipesmobileapp.data
+package com.gtp01.group01.android.recipesmobileapp.shared.model
 
 /**
  * Data class representing user authentication details.

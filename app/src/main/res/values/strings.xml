@@ -24,6 +24,11 @@
     <string name="enter_the_email">Enter The Email</string>
     <string name="logout">Logout</string>
     <string name="username_placeholder">Username Placeholder</string>
+    <string name="hello_home_fragment">home</string>
+    <string name="instructions">Instructions</string>
+    <string name="carbs">Carbs</string>
+    <string name="calorie">Calorie</string>
+    <string name="protein">Protein</string>
     <string name="desc_back_button">Back Button</string>
     <string name="title_add_new_recipe">Add New Recipe</string>
     <string name="hint_recipe_name">Recipe Name</string>
