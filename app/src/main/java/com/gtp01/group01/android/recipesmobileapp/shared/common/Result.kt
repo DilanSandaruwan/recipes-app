@@ -1,6 +1,8 @@
 package com.gtp01.group01.android.recipesmobileapp.shared.common
 
 sealed class Result{
+
+
     // Represents a loading state
     object Loading : Result()
     // Represents a successful result holding the actual value of type R
