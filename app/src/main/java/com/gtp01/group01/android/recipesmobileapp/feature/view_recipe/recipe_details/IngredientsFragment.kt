@@ -28,10 +28,7 @@ class IngredientsFragment : Fragment() {
 
 
         binding = FragmentIngredientsBinding.inflate(layoutInflater)
-        binding.ingredientsRecyclerView.apply {
-            layoutManager = LinearLayoutManager(context)
-            hasFixedSize()
-        }
+
         return binding.root
 
     }
@@ -41,48 +38,39 @@ class IngredientsFragment : Fragment() {
 
         // Initialize the ViewModel
         viewModel = ViewModelProvider(this).get(ViewRecipeViewModel::class.java)
+
+        binding.ingredientsRecyclerView.apply {
+            layoutManager = LinearLayoutManager(context)
+            hasFixedSize()
+        }
+
+        // Initialize the adapter with an empty list
+        adapter = IngredientsAdapter(requireContext(), emptyList())
+        binding.ingredientsRecyclerView.adapter = adapter
+
         initObservers()
+
         viewModel.fetchRecipeDetail(idLoggedUser = 1, recipeName = "Spaghetti Bolognese")
+    }
 
-        viewModel.recipeDetails.observe(viewLifecycleOwner) { recipeDetail ->
-            // Ensure recipeDetail is not null
-
-        // Set layout manager for RecyclerView
-      //  binding.ingredientsRecyclerView.layoutManager = LinearLayoutManager(requireContext())
-
-
-
-        // Observe ingredients LiveData
-
-    } }
-
-
-
-
-
-
-   private fun initObservers(){
-
-
-        viewModel.recipeDetails.observe(viewLifecycleOwner){result ->
+    private fun initObservers() {
+        viewModel.recipeDetails.observe(viewLifecycleOwner) { result ->
             when (result) {
-                is Result.Loading->{
+                is Result.Loading -> {
                     binding.progressBar.show()
                 }
-                is Success<*> ->{
+                is Success<*> -> {
                     binding.progressBar.gone()
                     val data = result.result
 
                     if (data is List<*>) {
                         val recipes = data.filterIsInstance<Recipe>()
                         if (recipes.isNotEmpty()) {
-                            // Assuming you want to display the instruction from the first recipe in the list
-                            val ingreadients = recipes[0].ingredients
-                           // val formattedIngreadients = ingreadients.replace("\\n", "\n")
-                            Log.d(TAG, "Recipe ingreadients fetched: $ingreadients")
-                           adapter= IngredientsAdapter(requireContext(), ingreadients)
-                            binding.ingredientsRecyclerView.adapter = adapter
-
+                            // Assuming you want to display the ingredients from the first recipe in the list
+                            val ingredients = recipes[0].ingredients
+                            val formattedIngredients = ingredients.replace("\\n", "\n")
+                            Log.d(TAG, "Recipe ingredients fetched: $formattedIngredients")
+                            adapter.updateIngredients(formattedIngredients)
                         } else {
                             // Handle case where no recipes are returned
                             Log.d(TAG, "No recipes found")
@@ -90,23 +78,15 @@ class IngredientsFragment : Fragment() {
                             // binding.textView3.text = "No recipes found"
                         }
                     }
-
-                   // val ingredients = result.result
-                   // val myRecycleViewAdapter = IngredientsAdapter(requireContext(), ingredients)
-                   // binding.ingredientsRecyclerView.adapter = myRecycleViewAdapter
                 }
-
-                is Result.Failure->{
+                is Result.Failure -> {
                     binding.progressBar.gone()
                     Snackbar.make(binding.root, result.error, Snackbar.LENGTH_LONG).show()
                 }
-
             }
-
         }
-
     }
+
     companion object {
         private val TAG = "Ingradientsfragment"
-    }
-}
+    }}

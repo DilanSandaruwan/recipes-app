@@ -8,8 +8,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.gtp01.group01.android.recipesmobileapp.R
 
-class IngredientsAdapter(private val context: Context, private val formattedIngredients: Any?
-) : RecyclerView.Adapter<IngredientsAdapter.ViewHolder>() {
+class IngredientsAdapter(private val context: Context, private var ingredients: List<String>) : RecyclerView.Adapter<IngredientsAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(context).inflate(R.layout.ingredients_list_item, parent, false)
@@ -17,19 +16,14 @@ class IngredientsAdapter(private val context: Context, private val formattedIngr
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        if (formattedIngredients is List<*>) {
-            val ingredient = formattedIngredients[position] as? String
-            ingredient?.let {
-                holder.bind(it)
-            }
-        }
+        holder.bind(ingredients[position])
     }
 
-    override fun getItemCount(): Int {
-        if (formattedIngredients is List<*>) {
-            return formattedIngredients.size
-        }
-        return 0
+    override fun getItemCount(): Int = ingredients.size
+
+    fun updateIngredients(newIngredients: String) {
+        ingredients = listOf(newIngredients)
+        notifyDataSetChanged()
     }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
