@@ -76,6 +76,23 @@ class RecipeManagementRepository @Inject constructor(
             response.body()
         } else {
             emptyList()
+    /**
+     * Retrieves a list of active recipes filtered by preparation time duration.
+     *
+     * @return A list of [Recipe] containing the filtered list of [Recipe].
+     */
+    suspend fun filterRecipesByDuration(idLoggedUser: Int, maxduration: Int): List<Recipe> {
+        return withContext(Dispatchers.IO) {
+            return@withContext try {
+                val response = recipeManagementApiService.filterRecipesByDuration(idLoggedUser, maxduration)
+                if (response.isSuccessful) {
+                    response.body() ?: emptyList()
+                } else {
+                    emptyList<Recipe>()
+                }
+            } catch (e: Exception) {
+                emptyList<Recipe>()
+            }
         }
     }
 
