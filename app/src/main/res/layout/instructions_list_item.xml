@@ -7,8 +7,6 @@
     android:layout_marginBottom="15dp"
     android:gravity="center_vertical"
     android:padding="10dp">
-
-
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -17,21 +15,19 @@
         app:cardCornerRadius="5dp"
         app:cardElevation="20dp">
 
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/tvIngriedents"
+                android:id="@+id/tvInstructions"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Instruction"
                 android:textColor="@color/black"
-                android:textSize="23sp"
-                android:textStyle="bold" />
+                android:textSize="10sp" />
 
         </LinearLayout>
 

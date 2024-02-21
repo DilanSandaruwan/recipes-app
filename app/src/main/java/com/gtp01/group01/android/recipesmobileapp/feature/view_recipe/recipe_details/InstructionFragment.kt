@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.gtp01.group01.android.recipesmobileapp.databinding.FragmentInstructionBinding
 import com.gtp01.group01.android.recipesmobileapp.shared.common.Result
@@ -19,9 +20,9 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class InstructionFragment : Fragment() {
 
-private lateinit var binding : FragmentInstructionBinding
+    private lateinit var binding: FragmentInstructionBinding
     private lateinit var viewModel: ViewRecipeViewModel
-
+    private lateinit var adapter: InstructionAdapter
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -36,36 +37,31 @@ private lateinit var binding : FragmentInstructionBinding
         super.onViewCreated(view, savedInstanceState)
 
         viewModel = ViewModelProvider(this).get(ViewRecipeViewModel::class.java)
-        viewModel.fetchRecipeDetail(idLoggedUser = 1, recipeName = "Spaghetti Bolognese")
+
+        binding.instructionsRecyclerView.apply {
+            layoutManager = LinearLayoutManager(context)
+            hasFixedSize()
+        }
+
+
+        // Initialize the adapter with an empty list
+        adapter = InstructionAdapter(requireContext(), emptyArray())
+        binding.instructionsRecyclerView.adapter = adapter
+
         initObservers()
-        // Observe recipeDetails LiveData
-    /*    viewModel.recipeDetails.observe(viewLifecycleOwner) { recipes ->
-            recipes?.let {
-                if (recipes.isNotEmpty()) {
-                    // Assuming you want to display the instruction from the first recipe in the list
-                    val instruction = recipes[0].instruction
-                    val formattedInstruction = instruction.replace("\\n", "\n")
-                    Log.d(TAG, "Recipe instruction fetched: $formattedInstruction")
-                    binding.textView3.text = formattedInstruction
-                } else {
-                    Log.d(TAG, "No recipes found")
-                    // Handle case where no recipes are returned
-                    // For example, show a message indicating no recipes found
-                    // binding.textView3.text = "No recipes found"
-                }
-            }
-        }*/
+        viewModel.fetchRecipeDetail(idLoggedUser = 1, recipeName = "Spaghetti Bolognese")
 
-}
+    }
 
-    private fun initObservers(){
+    private fun initObservers() {
 
 
-        viewModel.recipeDetails.observe(viewLifecycleOwner){result ->
+        viewModel.recipeDetails.observe(viewLifecycleOwner) { result ->
             when (result) {
                 is Result.Loading -> {
                     binding.progressBar.show()
                 }
+
                 is Result.Success<*> -> {
                     binding.progressBar.gone()
                     val data = result.result
@@ -75,18 +71,18 @@ private lateinit var binding : FragmentInstructionBinding
                         if (recipes.isNotEmpty()) {
                             // Assuming you want to display the instruction from the first recipe in the list
                             val instruction = recipes[0].instruction
-                            val formattedInstruction = instruction.replace("\\n", "\n")
+                            val formattedInstruction = instruction.split("\\n").toTypedArray()
                             Log.d(TAG, "Recipe instruction fetched: $formattedInstruction")
-                            binding.textView3.text = formattedInstruction
+                            adapter.updateInstructions(formattedInstruction)
 
                         } else {
                             // Handle case where no recipes are returned
                             Log.d(TAG, "No recipes found")
-                            // You can show a message indicating no recipes found here
-                            // binding.textView3.text = "No recipes found"
+
                         }
                     }
                 }
+
                 is Result.Failure -> {
                     binding.progressBar.gone()
                     Snackbar.make(binding.root, result.error, Snackbar.LENGTH_LONG).show()
@@ -94,7 +90,7 @@ private lateinit var binding : FragmentInstructionBinding
             }
         }
 
-        }
+    }
 
 
     companion object {
