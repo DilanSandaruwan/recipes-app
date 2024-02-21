@@ -45,7 +45,7 @@ class IngredientsFragment : Fragment() {
         }
 
         // Initialize the adapter with an empty list
-        adapter = IngredientsAdapter(requireContext(), emptyList())
+        adapter = IngredientsAdapter(requireContext(), emptyArray())
         binding.ingredientsRecyclerView.adapter = adapter
 
         initObservers()
@@ -68,9 +68,9 @@ class IngredientsFragment : Fragment() {
                         if (recipes.isNotEmpty()) {
                             // Assuming you want to display the ingredients from the first recipe in the list
                             val ingredients = recipes[0].ingredients
-                            val formattedIngredients = ingredients.replace("\\n", "\n")
-                            Log.d(TAG, "Recipe ingredients fetched: $formattedIngredients")
-                            adapter.updateIngredients(formattedIngredients)
+                            val formattedIngredients = ingredients.split("\\n").toTypedArray()
+                            Log.d(TAG, "Recipe ingredients fetched: $ingredients")
+                            adapter.updateIngredients(formattedIngredients )
                         } else {
                             // Handle case where no recipes are returned
                             Log.d(TAG, "No recipes found")
