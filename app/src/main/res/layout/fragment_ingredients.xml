@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".feature.view_recipe.recipe_details.IngredientsFragment">
 
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/ingredientsRecyclerView"
         android:layout_width="313dp"
