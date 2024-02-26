@@ -1,6 +1,8 @@
 package com.gtp01.group01.android.recipesmobileapp.shared.model
 
+import com.google.gson.annotations.SerializedName
+
 class FoodCategory (
-    val idfoodCategory: Long,
-    val categoryName: String
+    @SerializedName("idfoodCategory") val idFoodCategory: Int,
+    @SerializedName("categoryName") val categoryName: String
 )

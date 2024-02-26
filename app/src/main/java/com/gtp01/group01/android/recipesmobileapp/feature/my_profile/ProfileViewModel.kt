@@ -27,9 +27,9 @@ class ProfileViewModel  @Inject constructor(private  val authRepository: AuthRep
             if (currentUser != null) {
                 // Create an AuthUser object with the retrieved details
                 val authUser = AuthUser(
-                    iduser = 1, // You might get this ID from Firebase or another source
+                    idUser = 1, // You might get this ID from Firebase or another source
                     email = currentUser.email.orEmpty(),
-                    fullname = currentUser.displayName.orEmpty()
+                    fullName = currentUser.displayName.orEmpty()
                 )
 
                 // Save the user details using the AuthRepository

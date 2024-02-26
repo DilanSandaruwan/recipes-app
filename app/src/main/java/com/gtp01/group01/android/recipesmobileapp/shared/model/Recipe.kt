@@ -1,20 +1,22 @@
 package com.gtp01.group01.android.recipesmobileapp.shared.model
 
+import com.google.gson.annotations.SerializedName
+
 data class Recipe (
-    val idrecipe: Long,
-    val owner: AuthUser,
-    val recipeName: String,
-    val ingredients: String,
-    val instruction: String,
-    val preparationTime: Float,
-    val calory: Float,
-    val protein: Float,
-    val carbs: Float,
-    val serving: Int,
-    val photo: String?, // Nullable if photo is optional
-    val categories: List<FoodCategory>,
-    val isActive: Int, // Change type to Int
-    val likeCount: Int,
-    val hasLike: Boolean,
-    val hasFavorite: Boolean
+    @SerializedName("idrecipe") val idRecipe: Int,
+    @SerializedName("owner") val owner: AuthUser,
+    @SerializedName("recipeName") val recipeName: String,
+    @SerializedName("ingredients") val ingredients: String,
+    @SerializedName("instruction") val instruction: String,
+    @SerializedName("preparationTime") val preparationTime: Int,
+    @SerializedName("calory") val calorie: Int,
+    @SerializedName("protein") val protein: Int,
+    @SerializedName("carbs") val carbs: Int,
+    @SerializedName("serving") val serving: Int,
+    @SerializedName("photo") val photo: String?,
+    @SerializedName("categories") val categories: List<FoodCategory>,
+    @SerializedName("isActive") val isActive: Int,
+    @SerializedName("likeCount") val likeCount: Int,
+    @SerializedName("hasLike") val hasLike: Boolean,
+    @SerializedName("hasFavorite") val hasFavorite: Boolean
 )

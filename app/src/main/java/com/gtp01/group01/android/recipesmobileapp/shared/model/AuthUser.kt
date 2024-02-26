@@ -1,5 +1,7 @@
 package com.gtp01.group01.android.recipesmobileapp.shared.model
 
+import com.google.gson.annotations.SerializedName
+
 /**
  * Data class representing user authentication details.
  *
@@ -9,7 +11,8 @@ package com.gtp01.group01.android.recipesmobileapp.shared.model
  */
 
 data class AuthUser(
-    val iduser: Int,
-    val email: String,
-    val fullname: String
+    @SerializedName("iduser") val idUser: Int,
+    @SerializedName("email") val email: String,
+    @SerializedName("fullname") val fullName: String,
+
 )
