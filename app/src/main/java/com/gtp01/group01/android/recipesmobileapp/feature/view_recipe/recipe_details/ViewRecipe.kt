@@ -105,7 +105,7 @@ class ViewRecipe : Fragment() {
 
                             val recipe_name = recipes[0].recipeName
                             val carbs = recipes[0].carbs
-                            val calorie = recipes[0].calory
+                            val calorie = recipes[0].calorie
                             val likes = recipes[0].likeCount
                             val protein = recipes[0].protein
                             val time = recipes[0].preparationTime
@@ -113,7 +113,7 @@ class ViewRecipe : Fragment() {
                             val formattedCalorie = "Calorie: $calorie"
                             val formattedProtein = "Protein: $protein"
                             // Access user's full name
-                            val userName = recipes[0].owner.fullname
+                            val userName = recipes[0].owner.fullName
                             val formattedLikes = "Likes: $likes"
                             val formattedTime = "Time: $time"
                             binding.tvLikeCount.text = formattedLikes
@@ -121,6 +121,7 @@ class ViewRecipe : Fragment() {
                             binding.carbsTextView.text = formattedCarbs
                             binding.calorieTextView.text = formattedCalorie
                             binding.proteinTextView.text = formattedProtein
+
                             // Set user's full name to appropriate TextView
                             binding.tvUserName.text = userName
                             binding.tvTime.text = formattedTime
