@@ -49,47 +49,47 @@ class InstructionFragment : Fragment() {
         binding.instructionsRecyclerView.adapter = adapter
 
         initObservers()
-        viewModel.fetchRecipeDetail(idLoggedUser = 1, recipeName = "Spaghetti Bolognese")
+        viewModel.fetchRecipeDetail(idLoggedUser = 10, idrecipe  = 1)
 
     }
 
     private fun initObservers() {
-
-
         viewModel.recipeDetails.observe(viewLifecycleOwner) { result ->
             when (result) {
                 is Result.Loading -> {
+                    // Show progress bar when loading
                     binding.progressBar.show()
                 }
 
                 is Result.Success<*> -> {
+                    // Hide progress bar when data is loaded successfully
                     binding.progressBar.gone()
                     val data = result.result
 
-                    if (data is List<*>) {
-                        val recipes = data.filterIsInstance<Recipe>()
-                        if (recipes.isNotEmpty()) {
-                            // Assuming you want to display the instruction from the first recipe in the list
-                            val instruction = recipes[0].instruction
-                            val formattedInstruction = instruction.split("\\n").toTypedArray()
-                            Log.d(TAG, "Recipe instruction fetched: $formattedInstruction")
-                            adapter.updateInstructions(formattedInstruction)
-
-                        } else {
-                            // Handle case where no recipes are returned
-                            Log.d(TAG, "No recipes found")
-
-                        }
+                    if (data is Recipe) {
+                        // Access the recipe directly
+                        val recipe = data
+                        // Access instruction from the recipe
+                        val instruction = recipe.instruction
+                        // Split instruction string by newline character and convert it to array
+                        val formattedInstruction = instruction.split("\\n").toTypedArray()
+                        Log.d(TAG, "Recipe instruction fetched: $formattedInstruction")
+                        // Update UI with instructions
+                        adapter.updateInstructions(formattedInstruction)
+                    } else {
+                        // Handle unexpected data type
+                        Log.e(TAG, "Unexpected data type: $data")
                     }
                 }
 
                 is Result.Failure -> {
+                    // Hide progress bar when there's a failure
                     binding.progressBar.gone()
+                    // Show error message using Snackbar
                     Snackbar.make(binding.root, result.error, Snackbar.LENGTH_LONG).show()
                 }
             }
         }
-
     }
 
 

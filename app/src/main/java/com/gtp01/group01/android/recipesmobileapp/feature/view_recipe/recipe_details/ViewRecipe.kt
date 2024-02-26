@@ -43,22 +43,22 @@ class ViewRecipe : Fragment() {
         viewModel = ViewModelProvider(this)[ViewRecipeViewModel::class.java]
         setUpTabLayoutWithViewPager()
         val idLoggedUser = 10
-        val recipeName = "Spaghetti Bolognese"
+        val idrecipe = 1
 
         // Log the request parameters
         Log.d(
             ContentValues.TAG,
-            "Fetching recipe details for user id: $idLoggedUser, recipe name: $recipeName"
+            "Fetching recipe details for user id: $idLoggedUser, recipe name: $idrecipe"
         )
 
         // Make the network request to fetch recipe details
-        viewModel.fetchRecipeDetail(idLoggedUser, recipeName)
+        viewModel.fetchRecipeDetail(idLoggedUser, idrecipe)
 
         initObservers()
 
         binding.appBar.setExpanded(true, true)
         binding.collapsingToolbarLayout.apply {
-            title = "$recipeName"
+            title = "$idrecipe"
 
 
 
@@ -98,22 +98,21 @@ class ViewRecipe : Fragment() {
                     binding.progressBar.gone()
                     val data = result.result
 
-                    if (data is List<*>) {
-                        val recipes = data.filterIsInstance<Recipe>()
-                        if (recipes.isNotEmpty()) {
+                    if (data is Recipe) {
+                        val recipe = data
                             // Assuming you want to display the instruction from the first recipe in the list
 
-                            val recipe_name = recipes[0].recipeName
-                            val carbs = recipes[0].carbs
-                            val calorie = recipes[0].calorie
-                            val likes = recipes[0].likeCount
-                            val protein = recipes[0].protein
-                            val time = recipes[0].preparationTime
+                            val recipe_name = recipe.recipeName
+                            val carbs = recipe.carbs
+                            val calorie = recipe.calorie
+                            val likes = recipe.likeCount
+                            val protein = recipe.protein
+                            val time = recipe.preparationTime
                             val formattedCarbs = "Carbs: $carbs"
                             val formattedCalorie = "Calorie: $calorie"
                             val formattedProtein = "Protein: $protein"
                             // Access user's full name
-                            val userName = recipes[0].owner.fullName
+                            val userName = recipe.owner.fullName
                             val formattedLikes = "Likes: $likes"
                             val formattedTime = "Time: $time"
                             binding.tvLikeCount.text = formattedLikes
@@ -126,14 +125,9 @@ class ViewRecipe : Fragment() {
                             binding.tvUserName.text = userName
                             binding.tvTime.text = formattedTime
                             Log.d(TAG, "Formatted time: ${binding.tvTime.text}")
-                        } else {
-                            // Handle case where no recipes are returned
-                            Log.d(InstructionFragment.TAG, "No recipes found")
-                            // You can show a message indicating no recipes found here
-                            // binding.textView3.text = "No recipes found"
-                        }
-                    }
-                }
+
+
+                }}
 
                 is Result.Failure -> {
                     binding.progressBar.gone()

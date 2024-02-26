@@ -7,10 +7,10 @@ import javax.inject.Inject
 
 class ViewRecipeRepository @Inject constructor(private val authApiService: AuthApiService) {
 
-    suspend fun getRecipeDetail(idLoggedUser: Int, recipeName: String): List<Recipe>? {
+    suspend fun getRecipeDetail(idLoggedUser: Int, idrecipe: Int):  Recipe? {
         return try {
-            Log.d(TAG, "Making network request to fetch recipe details for user id: $idLoggedUser, recipe name: $recipeName")
-            val response = authApiService.getRecipeDetail(idLoggedUser, recipeName)
+            Log.d(TAG, "Making network request to fetch recipe details for user id: $idLoggedUser, recipe name: $idrecipe")
+            val response = authApiService.getRecipeDetail(idLoggedUser, idrecipe)
             if (response.isSuccessful) {
                 val recipes = response.body()
 

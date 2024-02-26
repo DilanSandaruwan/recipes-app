@@ -16,21 +16,21 @@ class ViewRecipeViewModel  @Inject constructor(private val viewRecipeRepository:
 ): ViewModel() {
 
     val recipeDetails = MutableLiveData<Result>()
-private val _recipeDetails = MutableLiveData<List<Recipe>>()
+private val _recipeDetails = MutableLiveData<Recipe?>()
     init {
         // Initialize recipeDetails with the complete data
-        _recipeDetails.value = emptyList()
+        _recipeDetails.value = null
     }
 
 
-    fun fetchRecipeDetail(idLoggedUser: Int, recipeName: String) {
+    fun fetchRecipeDetail(idLoggedUser: Int, idrecipe: Int) {
 
         viewModelScope.launch {
             try {
                 // Post loading state
                 recipeDetails.postValue(Result.Loading)
                 // Fetch recipe details from the repository
-                val result = viewRecipeRepository.getRecipeDetail(idLoggedUser, recipeName)
+                val result = viewRecipeRepository.getRecipeDetail(idLoggedUser, idrecipe)
 
                 // Update the recipeDetails LiveData with the successful result
                 recipeDetails.postValue(Result.Success(result))

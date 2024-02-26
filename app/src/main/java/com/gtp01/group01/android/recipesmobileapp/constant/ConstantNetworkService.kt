@@ -13,5 +13,5 @@ object ConstantNetworkService {
     const val AUTH_DETAIL_USER_ENDPOINT ="/api/v1/user"
 
     const val RECIPE_DETAIL_BY_RECIPE_NAME_ENDPOINT= "api/v1/reader/{idLoggedUser}/recipe/filterby/name/{recipename}"
-
+    const val RECIPE_DETAIL_BY_RECIPE_id_ENDPOINT= "api/v1/reader/{idLoggedUser}/recipe/id/{idrecipe}"
 }
