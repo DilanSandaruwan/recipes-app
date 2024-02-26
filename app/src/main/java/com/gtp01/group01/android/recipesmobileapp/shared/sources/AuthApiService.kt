@@ -25,10 +25,10 @@ interface AuthApiService {
     suspend fun saveUser(@Body authUser: AuthUser)
     : Response<AuthUser>
     @Headers("Accept: application/json; utf-8")
-    @GET(ConstantNetworkService.RECIPE_DETAIL_BY_RECIPE_NAME_ENDPOINT)
+    @GET(ConstantNetworkService.RECIPE_DETAIL_BY_RECIPE_id_ENDPOINT)
     suspend fun getRecipeDetail(
         @Path("idLoggedUser") idLoggedUser: Int,
-        @Path("recipename") recipeName: String
-    ): Response<List<Recipe>>
+        @Path("idrecipe") idrecipe: Int
+    ): Response<Recipe>
 
 }

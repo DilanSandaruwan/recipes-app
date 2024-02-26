@@ -50,37 +50,40 @@ class IngredientsFragment : Fragment() {
 
         initObservers()
 
-        viewModel.fetchRecipeDetail(idLoggedUser = 1, recipeName = "Spaghetti Bolognese")
+        viewModel.fetchRecipeDetail(idLoggedUser = 10, idrecipe = 1)
     }
 
     private fun initObservers() {
         viewModel.recipeDetails.observe(viewLifecycleOwner) { result ->
             when (result) {
                 is Result.Loading -> {
+                    // Show progress bar when loading
                     binding.progressBar.show()
                 }
-                is Success<*> -> {
+                is Result.Success<*> -> {
+                    // Hide progress bar when data is loaded successfully
                     binding.progressBar.gone()
                     val data = result.result
 
-                    if (data is List<*>) {
-                        val recipes = data.filterIsInstance<Recipe>()
-                        if (recipes.isNotEmpty()) {
-                            // Assuming you want to display the ingredients from the first recipe in the list
-                            val ingredients = recipes[0].ingredients
-                            val formattedIngredients = ingredients.split("\\n").toTypedArray()
-                            Log.d(TAG, "Recipe ingredients fetched: $ingredients")
-                            adapter.updateIngredients(formattedIngredients )
-                        } else {
-                            // Handle case where no recipes are returned
-                            Log.d(TAG, "No recipes found")
-                            // You can show a message indicating no recipes found here
-                            // binding.textView3.text = "No recipes found"
-                        }
+                    if (data is Recipe) {
+                        // Access the recipe directly
+                        val recipe = data
+                        // Assuming you want to display the ingredients
+                        val ingredients = recipe.ingredients
+                        // Split ingredients string by newline character and convert it to array
+                        val formattedIngredients = ingredients.split("\\n").toTypedArray()
+                        Log.d(TAG, "Recipe ingredients fetched: $ingredients")
+                        // Update UI with ingredients
+                        adapter.updateIngredients(formattedIngredients)
+                    } else {
+                        // Handle unexpected data type
+                        Log.e(TAG, "Unexpected data type: $data")
                     }
                 }
                 is Result.Failure -> {
+                    // Hide progress bar when there's a failure
                     binding.progressBar.gone()
+                    // Show error message using Snackbar
                     Snackbar.make(binding.root, result.error, Snackbar.LENGTH_LONG).show()
                 }
             }
