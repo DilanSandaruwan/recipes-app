@@ -48,4 +48,9 @@
     <dimen name="content_card_view_corner_radius">20dp</dimen>
     <dimen name="content_card_view_elevation">10dp</dimen>
     <dimen name="list_card_view_corner_radius">12dp</dimen>
+    <dimen name="large_suggestion_card_view_width">255dp</dimen>
+    <dimen name="large_suggestion_card_view_min_height">205dp</dimen>
+    <dimen name="large_suggestion_card_view_max_height">275dp</dimen>
+    <dimen name="large_suggestion_card_view_img_height">142.94dp</dimen>
+    <dimen name="large_suggestion_card_view_name_width">195dp</dimen>
 </resources>

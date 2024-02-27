@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.gtp01.group01.android.recipesmobileapp.repository.RecipeManagementRepository
 import com.gtp01.group01.android.recipesmobileapp.shared.model.Recipe
+import com.gtp01.group01.android.recipesmobileapp.shared.model.User
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -20,9 +21,14 @@ import javax.inject.Inject
 class HomeViewModel @Inject constructor(private val recipeManagementRepository: RecipeManagementRepository) :
     ViewModel() {
 
+    // LiveData for holding logged in user
+    private val _user = MutableLiveData<User?>(null)
+    val user: LiveData<User?> = _user
+
     // LiveData for holding time-based recipe list
     private val _timeBasedRecipeList = MutableLiveData<List<Recipe>>(emptyList())
     val timeBasedRecipeList: LiveData<List<Recipe>> = _timeBasedRecipeList
+
 
     /**
      * Filters recipes based on duration.
