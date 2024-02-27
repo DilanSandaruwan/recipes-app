@@ -120,5 +120,9 @@
     <string name="add_instruction">Add Instruction</string>
     <string name="desc_add_new_ingredient">Add new ingredient</string>
     <string name="desc_instructions">Instructions</string>
+    <!-- Strings used in home screen -->
     <string name="home_suggestion_bytime_title">Make It In %d Min</string>
+    <string name="placeholder_search">Enter Recipe Name</string>
+    <string name="likes">Likes</string>
+    <string name="min">min</string>
 </resources>
