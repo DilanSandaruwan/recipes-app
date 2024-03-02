@@ -26,6 +26,7 @@ class RecipeAddUpdateViewModel @Inject constructor(
 ) : ViewModel() {
 
     var checkedCategoriesList: MutableList<FoodCategory> = mutableListOf()
+    var ingredientsList: MutableList<String> = mutableListOf()
 
     private val _serveCount = MutableLiveData(0)
     val serveCount: LiveData<Int> = _serveCount
@@ -75,6 +76,7 @@ class RecipeAddUpdateViewModel @Inject constructor(
                     _serveCount.postValue(serveCount.plus(1))
                 }
             }
+
             TagConstant.TAG_COOKING_TIME -> {
                 _cookingTime.value?.let { cookingTime ->
                     _cookingTime.postValue(cookingTime.plus(1))
@@ -94,6 +96,7 @@ class RecipeAddUpdateViewModel @Inject constructor(
                     }
                 }
             }
+
             TagConstant.TAG_COOKING_TIME -> {
                 _cookingTime.value?.let { cookingTime ->
                     if (cookingTime > 0) {

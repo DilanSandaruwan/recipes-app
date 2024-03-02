@@ -10,13 +10,16 @@ import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.text.HtmlCompat
+import androidx.core.view.children
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.textfield.TextInputEditText
 import com.gtp01.group01.android.recipesmobileapp.R
 import com.gtp01.group01.android.recipesmobileapp.constant.TagConstant
 import com.gtp01.group01.android.recipesmobileapp.databinding.FragmentRecipeAddBinding
+import com.gtp01.group01.android.recipesmobileapp.databinding.LayoutDuplicateIngredientItemBinding
 import com.gtp01.group01.android.recipesmobileapp.shared.model.FoodCategory
 import com.gtp01.group01.android.recipesmobileapp.shared.utils.ui.RecipeMappers
 import dagger.hilt.android.AndroidEntryPoint
@@ -76,16 +79,28 @@ class RecipeAddFragment : Fragment() {
             ibDecreCookingTime.setOnClickListener {
                 viewModel.decreaseCount(TagConstant.TAG_COOKING_TIME)
             }
+            btnAddIngredient.setOnClickListener {
+                addIngredientField()
+            }
+            btnAddInstructions.setOnClickListener {
+                addInstructionsField()
+            }
             btnSave.setOnClickListener {
                 Log.e("DILAN", "onCreateView: ${viewModel.checkedCategoriesList}")
             }
 
             // Set HTML formatted text to the TextView
-            mtvInfoIngredient.text = HtmlCompat.fromHtml(getString(R.string.ingredients_html), HtmlCompat.FROM_HTML_MODE_LEGACY)
-            mtvInfoInstruction.text = HtmlCompat.fromHtml(getString(R.string.instructions_html), HtmlCompat.FROM_HTML_MODE_LEGACY)
+            mtvInfoIngredient.text = HtmlCompat.fromHtml(
+                getString(R.string.ingredients_html),
+                HtmlCompat.FROM_HTML_MODE_LEGACY
+            )
+            mtvInfoInstruction.text = HtmlCompat.fromHtml(
+                getString(R.string.instructions_html),
+                HtmlCompat.FROM_HTML_MODE_LEGACY
+            )
 
             ivInfoIngredient.setOnClickListener {
-                if(mtvInfoIngredient.visibility == VISIBLE){
+                if (mtvInfoIngredient.visibility == VISIBLE) {
                     mtvInfoIngredient.visibility = GONE
                 } else {
                     mtvInfoIngredient.visibility = VISIBLE
@@ -93,7 +108,7 @@ class RecipeAddFragment : Fragment() {
             }
 
             ivInfoInstruction.setOnClickListener {
-                if(mtvInfoInstruction.visibility == VISIBLE){
+                if (mtvInfoInstruction.visibility == VISIBLE) {
                     mtvInfoInstruction.visibility = GONE
                 } else {
                     mtvInfoInstruction.visibility = VISIBLE
@@ -101,6 +116,48 @@ class RecipeAddFragment : Fragment() {
             }
         }
         return binding.root
+    }
+
+    private fun addIngredientField() {
+        val subBinding = LayoutDuplicateIngredientItemBinding.inflate(layoutInflater)
+        subBinding.btnDeleteIngredient.setOnClickListener {
+            binding.lytDynamicIngredients.removeView(subBinding.root)
+        }
+
+        if (binding.lytDynamicIngredients.childCount > 0) {
+            for (i in binding.lytDynamicIngredients.children) {
+                val metInsertIngredient =
+                    i.findViewById<TextInputEditText>(R.id.metInsertIngredient)
+                if (metInsertIngredient.text.toString()
+                        .isEmpty() || metInsertIngredient.text.toString().isBlank()
+                ) {
+                    return
+                }
+            }
+        }
+        val view = subBinding.root
+        binding.lytDynamicIngredients.addView(view)
+    }
+
+    private fun addInstructionsField() {
+        val subBinding = LayoutDuplicateIngredientItemBinding.inflate(layoutInflater)
+        subBinding.btnDeleteIngredient.setOnClickListener {
+            binding.lytDynamicInstructions.removeView(subBinding.root)
+        }
+
+        if (binding.lytDynamicInstructions.childCount > 0) {
+            for (i in binding.lytDynamicInstructions.children) {
+                val metInsertInstructions =
+                    i.findViewById<TextInputEditText>(R.id.metInsertIngredient)
+                if (metInsertInstructions.text.toString()
+                        .isEmpty() || metInsertInstructions.text.toString().isBlank()
+                ) {
+                    return
+                }
+            }
+        }
+        val view = subBinding.root
+        binding.lytDynamicInstructions.addView(view)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

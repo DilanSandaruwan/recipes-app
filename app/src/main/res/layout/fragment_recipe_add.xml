@@ -276,9 +276,18 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="8dp"
                             android:layout_marginBottom="10dp"
-                            android:background="@color/md_theme_primary"
-                            android:padding="10dp"
+                            android:background="@drawable/bg_curved_square_info"
+                            android:paddingStart="30dp"
+                            android:paddingTop="30dp"
+                            android:paddingEnd="10dp"
+                            android:paddingBottom="30dp"
                             android:textColor="@color/white" />
+
+                        <LinearLayout
+                            android:id="@+id/lytDynamicIngredients"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical" />
 
                         <LinearLayout
                             android:id="@+id/lytLinearIngredients"
@@ -287,6 +296,7 @@
                             android:orientation="vertical">
 
                             <com.google.android.material.button.MaterialButton
+                                android:id="@+id/btnAddIngredient"
                                 style="@style/Widget.Material3.Button.TextButton.Icon"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -329,11 +339,21 @@
                             android:id="@+id/mtvInfoInstruction"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginBottom="10dp"
                             android:layout_marginTop="8dp"
-                            android:background="@color/md_theme_primary"
+                            android:layout_marginBottom="10dp"
+                            android:background="@drawable/bg_curved_square_info"
                             android:padding="10dp"
+                            android:paddingStart="30dp"
+                            android:paddingTop="30dp"
+                            android:paddingEnd="10dp"
+                            android:paddingBottom="30dp"
                             android:textColor="@color/white" />
+
+                        <LinearLayout
+                            android:id="@+id/lytDynamicInstructions"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical" />
 
                         <LinearLayout
                             android:id="@+id/lytLinearInstructions"
@@ -342,6 +362,7 @@
                             android:orientation="vertical">
 
                             <com.google.android.material.button.MaterialButton
+                                android:id="@+id/btnAddInstructions"
                                 style="@style/Widget.Material3.Button.TextButton.Dialog.Icon"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
