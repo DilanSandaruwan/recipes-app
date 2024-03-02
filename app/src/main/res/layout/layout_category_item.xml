@@ -1,33 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/lytCategoryItem"
-    android:layout_width="120dp"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/lytMatCardCategoryItem"
-        android:layout_width="120dp"
-        android:layout_height="160dp"
-        android:layout_marginBottom="10dp"
-        android:elevation="6dp"
-        app:cardCornerRadius="20dp">
+    <data>
 
-        <com.gtp01.group01.android.recipesmobileapp.shared.utils.ui.RoundedImageView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_gravity="center"
-            android:padding="5dp"
-            android:src="@drawable/ico_unselected_item" />
+    </data>
 
-    </com.google.android.material.card.MaterialCardView>
-
-    <com.google.android.material.textview.MaterialTextView
-        android:layout_width="match_parent"
+    <LinearLayout
+        android:id="@+id/lytCategoryItem"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:gravity="center"
-        android:text="@string/sample_category_name"
-        android:textColor="@color/white" />
-</LinearLayout>
+        android:layout_margin="10dp"
+        android:orientation="vertical">
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/lytMatCardCategoryItem"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginBottom="10dp"
+            android:elevation="6dp"
+            android:theme="@style/Theme.RecipesMobileApp"
+            app:cardCornerRadius="20dp">
+
+            <com.gtp01.group01.android.recipesmobileapp.shared.utils.ui.RoundedImageView
+                android:id="@+id/rimSelectedOrNot"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:translationZ="50dp"
+                android:layout_margin="5dp"
+                android:background="@drawable/ico_unselected_item"
+                android:layout_gravity="top|end" />
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/mtvCategoryName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:gravity="center"
+            android:text="@string/sample_category_name"
+            android:textColor="@color/black" />
+    </LinearLayout>
+</layout>

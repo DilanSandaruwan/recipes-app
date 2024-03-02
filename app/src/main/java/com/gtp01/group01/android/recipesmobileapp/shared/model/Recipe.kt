@@ -2,30 +2,31 @@ package com.gtp01.group01.android.recipesmobileapp.shared.model
 
 import android.graphics.Bitmap
 import com.google.gson.annotations.SerializedName
+
 /**
- * Data class representing a recipe.
+ * Represents a recipe.
  *
- * @property idRecipe The ID of the recipe.
- * @property owner The owner of the recipe, represented by an [AuthUser] object.
+ * @property idrecipe The unique identifier of the recipe.
+ * @property owner The user who wrote the recipe.
  * @property recipeName The name of the recipe.
- * @property ingredients The ingredients required for the recipe.
- * @property instruction The instructions to prepare the recipe.
- * @property preparationTime The preparation time in minutes.
- * @property calorie The calorie content of the recipe.
- * @property protein The protein content of the recipe.
- * @property carbs The carbohydrate content of the recipe.
- * @property serving The serving size of the recipe.
- * @property photo The base64 encoded string representing the photo of the recipe.
- * @property categories The list of food categories the recipe belongs to.
- * @property isActive The status of the recipe.
- * @property likeCount The number of likes received for the recipe.
- * @property hasLike Indicates whether the recipe has been liked.
- * @property hasFavorite Indicates whether the recipe has been marked as favorite.
+ * @property ingredients The list of ingredients required for the recipe.
+ * @property instruction The step-by-step instructions for preparing the recipe.
+ * @property preparationTime The time required to prepare the recipe in minutes.
+ * @property calory The calorie count of the recipe.
+ * @property protein The protein count of the recipe.
+ * @property carbs The carbohydrate count of the recipe.
+ * @property serving The number of servings the recipe yields.
+ * @property photo The photo of the prepared recipe.
+ * @property categories The list of food categories to which the recipe belongs.
+ * @property isActive The status indicating whether the recipe is active or disabled. 1= active, 0= disabled.
+ * @property likeCount The number of likes the recipe has received.
+ * @property hasLike Indicates whether the current logged in user has liked the recipe. Return true if user has liked the recipe.
+ * @property hasFavorite Indicates whether the current logged in user has marked the recipe as favorite. Return true if user has marked as favorite.
  * @property bitmap The decoded image bitmap of the recipe photo.
  */
 data class Recipe(
     @SerializedName("idrecipe") val idRecipe: Int,
-    @SerializedName("owner") val owner: AuthUser,
+    @SerializedName("owner") val owner: User,
     @SerializedName("recipeName") val recipeName: String,
     @SerializedName("ingredients") val ingredients: String,
     @SerializedName("instruction") val instruction: String,
@@ -41,4 +42,14 @@ data class Recipe(
     @SerializedName("hasLike") val hasLike: Boolean,
     @SerializedName("hasFavorite") val hasFavorite: Boolean,
     var bitmap: Bitmap? = null // Add a property to hold the decoded image bitmap
+)
+
+/**
+ * Represents a list of recipes.
+ *
+ * @property recipes The list of recipes.
+ */
+
+data class RecipeList(
+    @SerializedName("recipes") val recipes: List<Recipe>
 )

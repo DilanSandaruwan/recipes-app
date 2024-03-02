@@ -124,6 +124,7 @@
                                 android:textStyle="bold" />
 
                             <ImageButton
+                                android:id="@+id/ibDecreServeCount"
                                 android:layout_width="48dp"
                                 android:layout_height="48dp"
                                 android:layout_gravity="center"
@@ -138,22 +139,26 @@
                                 android:layout_gravity="center"
                                 android:layout_marginStart="5dp"
                                 android:layout_marginEnd="5dp"
-                                android:gravity="center">
+                                android:gravity="center"
+                                app:hintEnabled="false">
 
                                 <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/metServingCount"
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
                                     android:background="@null"
                                     android:digits="@string/validity_digits"
                                     android:gravity="center"
+                                    android:hint="@string/default_zero"
                                     android:inputType="numberSigned"
-                                    android:text="@string/default_zero"
+                                    android:textColorHint="@color/grey_pale"
                                     android:textSize="20sp"
                                     android:textStyle="bold" />
 
                             </com.google.android.material.textfield.TextInputLayout>
 
                             <ImageButton
+                                android:id="@+id/ibIncreServeCount"
                                 android:layout_width="48dp"
                                 android:layout_height="48dp"
                                 android:layout_gravity="center"
@@ -181,6 +186,7 @@
                                 android:textStyle="bold" />
 
                             <ImageButton
+                                android:id="@+id/ibDecreCookingTime"
                                 android:layout_width="48dp"
                                 android:layout_height="48dp"
                                 android:layout_gravity="center"
@@ -195,21 +201,25 @@
                                 android:layout_gravity="center"
                                 android:layout_marginStart="5dp"
                                 android:layout_marginEnd="5dp"
-                                android:gravity="center">
+                                android:gravity="center"
+                                app:hintEnabled="false">
 
                                 <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/metCookingTime"
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
                                     android:background="@null"
                                     android:digits="@string/validity_digits"
                                     android:gravity="center"
+                                    android:hint="@string/default_zero"
                                     android:inputType="numberSigned"
-                                    android:text="@string/default_zero"
+                                    android:textColorHint="@color/grey_pale"
                                     android:textSize="20sp"
                                     android:textStyle="bold" />
                             </com.google.android.material.textfield.TextInputLayout>
 
                             <ImageButton
+                                android:id="@+id/ibIncreCookingTime"
                                 android:layout_width="48dp"
                                 android:layout_height="48dp"
                                 android:layout_gravity="center"
@@ -229,6 +239,7 @@
                             android:textStyle="bold" />
 
                         <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rvFoodCategory"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
@@ -262,8 +273,12 @@
                         <com.google.android.material.textview.MaterialTextView
                             android:id="@+id/mtvInfoIngredient"
                             android:layout_width="match_parent"
-                            android:layout_height="100dp"
-                            android:layout_marginBottom="10dp" />
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginBottom="10dp"
+                            android:background="@color/md_theme_primary"
+                            android:padding="10dp"
+                            android:textColor="@color/white" />
 
                         <LinearLayout
                             android:id="@+id/lytLinearIngredients"
@@ -313,8 +328,12 @@
                         <com.google.android.material.textview.MaterialTextView
                             android:id="@+id/mtvInfoInstruction"
                             android:layout_width="match_parent"
-                            android:layout_height="100dp"
-                            android:layout_marginBottom="10dp" />
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="10dp"
+                            android:layout_marginTop="8dp"
+                            android:background="@color/md_theme_primary"
+                            android:padding="10dp"
+                            android:textColor="@color/white" />
 
                         <LinearLayout
                             android:id="@+id/lytLinearInstructions"
@@ -328,7 +347,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="0dp"
                                 android:contentDescription="@string/desc_add_new_ingredient"
-                                android:text="@string/add_ingredient"
+                                android:text="@string/add_instruction"
                                 android:textColor="@color/md_theme_primary"
                                 android:theme="@style/Theme.RecipesMobileApp"
                                 app:icon="@drawable/ico_increment"
@@ -348,6 +367,7 @@
                             android:orientation="horizontal">
 
                             <com.google.android.material.button.MaterialButton
+                                android:id="@+id/btnDelete"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_vertical"
@@ -357,6 +377,7 @@
                                 android:visibility="gone" />
 
                             <com.google.android.material.button.MaterialButton
+                                android:id="@+id/btnUpdate"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_vertical"
@@ -366,6 +387,7 @@
                                 android:visibility="gone" />
 
                             <com.google.android.material.button.MaterialButton
+                                android:id="@+id/btnSave"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_vertical"
