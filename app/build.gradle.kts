@@ -120,4 +120,7 @@ dependencies {
     implementation(libs.firebase.ui.auth)
     implementation(libs.firebase.auth)
     implementation(libs.firebase.core)
+    //glide
+    implementation ("com.github.bumptech.glide:glide:4.13.2")
+    annotationProcessor ("com.github.bumptech.glide:compiler:4.13.2")
 }
