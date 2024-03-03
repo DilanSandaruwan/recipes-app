@@ -1,5 +1,6 @@
 package com.gtp01.group01.android.recipesmobileapp.shared.model
 
+import android.graphics.Bitmap
 import com.google.gson.annotations.SerializedName
 
 data class Recipe (
@@ -18,5 +19,6 @@ data class Recipe (
     @SerializedName("isActive") val isActive: Int,
     @SerializedName("likeCount") val likeCount: Int,
     @SerializedName("hasLike") val hasLike: Boolean,
-    @SerializedName("hasFavorite") val hasFavorite: Boolean
+    @SerializedName("hasFavorite") val hasFavorite: Boolean,
+    var bitmap: Bitmap? = null // Add a property to hold the decoded image bitmap
 )
