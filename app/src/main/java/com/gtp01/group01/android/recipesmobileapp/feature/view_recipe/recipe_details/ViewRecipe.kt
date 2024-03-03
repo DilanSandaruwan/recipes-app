@@ -109,7 +109,7 @@ class ViewRecipe : Fragment() {
                             val likes = recipe.likeCount
                             val protein = recipe.protein
                             val time = recipe.preparationTime
-                        val recipe_image = recipe.bitmap
+
                             val formattedCarbs = "Carbs: $carbs"
                             val formattedCalorie = "Calorie: $calorie"
                             val formattedProtein = "Protein: $protein"
