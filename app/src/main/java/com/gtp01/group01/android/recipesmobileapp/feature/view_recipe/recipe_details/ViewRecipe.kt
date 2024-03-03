@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayoutMediator
 import com.gtp01.group01.android.recipesmobileapp.R
@@ -108,6 +109,7 @@ class ViewRecipe : Fragment() {
                             val likes = recipe.likeCount
                             val protein = recipe.protein
                             val time = recipe.preparationTime
+                        val recipe_image = recipe.bitmap
                             val formattedCarbs = "Carbs: $carbs"
                             val formattedCalorie = "Calorie: $calorie"
                             val formattedProtein = "Protein: $protein"
@@ -120,7 +122,18 @@ class ViewRecipe : Fragment() {
                             binding.carbsTextView.text = formattedCarbs
                             binding.calorieTextView.text = formattedCalorie
                             binding.proteinTextView.text = formattedProtein
-
+                        val recipeImageBitmap = recipe.bitmap
+                        if (recipeImageBitmap != null) {
+                            Glide.with(requireContext())
+                                .load(recipeImageBitmap)
+                                .placeholder(R.drawable.img) // Placeholder image while loading
+                                .error(R.drawable.error_image) // Error image if loading fails
+                                .into(binding.ivRecipeImage)
+                        } else {
+                            // If the bitmap is null, you may want to set a placeholder image or hide the ImageView
+                            // For example:
+                            binding.ivRecipeImage.setImageResource(R.drawable.img)
+                        }
                             // Set user's full name to appropriate TextView
                             binding.tvUserName.text = userName
                             binding.tvTime.text = formattedTime
