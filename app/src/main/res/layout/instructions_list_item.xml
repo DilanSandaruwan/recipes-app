@@ -28,7 +28,8 @@
                 android:layout_weight="1"
                 android:text="Instruction"
                 android:textColor="@color/black"
-                android:textSize="12sp" />
+                android:textSize="12sp"
+                android:textStyle="bold"/>
 
         </LinearLayout>
 

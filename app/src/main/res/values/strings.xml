@@ -31,6 +31,7 @@
     <string name="protein">Protein</string>
     <string name="time">Time</string>
     <string name="likecount">LikeCount</string>
+    <string name="username">username</string>
 
     /* Theme */
     <color name="md_theme_primary">#7F4D7A</color>
