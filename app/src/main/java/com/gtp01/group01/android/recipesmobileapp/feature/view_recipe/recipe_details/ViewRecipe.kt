@@ -125,14 +125,9 @@ class ViewRecipe : Fragment() {
                             binding?.let {
                                 Glide.with(requireContext())
                                     .load(recipeImageBitmap)
-                                    .placeholder(R.drawable.img) // Placeholder image while loading
                                     .error(R.drawable.error_image) // Error image if loading fails
                                     .into(it.ivRecipeImage)
                             }
-                        } else {
-                            // If the bitmap is null, you may want to set a placeholder image or hide the ImageView
-                            // For example:
-                            binding?.ivRecipeImage?.setImageResource(R.drawable.img)
                         }
                         // Set user's full name to appropriate TextView
                         binding?.tvUserName?.text = userName
