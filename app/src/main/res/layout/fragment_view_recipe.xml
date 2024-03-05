@@ -37,7 +37,7 @@
                 app:layout_scrollFlags="scroll|enterAlways|enterAlwaysCollapsed">
 
 
-                <ImageView
+                <com.google.android.material.imageview.ShapeableImageView
                     android:id="@+id/ivRecipeImage"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -45,7 +45,6 @@
                     android:scaleType="centerCrop"
                     android:src="@drawable/img"
                     app:layout_collapseMode="pin" />
-
 
                 <ImageButton
                     android:id="@+id/imgToolbarBtnBack"
@@ -109,8 +108,8 @@
                     android:id="@+id/carbsTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/black"
                     android:text="@string/carbs"
+                    android:textColor="@color/black"
                     app:layout_constraintEnd_toEndOf="@id/carbsImageView"
                     app:layout_constraintStart_toStartOf="@id/carbsImageView"
                     app:layout_constraintTop_toBottomOf="@id/carbsImageView" />
@@ -132,8 +131,8 @@
                     android:id="@+id/calorieTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/black"
                     android:text="@string/calorie"
+                    android:textColor="@color/black"
                     app:layout_constraintEnd_toEndOf="@id/calorieImageView"
                     app:layout_constraintStart_toStartOf="@id/calorieImageView"
                     app:layout_constraintTop_toBottomOf="@id/calorieImageView" />
@@ -155,8 +154,8 @@
                     android:id="@+id/proteinTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/black"
                     android:text="@string/protein"
+                    android:textColor="@color/black"
                     app:layout_constraintBottom_toBottomOf="@+id/calorieTextView"
                     app:layout_constraintEnd_toEndOf="@id/proteinImageView"
                     app:layout_constraintStart_toStartOf="@id/proteinImageView"
@@ -192,10 +191,10 @@
                     android:id="@+id/tvRecipeName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/black"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="16dp"
                     android:text="RecipeName"
+                    android:textColor="@color/black"
                     android:textSize="18sp"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -209,8 +208,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="2dp"
                     android:layout_marginBottom="16dp"
-                    android:textColor="@color/black"
                     android:text="@string/username"
+                    android:textColor="@color/black"
                     app:layout_constraintBottom_toTopOf="@+id/carbsImageView"
                     app:layout_constraintEnd_toStartOf="@+id/imageView3"
                     app:layout_constraintHorizontal_bias="0.0"
@@ -249,8 +248,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="16dp"
-                    android:textColor="@color/black"
                     android:text="@string/likecount"
+                    android:textColor="@color/black"
                     app:layout_constraintBottom_toBottomOf="@+id/imageView3"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
@@ -264,8 +263,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:layout_marginEnd="16dp"
-                    android:textColor="@color/black"
                     android:text="@string/time"
+                    android:textColor="@color/black"
                     app:layout_constraintBottom_toBottomOf="@+id/imageView"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
