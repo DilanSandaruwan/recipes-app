@@ -23,7 +23,8 @@ interface AuthApiService {
     @Headers("Accept: application/json; utf-8")
     @POST(ConstantNetworkService.AUTH_DETAIL_USER_ENDPOINT)
     suspend fun saveUser(@Body authUser: AuthUser)
-    : Response<AuthUser>
+            : Response<AuthUser>
+
     @Headers("Accept: application/json; utf-8")
     @GET(ConstantNetworkService.RECIPE_DETAIL_BY_RECIPE_id_ENDPOINT)
     suspend fun getRecipeDetail(

@@ -15,4 +15,4 @@ data class AuthUser(
     @SerializedName("email") val email: String,
     @SerializedName("fullname") val fullName: String,
 
-)
+    )

@@ -8,31 +8,32 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.gtp01.group01.android.recipesmobileapp.R
 
-class InstructionAdapter (private val context: Context, private var instructions: Array<String>) : RecyclerView.Adapter<InstructionAdapter.ViewHolder>(){
+class InstructionAdapter(private val context: Context, private var instructions: Array<String>) :
+    RecyclerView.Adapter<InstructionAdapter.ViewHolder>() {
 
 
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val view =
+            LayoutInflater.from(context).inflate(R.layout.instructions_list_item, parent, false)
+        return ViewHolder(view)
+    }
 
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-            val view = LayoutInflater.from(context).inflate(R.layout.instructions_list_item, parent, false)
-            return ViewHolder(view)
-        }
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        holder.bind(instructions[position])
+    }
 
-        override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-            holder.bind(instructions[position])
-        }
+    override fun getItemCount(): Int = instructions.size
 
-        override fun getItemCount(): Int = instructions.size
+    fun updateInstructions(newInstructions: Array<String>) {
+        instructions = newInstructions
+        notifyDataSetChanged()
+    }
 
-        fun updateInstructions(newInstructions: Array<String>) {
-            instructions = newInstructions
-            notifyDataSetChanged()
-        }
+    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        private val textIngredientName: TextView = itemView.findViewById(R.id.tvInstructions)
 
-        inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-            private val textIngredientName: TextView = itemView.findViewById(R.id.tvInstructions)
-
-            fun bind(ingredient: String) {
-                textIngredientName.text = ingredient
-            }
+        fun bind(ingredient: String) {
+            textIngredientName.text = ingredient
         }
     }
+}

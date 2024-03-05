@@ -4,15 +4,15 @@ import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 
 
-class ViewPagerAdapter (fragment:Fragment):FragmentStateAdapter(fragment){
+class ViewPagerAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
 
 
-    override fun getItemCount(): Int= 2
+    override fun getItemCount(): Int = 2
 
     override fun createFragment(position: Int): Fragment {
-        return when(position){
+        return when (position) {
 
-            0->InstructionFragment()
+            0 -> InstructionFragment()
             else -> IngredientsFragment()
         }
     }

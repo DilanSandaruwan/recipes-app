@@ -5,6 +5,7 @@ import android.view.View
 fun View.show() {
     visibility = View.VISIBLE
 }
+
 /**
  * Sets the visibility of a View to GONE.
  */

@@ -2,7 +2,6 @@ package com.gtp01.group01.android.recipesmobileapp.feature.view_recipe
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.opengl.ETC1.decodeImage
 import android.util.Log
 import com.gtp01.group01.android.recipesmobileapp.shared.model.Recipe
 import com.gtp01.group01.android.recipesmobileapp.shared.sources.AuthApiService

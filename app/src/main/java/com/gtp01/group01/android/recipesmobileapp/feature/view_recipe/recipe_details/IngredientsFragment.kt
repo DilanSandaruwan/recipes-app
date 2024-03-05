@@ -1,9 +1,6 @@
 package com.gtp01.group01.android.recipesmobileapp.feature.view_recipe.recipe_details
-import com.gtp01.group01.android.recipesmobileapp.shared.common.Result
-import com.gtp01.group01.android.recipesmobileapp.shared.common.gone
-import com.gtp01.group01.android.recipesmobileapp.shared.common.show
+
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,13 +9,15 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.gtp01.group01.android.recipesmobileapp.databinding.FragmentIngredientsBinding
-import com.gtp01.group01.android.recipesmobileapp.shared.common.Result.Success
+import com.gtp01.group01.android.recipesmobileapp.shared.common.Result
+import com.gtp01.group01.android.recipesmobileapp.shared.common.gone
+import com.gtp01.group01.android.recipesmobileapp.shared.common.show
 import com.gtp01.group01.android.recipesmobileapp.shared.model.Recipe
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class IngredientsFragment : Fragment() {
-    private lateinit var binding: FragmentIngredientsBinding
+    private var binding: FragmentIngredientsBinding? = null
     private lateinit var viewModel: ViewRecipeViewModel
     private lateinit var adapter: IngredientsAdapter
     override fun onCreateView(
@@ -29,7 +28,7 @@ class IngredientsFragment : Fragment() {
 
         binding = FragmentIngredientsBinding.inflate(layoutInflater)
 
-        return binding.root
+        return binding!!.root
 
     }
 
@@ -39,14 +38,14 @@ class IngredientsFragment : Fragment() {
         // Initialize the ViewModel
         viewModel = ViewModelProvider(this).get(ViewRecipeViewModel::class.java)
 
-        binding.ingredientsRecyclerView.apply {
+        binding!!.ingredientsRecyclerView.apply {
             layoutManager = LinearLayoutManager(context)
             hasFixedSize()
         }
 
         // Initialize the adapter with an empty list
         adapter = IngredientsAdapter(requireContext(), emptyArray())
-        binding.ingredientsRecyclerView.adapter = adapter
+        binding!!.ingredientsRecyclerView.adapter = adapter
 
         initObservers()
 
@@ -58,11 +57,12 @@ class IngredientsFragment : Fragment() {
             when (result) {
                 is Result.Loading -> {
                     // Show progress bar when loading
-                    binding.progressBar.show()
+                    binding?.progressBar?.show()
                 }
+
                 is Result.Success<*> -> {
                     // Hide progress bar when data is loaded successfully
-                    binding.progressBar.gone()
+                    binding?.progressBar?.gone()
                     val data = result.result
 
                     if (data is Recipe) {
@@ -72,24 +72,29 @@ class IngredientsFragment : Fragment() {
                         val ingredients = recipe.ingredients
                         // Split ingredients string by newline character and convert it to array
                         val formattedIngredients = ingredients.split("\\n").toTypedArray()
-                        Log.d(TAG, "Recipe ingredients fetched: $ingredients")
+
                         // Update UI with ingredients
                         adapter.updateIngredients(formattedIngredients)
-                    } else {
-                        // Handle unexpected data type
-                        Log.e(TAG, "Unexpected data type: $data")
                     }
                 }
+
                 is Result.Failure -> {
                     // Hide progress bar when there's a failure
-                    binding.progressBar.gone()
+                    binding?.progressBar?.gone()
                     // Show error message using Snackbar
-                    Snackbar.make(binding.root, result.error, Snackbar.LENGTH_LONG).show()
+                    binding?.root?.let {
+                        Snackbar.make(it, result.error, Snackbar.LENGTH_LONG).show()
+                    }
                 }
             }
         }
     }
 
-    companion object {
-        private val TAG = "Ingradientsfragment"
-    }}
+    override fun onDestroyView() {
+        super.onDestroyView()
+        // Clearing the binding reference
+        binding = null
+
+    }
+
+}

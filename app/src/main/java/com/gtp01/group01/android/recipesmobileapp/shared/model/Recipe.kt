@@ -3,7 +3,7 @@ package com.gtp01.group01.android.recipesmobileapp.shared.model
 import android.graphics.Bitmap
 import com.google.gson.annotations.SerializedName
 
-data class Recipe (
+data class Recipe(
     @SerializedName("idrecipe") val idRecipe: Int,
     @SerializedName("owner") val owner: AuthUser,
     @SerializedName("recipeName") val recipeName: String,
