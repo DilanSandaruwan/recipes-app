@@ -27,28 +27,28 @@ class InstructionFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentInstructionBinding.inflate(layoutInflater)
 
+        binding = FragmentInstructionBinding.inflate(layoutInflater)
         return binding?.root
 
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        // Initialize ViewModel
         viewModel = ViewModelProvider(this).get(ViewRecipeViewModel::class.java)
-
+        // Set up RecyclerView layout manager
         binding!!.instructionsRecyclerView.apply {
             layoutManager = LinearLayoutManager(context)
             hasFixedSize()
         }
 
-
         // Initialize the adapter with an empty list
         adapter = InstructionAdapter(requireContext(), emptyArray())
         binding!!.instructionsRecyclerView.adapter = adapter
-
+        // Observe changes in recipe details
         initObservers()
+        // Fetch recipe details
         viewModel.fetchRecipeDetail(idLoggedUser = 10, idrecipe = 1)
 
     }

@@ -11,7 +11,7 @@ import retrofit2.http.POST
 import retrofit2.http.Path
 
 /**
- * Interface representing the authentication API service.
+ * Interface defining API endpoints related to authentication and recipe details.
  */
 interface AuthApiService {
     /**
@@ -24,7 +24,13 @@ interface AuthApiService {
     @POST(ConstantNetworkService.AUTH_DETAIL_USER_ENDPOINT)
     suspend fun saveUser(@Body authUser: AuthUser)
             : Response<AuthUser>
-
+    /**
+     * Fetches recipe details for the specified user and recipe ID.
+     *
+     * @param idLoggedUser The ID of the logged-in user.
+     * @param idrecipe The ID of the recipe to fetch details for.
+     * @return A [Response] containing the details of the recipe if successful, otherwise an error response.
+     */
     @Headers("Accept: application/json; utf-8")
     @GET(ConstantNetworkService.RECIPE_DETAIL_BY_RECIPE_id_ENDPOINT)
     suspend fun getRecipeDetail(
