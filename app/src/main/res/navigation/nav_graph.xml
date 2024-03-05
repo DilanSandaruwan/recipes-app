@@ -33,7 +33,11 @@
         android:id="@+id/viewRecipe"
         android:name="com.gtp01.group01.android.recipesmobileapp.feature.view_recipe.recipe_details.ViewRecipe"
         android:label="fragment_view_recipe"
-        tools:layout="@layout/fragment_view_recipe" />
+        tools:layout="@layout/fragment_view_recipe" >
+        <action
+            android:id="@+id/action_viewRecipe_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </fragment>
     <fragment
         android:id="@+id/ingredientsFragment"
         android:name="com.gtp01.group01.android.recipesmobileapp.feature.view_recipe.recipe_details.IngredientsFragment"
