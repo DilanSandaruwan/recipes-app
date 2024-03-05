@@ -1,15 +1,14 @@
 package com.gtp01.group01.android.recipesmobileapp.feature.view_recipe.recipe_details
 
-import android.content.ContentValues
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayoutMediator
@@ -20,6 +19,7 @@ import com.gtp01.group01.android.recipesmobileapp.shared.common.gone
 import com.gtp01.group01.android.recipesmobileapp.shared.common.show
 import com.gtp01.group01.android.recipesmobileapp.shared.model.Recipe
 import dagger.hilt.android.AndroidEntryPoint
+
 /**
  * A fragment to display recipe details including instructions, ingredients, and other information.
  */
@@ -65,7 +65,9 @@ class ViewRecipe : Fragment() {
             setCollapsedTitleTextColor(Color.WHITE)
             setExpandedTitleColor(Color.WHITE)
         }
-
+        binding?.imgToolbarBtnBack?.setOnClickListener{
+            requireActivity().onBackPressed()
+        }
 
     }
     /**

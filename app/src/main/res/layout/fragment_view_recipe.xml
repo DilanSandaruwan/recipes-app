@@ -57,7 +57,10 @@
                     android:paddingTop="@dimen/_8sdp"
                     android:paddingEnd="@dimen/_4sdp"
                     android:paddingBottom="@dimen/_8sdp"
-                    android:src="@drawable/ic_back" />
+                    android:clickable="true"
+                    android:src="@drawable/ic_back"
+                    android:contentDescription="@string/navigate_to_home"
+                    android:focusable="true" />
 
                 <ImageButton
                     android:id="@+id/imgToolbarBtnFav"
@@ -100,7 +103,6 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="120dp"
                     android:src="@drawable/carbs_layor"
-
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 

@@ -73,7 +73,6 @@ class InstructionFragment : Fragment() {
                         val instruction = recipe.instruction
                         // Split instruction string by newline character and convert it to array
                         val formattedInstruction = instruction.split("\\n").toTypedArray()
-                        Log.d(TAG, "Recipe instruction fetched: $formattedInstruction")
                         // Update UI with instructions
                         adapter.updateInstructions(formattedInstruction)
                     } else {
