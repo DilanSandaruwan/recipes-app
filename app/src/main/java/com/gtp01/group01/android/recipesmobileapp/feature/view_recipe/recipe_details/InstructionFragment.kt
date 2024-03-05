@@ -20,7 +20,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class InstructionFragment : Fragment() {
 
-    private lateinit var binding: FragmentInstructionBinding
+    private var binding: FragmentInstructionBinding? = null
     private lateinit var viewModel: ViewRecipeViewModel
     private lateinit var adapter: InstructionAdapter
     override fun onCreateView(
@@ -29,7 +29,7 @@ class InstructionFragment : Fragment() {
     ): View? {
         binding = FragmentInstructionBinding.inflate(layoutInflater)
 
-        return binding.root
+        return binding?.root
 
     }
 
@@ -38,7 +38,7 @@ class InstructionFragment : Fragment() {
 
         viewModel = ViewModelProvider(this).get(ViewRecipeViewModel::class.java)
 
-        binding.instructionsRecyclerView.apply {
+        binding!!.instructionsRecyclerView.apply {
             layoutManager = LinearLayoutManager(context)
             hasFixedSize()
         }
@@ -46,10 +46,10 @@ class InstructionFragment : Fragment() {
 
         // Initialize the adapter with an empty list
         adapter = InstructionAdapter(requireContext(), emptyArray())
-        binding.instructionsRecyclerView.adapter = adapter
+        binding!!.instructionsRecyclerView.adapter = adapter
 
         initObservers()
-        viewModel.fetchRecipeDetail(idLoggedUser = 10, idrecipe  = 1)
+        viewModel.fetchRecipeDetail(idLoggedUser = 10, idrecipe = 1)
 
     }
 
@@ -58,12 +58,12 @@ class InstructionFragment : Fragment() {
             when (result) {
                 is Result.Loading -> {
                     // Show progress bar when loading
-                    binding.progressBar.show()
+                    binding?.progressBar?.show()
                 }
 
                 is Result.Success<*> -> {
                     // Hide progress bar when data is loaded successfully
-                    binding.progressBar.gone()
+                    binding?.progressBar?.gone()
                     val data = result.result
 
                     if (data is Recipe) {
@@ -84,16 +84,21 @@ class InstructionFragment : Fragment() {
 
                 is Result.Failure -> {
                     // Hide progress bar when there's a failure
-                    binding.progressBar.gone()
+                    binding?.progressBar?.gone()
                     // Show error message using Snackbar
-                    Snackbar.make(binding.root, result.error, Snackbar.LENGTH_LONG).show()
+                    binding?.root?.let {
+                        Snackbar.make(it, result.error, Snackbar.LENGTH_LONG).show()
+                    }
                 }
             }
         }
     }
 
 
-    companion object {
-        const val TAG = "InstructionFragment"
+    override fun onDestroyView() {
+        super.onDestroyView()
+        // Clearing the binding reference
+        binding = null
+
     }
 }

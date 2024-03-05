@@ -12,11 +12,13 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class ViewRecipeViewModel  @Inject constructor(private val viewRecipeRepository: ViewRecipeRepository
-): ViewModel() {
+class ViewRecipeViewModel @Inject constructor(
+    private val viewRecipeRepository: ViewRecipeRepository
+) : ViewModel() {
 
     val recipeDetails = MutableLiveData<Result>()
-private val _recipeDetails = MutableLiveData<Recipe?>()
+    private val _recipeDetails = MutableLiveData<Recipe?>()
+
     init {
         // Initialize recipeDetails with the complete data
         _recipeDetails.value = null
@@ -40,10 +42,6 @@ private val _recipeDetails = MutableLiveData<Recipe?>()
             }
         }
     }
-
-
-
-
 
 
 }
