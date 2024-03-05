@@ -59,9 +59,6 @@ class ViewRecipe : Fragment() {
 
         binding.appBar.setExpanded(true, true)
         binding.collapsingToolbarLayout.apply {
-            title = "$idrecipe"
-
-
 
             setCollapsedTitleTextColor(Color.WHITE)
             setExpandedTitleColor(Color.WHITE)
@@ -116,7 +113,7 @@ class ViewRecipe : Fragment() {
                             // Access user's full name
                             val userName = recipe.owner.fullName
                             val formattedLikes = "Likes: $likes"
-                            val formattedTime = "Time: $time"
+                            val formattedTime = "Time: $time min"
                             binding.tvLikeCount.text = formattedLikes
                             binding.tvRecipeName.text = recipe_name
                             binding.carbsTextView.text = formattedCarbs

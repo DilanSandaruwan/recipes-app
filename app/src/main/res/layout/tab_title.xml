@@ -8,5 +8,6 @@
     android:padding="@dimen/_16sdp"
     android:background="@drawable/tab_background_selecter"
     android:textColor="@color/tab_text_selector"
+    android:textStyle="bold"
     tools:text="Title"/>
 
