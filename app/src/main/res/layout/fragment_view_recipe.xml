@@ -43,7 +43,7 @@
                     android:layout_height="match_parent"
                     android:fitsSystemWindows="true"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/img"
+                    android:src="@drawable/error_image"
                     app:layout_collapseMode="pin" />
 
                 <ImageButton
