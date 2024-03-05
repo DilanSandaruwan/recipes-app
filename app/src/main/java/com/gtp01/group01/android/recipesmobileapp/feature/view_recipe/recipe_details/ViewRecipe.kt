@@ -20,13 +20,18 @@ import com.gtp01.group01.android.recipesmobileapp.shared.common.gone
 import com.gtp01.group01.android.recipesmobileapp.shared.common.show
 import com.gtp01.group01.android.recipesmobileapp.shared.model.Recipe
 import dagger.hilt.android.AndroidEntryPoint
-
+/**
+ * A fragment to display recipe details including instructions, ingredients, and other information.
+ */
 @AndroidEntryPoint
 class ViewRecipe : Fragment() {
 
     private var binding: FragmentViewRecipeBinding? = null
     private lateinit var viewModel: ViewRecipeViewModel
     private val tabTitles = arrayListOf("Instructions", "Ingredients")
+    /**
+     * Inflates the layout for this fragment.
+     */
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -37,19 +42,17 @@ class ViewRecipe : Fragment() {
 
     }
 
-
+    /**
+     * Initializes the view components and sets up necessary observers.
+     */
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(this)[ViewRecipeViewModel::class.java]
         setUpTabLayoutWithViewPager()
+
         val idLoggedUser = 10
         val idrecipe = 1
 
-        // Log the request parameters
-        Log.d(
-            ContentValues.TAG,
-            "Fetching recipe details for user id: $idLoggedUser, recipe name: $idrecipe"
-        )
 
         // Make the network request to fetch recipe details
         viewModel.fetchRecipeDetail(idLoggedUser, idrecipe)
@@ -65,7 +68,9 @@ class ViewRecipe : Fragment() {
 
 
     }
-
+    /**
+     * Sets up the tab layout with the ViewPager for switching between instructions and ingredients.
+     */
     private fun setUpTabLayoutWithViewPager() {
         this.binding?.viewpager?.adapter = ViewPagerAdapter(this)
 
@@ -83,7 +88,9 @@ class ViewRecipe : Fragment() {
             binding?.tabLayout?.getTabAt(i)?.customView = textView
         }
     }
-
+    /**
+     * Initializes observers to observe changes in recipe details.
+     */
     private fun initObservers() {
 
 
@@ -147,7 +154,9 @@ class ViewRecipe : Fragment() {
         }
 
     }
-
+    /**
+     * Clears the binding reference to avoid memory leaks.
+     */
     override fun onDestroyView() {
         super.onDestroyView()
         // Release resources or references to avoid memory leaks

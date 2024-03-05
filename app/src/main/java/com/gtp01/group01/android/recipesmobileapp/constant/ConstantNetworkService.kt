@@ -11,7 +11,9 @@ object ConstantNetworkService {
      * Endpoint for user authorization-related save new user API requests.
      */
     const val AUTH_DETAIL_USER_ENDPOINT ="/api/v1/user"
-
-
+    /**
+     * Endpoint for retrieving recipe details by recipe ID.
+     * Use placeholders `{idLoggedUser}` and `{idrecipe}` to specify user ID and recipe ID respectively.
+     */
     const val RECIPE_DETAIL_BY_RECIPE_id_ENDPOINT= "api/v1/reader/{idLoggedUser}/recipe/id/{idrecipe}"
 }

@@ -20,18 +20,19 @@ class IngredientsFragment : Fragment() {
     private var binding: FragmentIngredientsBinding? = null
     private lateinit var viewModel: ViewRecipeViewModel
     private lateinit var adapter: IngredientsAdapter
+    /**
+     * Called to have the fragment instantiate its user interface view.
+     */
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
-
         binding = FragmentIngredientsBinding.inflate(layoutInflater)
-
         return binding!!.root
-
     }
-
+    /**
+     * Called immediately after [onCreateView] has returned, and fragment's view hierarchy has been created.
+     */
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -46,12 +47,14 @@ class IngredientsFragment : Fragment() {
         // Initialize the adapter with an empty list
         adapter = IngredientsAdapter(requireContext(), emptyArray())
         binding!!.ingredientsRecyclerView.adapter = adapter
-
+        // Initialize observers to listen for changes in recipe details
         initObservers()
-
+        // Fetch recipe details
         viewModel.fetchRecipeDetail(idLoggedUser = 10, idrecipe = 1)
     }
-
+    /**
+     * Initializes observers to listen for changes in recipe details LiveData.
+     */
     private fun initObservers() {
         viewModel.recipeDetails.observe(viewLifecycleOwner) { result ->
             when (result) {
@@ -89,12 +92,14 @@ class IngredientsFragment : Fragment() {
             }
         }
     }
-
+    /**
+     * Called when the fragment's view is destroyed.
+     * It releases references to the binding.
+     */
     override fun onDestroyView() {
         super.onDestroyView()
-        // Clearing the binding reference
+        // Clearing the binding reference to avoid memory leaks
         binding = null
-
     }
 
 }
