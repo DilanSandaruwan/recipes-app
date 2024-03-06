@@ -24,4 +24,30 @@
     <string name="enter_the_email">Enter The Email</string>
     <string name="logout">Logout</string>
     <string name="username_placeholder">Username Placeholder</string>
+    <string name="desc_back_button">Back Button</string>
+    <string name="title_add_new_recipe">Add New Recipe</string>
+    <string name="hint_recipe_name">Recipe Name</string>
+    <string name="desc_decre">Decrease Count</string>
+    <string name="add_rec_estimated_serving_portion">Estimated Serving Portion (no: of persons)</string>
+    <string name="add_rec_estimated_cooking_time_in_minutes">Estimated Cooking Time (in minutes)</string>
+    <string name="default_zero">0</string>
+    <string name="validity_digits">0123456789</string>
+    <string name="categories">Categories</string>
+    <string name="ingredients">Ingredients</string>
+    <string name="instructions">Instructions</string>
+    <string name="save">Save</string>
+    <string name="update">Update</string>
+    <string name="delete">Delete</string>
+    <string name="desc_caregory_item">Caregory Item</string>
+    <string name="sample_category_name">Sushi</string>
+    <string name="desc_ingredient_01">Ingredient 01</string>
+    <string name="add_ingredient">Add Ingredient</string>
+    <string name="add_instruction">Add Instruction</string>
+    <string name="desc_add_new_ingredient">Add new ingredient</string>
+    <string name="desc_instructions">Instructions</string>
+    <!-- Strings used in home screen -->
+    <string name="home_suggestion_bytime_title">Make It In %d Min</string>
+    <string name="placeholder_search">Enter Recipe Name</string>
+    <string name="likes">Likes</string>
+    <string name="min">min</string>
 </resources>
