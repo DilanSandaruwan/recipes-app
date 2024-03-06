@@ -4,6 +4,10 @@ package com.gtp01.group01.android.recipesmobileapp.constant
  */
 object ConstantNetworkService {
     /**
+     * Value for the Accept header indicating JSON content with UTF-8 encoding.
+     */
+    const val ACCEPT_JSON_UTF8 = "Accept: application/json; utf-8"
+    /**
      * The base URL of the application's API. This URL is used to make network requests.
      */
     const val  BASE_URL= "http://ec2-54-234-237-74.compute-1.amazonaws.com:5000"

@@ -118,7 +118,5 @@ dependencies {
     implementation(libs.firebase.ui.auth)
     implementation(libs.firebase.auth)
     implementation(libs.firebase.core)
-    //glide
-    implementation (libs.glide)
-    annotationProcessor (libs.compiler)
+
 }

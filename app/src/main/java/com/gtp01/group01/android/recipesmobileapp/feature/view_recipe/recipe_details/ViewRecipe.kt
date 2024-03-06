@@ -8,13 +8,13 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
-import com.bumptech.glide.Glide
+import coil.ImageLoader
+import coil.request.ImageRequest
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayoutMediator
 import com.gtp01.group01.android.recipesmobileapp.R
 import com.gtp01.group01.android.recipesmobileapp.databinding.FragmentViewRecipeBinding
-import com.gtp01.group01.android.recipesmobileapp.shared.common.Result
+import com.gtp01.group01.android.recipesmobileapp.shared.common.ResultState
 import com.gtp01.group01.android.recipesmobileapp.shared.common.gone
 import com.gtp01.group01.android.recipesmobileapp.shared.common.show
 import com.gtp01.group01.android.recipesmobileapp.shared.model.Recipe
@@ -98,11 +98,11 @@ class ViewRecipe : Fragment() {
 
         viewModel.recipeDetails.observe(viewLifecycleOwner) { result ->
             when (result) {
-                is Result.Loading -> {
+                is ResultState.Loading -> {
                     binding?.progressBar?.show()
                 }
 
-                is Result.Success<*> -> {
+                is ResultState.Success<*> -> {
                     binding?.progressBar?.gone()
                     val data = result.result
 
@@ -131,11 +131,16 @@ class ViewRecipe : Fragment() {
                         binding?.proteinTextView?.text = formattedProtein
                         val recipeImageBitmap = recipe.bitmap
                         if (recipeImageBitmap != null) {
-                            binding?.let {
-                                Glide.with(requireContext())
-                                    .load(recipeImageBitmap)
+                            binding?.let {binding ->
+                                val imageView = binding.ivRecipeImage
+                                val imageLoader = ImageLoader.Builder(requireContext()).build()
+                                val request = ImageRequest.Builder(requireContext())
+                                    .data(recipeImageBitmap)
+                                    .target(imageView)
                                     .error(R.drawable.error_image) // Error image if loading fails
-                                    .into(it.ivRecipeImage)
+                                    .build()
+
+                                imageLoader.enqueue(request)
                             }
                         }
                         // Set user's full name to appropriate TextView
@@ -146,7 +151,7 @@ class ViewRecipe : Fragment() {
                     }
                 }
 
-                is Result.Failure -> {
+                is ResultState.Failure -> {
                     binding?.progressBar?.gone()
                     binding?.let {
                         Snackbar.make(it.root, result.error, Snackbar.LENGTH_LONG).show()
