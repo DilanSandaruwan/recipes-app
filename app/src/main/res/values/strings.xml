@@ -33,6 +33,7 @@
     <string name="likecount">LikeCount</string>
     <string name="username">username</string>
     <string name="navigate_to_home">Navigate to Home</string>
+    <string name="ingredients">Ingredients</string>
 
     /* Theme */
     <color name="md_theme_primary">#7F4D7A</color>

@@ -11,7 +11,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.gtp01.group01.android.recipesmobileapp.databinding.FragmentInstructionBinding
-import com.gtp01.group01.android.recipesmobileapp.shared.common.Result
+import com.gtp01.group01.android.recipesmobileapp.shared.common.ResultState
 import com.gtp01.group01.android.recipesmobileapp.shared.common.gone
 import com.gtp01.group01.android.recipesmobileapp.shared.common.show
 import com.gtp01.group01.android.recipesmobileapp.shared.model.Recipe
@@ -56,12 +56,12 @@ class InstructionFragment : Fragment() {
     private fun initObservers() {
         viewModel.recipeDetails.observe(viewLifecycleOwner) { result ->
             when (result) {
-                is Result.Loading -> {
+                is ResultState.Loading -> {
                     // Show progress bar when loading
                     binding?.progressBar?.show()
                 }
 
-                is Result.Success<*> -> {
+                is ResultState.Success<*> -> {
                     // Hide progress bar when data is loaded successfully
                     binding?.progressBar?.gone()
                     val data = result.result
@@ -81,7 +81,7 @@ class InstructionFragment : Fragment() {
                     }
                 }
 
-                is Result.Failure -> {
+                is ResultState.Failure -> {
                     // Hide progress bar when there's a failure
                     binding?.progressBar?.gone()
                     // Show error message using Snackbar

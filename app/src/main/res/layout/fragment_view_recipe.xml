@@ -39,9 +39,8 @@
 
                 <com.google.android.material.imageview.ShapeableImageView
                     android:id="@+id/ivRecipeImage"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:fitsSystemWindows="true"
+                    android:layout_width="400dp"
+                    android:layout_height="350dp"
                     android:scaleType="centerCrop"
                     android:src="@drawable/error_image"
                     app:layout_collapseMode="pin" />
@@ -53,14 +52,14 @@
                     android:layout_gravity="start"
                     android:layout_margin="@dimen/_10sdp"
                     android:background="@drawable/btn_bg2"
+                    android:clickable="true"
+                    android:contentDescription="@string/navigate_to_home"
+                    android:focusable="true"
                     android:paddingStart="@dimen/_12sdp"
                     android:paddingTop="@dimen/_8sdp"
                     android:paddingEnd="@dimen/_4sdp"
                     android:paddingBottom="@dimen/_8sdp"
-                    android:clickable="true"
-                    android:src="@drawable/ic_back"
-                    android:contentDescription="@string/navigate_to_home"
-                    android:focusable="true" />
+                    android:src="@drawable/ic_back" />
 
                 <ImageButton
                     android:id="@+id/imgToolbarBtnFav"
@@ -146,10 +145,8 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="120dp"
                     android:layout_marginEnd="16dp"
-
                     android:src="@drawable/protein_layor"
                     app:layout_constraintEnd_toEndOf="parent"
-
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView

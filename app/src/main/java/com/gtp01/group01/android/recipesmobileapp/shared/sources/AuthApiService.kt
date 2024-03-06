@@ -20,7 +20,7 @@ interface AuthApiService {
      * @param authUser The [AuthUser] object containing user details.
      * @return A [Response] indicating the success or failure of the save operation.
      */
-    @Headers("Accept: application/json; utf-8")
+    @Headers(ConstantNetworkService.ACCEPT_JSON_UTF8)
     @POST(ConstantNetworkService.AUTH_DETAIL_USER_ENDPOINT)
     suspend fun saveUser(@Body authUser: AuthUser)
             : Response<AuthUser>
@@ -31,7 +31,7 @@ interface AuthApiService {
      * @param idrecipe The ID of the recipe to fetch details for.
      * @return A [Response] containing the details of the recipe if successful, otherwise an error response.
      */
-    @Headers("Accept: application/json; utf-8")
+    @Headers(ConstantNetworkService.ACCEPT_JSON_UTF8)
     @GET(ConstantNetworkService.RECIPE_DETAIL_BY_RECIPE_id_ENDPOINT)
     suspend fun getRecipeDetail(
         @Path("idLoggedUser") idLoggedUser: Int,

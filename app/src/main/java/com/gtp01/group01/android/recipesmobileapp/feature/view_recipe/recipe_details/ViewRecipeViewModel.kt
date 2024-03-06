@@ -4,7 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.gtp01.group01.android.recipesmobileapp.feature.view_recipe.ViewRecipeRepository
-import com.gtp01.group01.android.recipesmobileapp.shared.common.Result
+import com.gtp01.group01.android.recipesmobileapp.shared.common.ResultState
 import com.gtp01.group01.android.recipesmobileapp.shared.model.Recipe
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -19,7 +19,7 @@ class ViewRecipeViewModel @Inject constructor(
     private val viewRecipeRepository: ViewRecipeRepository
 ) : ViewModel() {
     /** LiveData to observe the result of fetching recipe details. */
-    val recipeDetails = MutableLiveData<Result>()
+    val recipeDetails = MutableLiveData<ResultState>()
     /** Private LiveData to hold the actual recipe details. */
     private val _recipeDetails = MutableLiveData<Recipe?>()
 
@@ -38,15 +38,15 @@ class ViewRecipeViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 // Post loading state
-                recipeDetails.postValue(Result.Loading)
+                recipeDetails.postValue(ResultState.Loading)
                 // Fetch recipe details from the repository
                 val result = viewRecipeRepository.getRecipeDetail(idLoggedUser, idrecipe)
 
                 // Update the recipeDetails LiveData with the successful result
-                recipeDetails.postValue(Result.Success(result))
+                recipeDetails.postValue(ResultState.Success(result))
             } catch (e: Exception) {
                 // Update the recipeDetails LiveData with the error result if an exception occurs
-                recipeDetails.postValue(Result.Failure(e.message ?: "Unknown error occurred"))
+                recipeDetails.postValue(ResultState.Failure(e.message ?: "Unknown error occurred"))
             }
         }
     }
