@@ -43,7 +43,6 @@ firebasePerfPlugin = "1.4.2"
 firebaseui-firebaseUiAuth = "8.0.2"
 firebaseUiAuth = "22.0.0"
 fragmentTesting = "1.6.2"
-glide = "4.13.2"
 gmsPlugin = "4.4.0"
 googleOss = "17.0.1"
 googleOssPlugin = "0.10.6"
@@ -158,7 +157,6 @@ firebase-crashlytics = { group = "com.google.firebase", name = "firebase-crashly
 firebase-performance = { group = "com.google.firebase", name = "firebase-perf-ktx" }
 
 firebase-ui-auth = { module = "com.firebaseui:firebase-ui-auth", version.ref = "firebaseui-firebaseUiAuth" }
-glide = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }
 google-oss-licenses = { group = "com.google.android.gms", name = "play-services-oss-licenses", version.ref = "googleOss" }
 google-oss-licenses-plugin = { group = "com.google.android.gms", name = "oss-licenses-plugin", version.ref = "googleOssPlugin" }
 google-services = { module = "com.google.gms:google-services", version.ref = "googleServices" }
