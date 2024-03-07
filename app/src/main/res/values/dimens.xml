@@ -19,7 +19,7 @@
     <dimen name="text_small">14sp</dimen>
     <dimen name="text_large">20sp</dimen>
     <dimen name="extra_large">50sp</dimen>
-
+    <dimen name="recipe_name_text_size">18sp</dimen>
     /* ShapeableImageView */
     <dimen name="image_padding">5dp</dimen>
 
@@ -63,4 +63,11 @@
     <dimen name="_16dp">16dp</dimen>
     <dimen name="_8dp">8dp</dimen>
     <dimen name="_15dp">15dp</dimen>
+    <dimen name="_10dp">10dp</dimen>
+    <dimen name="_0dp">0dp</dimen>
+    <dimen name="_18sp">18sp</dimen>
+    <dimen name="_2dp">2dp</dimen>
+    <dimen name="_120dp">120dp</dimen>
+    <dimen name="_24dp">24dp</dimen>
+
 </resources>
