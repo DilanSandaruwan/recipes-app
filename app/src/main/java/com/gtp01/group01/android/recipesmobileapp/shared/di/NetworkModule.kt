@@ -1,4 +1,4 @@
-package com.gtp01.group01.android.recipesmobileapp.di
+package com.gtp01.group01.android.recipesmobileapp.shared.di
 
 import android.util.Log
 import com.gtp01.group01.android.recipesmobileapp.constant.ConstantNetworkService
