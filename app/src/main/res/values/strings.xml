@@ -77,5 +77,8 @@
         &lt;li&gt;&#160;&#160;&#160;&#160;&lt;b&gt;Step 02: Boil one liter of water&lt;/b&gt;&lt;/li&gt;
     &lt;/ul&gt;
     &lt;br/&gt;</string>
+    <string name="desc_add_an_image_to_recipe">Add an image to recipe</string>
+    <string name="select_image">Choose Image</string>
+    <string name="choose_an_image_for_the_recipe">Choose an image for the recipe</string>
 
 </resources>

@@ -7,33 +7,33 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.gtp01.group01.android.recipesmobileapp.R
 import com.gtp01.group01.android.recipesmobileapp.databinding.LayoutCategoryItemBinding
-import com.gtp01.group01.android.recipesmobileapp.shared.model.FoodCategory
+import com.gtp01.group01.android.recipesmobileapp.shared.model.FoodCategoryApp
 
 class FoodCategoriesAdapter(
     val context: RecipeAddFragment,
     private val onCheckItemClickListener: FoodCategoriesAdapter.OnCheckItemClickListener
-) : ListAdapter<FoodCategory, FoodCategoriesAdapter.ViewHolder>(FoodCategoriesAdapter.diff_util) {
+) : ListAdapter<FoodCategoryApp, FoodCategoriesAdapter.ViewHolder>(FoodCategoriesAdapter.diff_util) {
     class ViewHolder(val binding: LayoutCategoryItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
     }
 
     interface OnCheckItemClickListener {
-        fun checkItemClick(category: FoodCategory)
+        fun checkItemClick(category: FoodCategoryApp)
     }
 
 
     companion object {
 
-        val diff_util = object : DiffUtil.ItemCallback<FoodCategory>() {
+        val diff_util = object : DiffUtil.ItemCallback<FoodCategoryApp>() {
 
-            override fun areItemsTheSame(oldItem: FoodCategory, newItem: FoodCategory): Boolean {
+            override fun areItemsTheSame(oldItem: FoodCategoryApp, newItem: FoodCategoryApp): Boolean {
                 return oldItem.idFoodCategory == newItem.idFoodCategory
             }
 
             override fun areContentsTheSame(
-                oldItem: FoodCategory,
-                newItem: FoodCategory
+                oldItem: FoodCategoryApp,
+                newItem: FoodCategoryApp
             ): Boolean {
                 return oldItem == newItem
             }

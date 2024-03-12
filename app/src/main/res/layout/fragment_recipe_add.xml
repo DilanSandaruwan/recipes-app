@@ -380,6 +380,33 @@
 
                         <View style="@style/ViewSeparator" />
 
+                        <!-- Choose an image -->
+                        <com.google.android.material.textview.MaterialTextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/choose_an_image_for_the_recipe"
+                            android:textStyle="bold" />
+
+                        <Button
+                            android:id="@+id/btnChooseItemImg"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="20dp"
+                            android:text="@string/select_image"
+                            android:textColor="@color/white"
+                            android:textSize="16sp" />
+
+                        <com.gtp01.group01.android.recipesmobileapp.shared.utils.ui.RoundedImageView
+                            android:id="@+id/ivChooseItemImg"
+                            android:layout_width="200dp"
+                            android:layout_height="200dp"
+                            android:layout_gravity="center"
+                            android:visibility="visible"
+                            android:layout_marginTop="16dp" />
+
+                        <View style="@style/ViewSeparator" />
+
                         <!-- Action buttons -->
                         <LinearLayout
                             android:layout_width="match_parent"

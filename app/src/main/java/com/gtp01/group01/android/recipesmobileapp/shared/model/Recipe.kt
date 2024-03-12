@@ -2,6 +2,7 @@ package com.gtp01.group01.android.recipesmobileapp.shared.model
 
 import android.graphics.Bitmap
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
 /**
  * Represents a recipe.
@@ -24,8 +25,9 @@ import com.google.gson.annotations.SerializedName
  * @property hasFavorite Indicates whether the current logged in user has marked the recipe as favorite. Return true if user has marked as favorite.
  * @property bitmap The decoded image bitmap of the recipe photo.
  */
+
 data class Recipe(
-    @SerializedName("idrecipe") val idRecipe: Int,
+    @SerializedName("idrecipe") val idRecipe: Int = 0,
     @SerializedName("owner") val owner: User,
     @SerializedName("recipeName") val recipeName: String,
     @SerializedName("ingredients") val ingredients: String,
@@ -35,14 +37,14 @@ data class Recipe(
     @SerializedName("protein") val protein: Int,
     @SerializedName("carbs") val carbs: Int,
     @SerializedName("serving") val serving: Int,
-    @SerializedName("photo") val photo: String?,
+    @SerializedName("photo") val photo: Any?,
     @SerializedName("categories") val categories: List<FoodCategory>,
     @SerializedName("isActive") val isActive: Int,
     @SerializedName("likeCount") val likeCount: Int,
     @SerializedName("hasLike") val hasLike: Boolean,
     @SerializedName("hasFavorite") val hasFavorite: Boolean,
     var bitmap: Bitmap? = null // Add a property to hold the decoded image bitmap
-)
+) : Serializable
 
 /**
  * Represents a list of recipes.

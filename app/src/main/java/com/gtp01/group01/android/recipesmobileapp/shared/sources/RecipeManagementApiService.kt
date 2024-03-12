@@ -7,6 +7,7 @@ import com.gtp01.group01.android.recipesmobileapp.constant.ConstantNetworkServic
 import com.gtp01.group01.android.recipesmobileapp.constant.ConstantNetworkService.RECIPE_GET_NUTRITION_VALUES_END_POINT
 import com.gtp01.group01.android.recipesmobileapp.constant.ConstantNetworkService.RECIPE_POST_RECIPE_END_POINT
 import com.gtp01.group01.android.recipesmobileapp.shared.model.FoodCategory
+import com.gtp01.group01.android.recipesmobileapp.shared.model.FoodCategoryApp
 import com.gtp01.group01.android.recipesmobileapp.shared.model.Recipe
 import com.gtp01.group01.android.recipesmobileapp.shared.models.NutritionModel
 import retrofit2.Response

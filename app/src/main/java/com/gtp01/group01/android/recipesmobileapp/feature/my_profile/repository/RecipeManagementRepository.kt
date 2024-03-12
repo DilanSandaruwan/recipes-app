@@ -3,11 +3,9 @@ package com.gtp01.group01.android.recipesmobileapp.repository
 import com.gtp01.group01.android.recipesmobileapp.shared.model.FoodCategory
 import com.gtp01.group01.android.recipesmobileapp.shared.model.Recipe
 import com.gtp01.group01.android.recipesmobileapp.shared.models.NutritionModel
-import com.gtp01.group01.android.recipesmobileapp.shared.models.RecipeAppResponse
 import com.gtp01.group01.android.recipesmobileapp.sources.RecipeManagementApiService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import retrofit2.Response
 import javax.inject.Inject
 
 /**
@@ -49,7 +47,7 @@ class RecipeManagementRepository @Inject constructor(
 
     suspend fun saveNewRecipe(idLoggedUser: Int, recipe: Recipe): Recipe? {
         return withContext(Dispatchers.IO) {
-            return@withContext saveNewRecipeResponseFromRemoteService(idLoggedUser,recipe)
+            return@withContext saveNewRecipeResponseFromRemoteService(idLoggedUser, recipe)
         }
     }
 

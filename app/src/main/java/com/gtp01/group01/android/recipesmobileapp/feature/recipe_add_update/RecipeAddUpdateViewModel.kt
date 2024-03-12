@@ -7,11 +7,13 @@ import androidx.lifecycle.viewModelScope
 import com.gtp01.group01.android.recipesmobileapp.constant.TagConstant
 import com.gtp01.group01.android.recipesmobileapp.repository.RecipeManagementRepository
 import com.gtp01.group01.android.recipesmobileapp.shared.model.FoodCategory
+import com.gtp01.group01.android.recipesmobileapp.shared.model.FoodCategoryApp
 import com.gtp01.group01.android.recipesmobileapp.shared.model.Recipe
 import com.gtp01.group01.android.recipesmobileapp.shared.models.NutritionModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlin.math.roundToInt
 
 /**
  * ViewModel for adding or updating a recipe.
@@ -25,8 +27,11 @@ class RecipeAddUpdateViewModel @Inject constructor(
     private val recipeManagementRepository: RecipeManagementRepository
 ) : ViewModel() {
 
-    var checkedCategoriesList: MutableList<FoodCategory> = mutableListOf()
+    var imageBytes: ByteArray? = null
+    var calculatedNutrients = ArrayList<Int>()
+    var editableCategoriesList: MutableList<FoodCategoryApp> = mutableListOf()
     var ingredientsList: MutableList<String> = mutableListOf()
+    var instructionsList: MutableList<String> = mutableListOf()
 
     private val _serveCount = MutableLiveData(0)
     val serveCount: LiveData<Int> = _serveCount
@@ -35,13 +40,13 @@ class RecipeAddUpdateViewModel @Inject constructor(
     val cookingTime: LiveData<Int> = _cookingTime
 
     private val _nutritionList = MutableLiveData<List<NutritionModel>>()
-    val nutrition: LiveData<List<NutritionModel>> = _nutritionList
+    val nutritionList: LiveData<List<NutritionModel>> = _nutritionList
 
     private val _categoryList = MutableLiveData<List<FoodCategory>>()
     val categoryList: LiveData<List<FoodCategory>> = _categoryList
 
-    private val _saveRecipeSuccess = MutableLiveData<Recipe>()
-    val saveRecipeSuccess: LiveData<Recipe> = _saveRecipeSuccess
+    private val _saveRecipeSuccess = MutableLiveData<Recipe?>()
+    val saveRecipeSuccess: LiveData<Recipe?> = _saveRecipeSuccess
 
     /**
      * Fetches nutrition information based on the provided ingredients.
@@ -65,7 +70,27 @@ class RecipeAddUpdateViewModel @Inject constructor(
     fun saveRecipe(idLoggedUser: Int, recipe: Recipe) {
         viewModelScope.launch {
             val response = recipeManagementRepository.saveNewRecipe(idLoggedUser, recipe)
-            _saveRecipeSuccess.postValue(recipe)
+            if (response == null) {
+                _saveRecipeSuccess.postValue(null)
+            } else {
+                _saveRecipeSuccess.postValue(response)
+            }
+        }
+    }
+
+    fun setDefaultCount(tag: Int) {
+        when (tag) {
+            TagConstant.TAG_SERVE_COUNT -> {
+                _serveCount.value?.let {
+                    _serveCount.postValue(0)
+                }
+            }
+
+            TagConstant.TAG_COOKING_TIME -> {
+                _cookingTime.value?.let {
+                    _cookingTime.postValue(0)
+                }
+            }
         }
     }
 
@@ -107,5 +132,23 @@ class RecipeAddUpdateViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    fun calculateNutrients() {
+        var calorie = 0.0
+        var protein = 0.0
+        var carbs = 0.0
+        if (!_nutritionList.value.isNullOrEmpty()) {
+            for (e in _nutritionList.value!!) {
+                calorie += e.calories
+                protein += e.proteinG
+                carbs += e.carbohydratesTotalG
+            }
+        }
+        calculatedNutrients.clear()
+        calculatedNutrients.add(calorie.roundToInt())
+        calculatedNutrients.add(protein.roundToInt())
+        calculatedNutrients.add(carbs.roundToInt())
+
     }
 }

@@ -1,6 +1,7 @@
 package com.gtp01.group01.android.recipesmobileapp.shared.model
 
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
 /**
  * Represents a user.
@@ -14,9 +15,9 @@ import com.google.gson.annotations.SerializedName
  */
 data class User(
     @SerializedName("iduser") val idUser: Int,
-    @SerializedName("email") val email: String,
-    @SerializedName("fullname") val fullName: String,
-    @SerializedName("preferCategories") val preferCategories: List<FoodCategory>,
-    @SerializedName("preferDuration") val preferDuration: Int,
-    @SerializedName("preferCalory") val preferCalorie: Int
-)
+    @SerializedName("email") val email: String? = null,
+    @SerializedName("fullname") val fullName: String? = null,
+    @SerializedName("preferCategories") val preferCategories: List<FoodCategoryApp> = emptyList(),
+    @SerializedName("preferDuration") val preferDuration: Int = 0,
+    @SerializedName("preferCalory") val preferCalorie: Int = 0,
+):Serializable
