@@ -7,7 +7,6 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.text.Editable
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
@@ -22,11 +21,13 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
 import com.gtp01.group01.android.recipesmobileapp.R
 import com.gtp01.group01.android.recipesmobileapp.constant.TagConstant
 import com.gtp01.group01.android.recipesmobileapp.databinding.FragmentRecipeAddBinding
 import com.gtp01.group01.android.recipesmobileapp.databinding.LayoutDuplicateIngredientItemBinding
+import com.gtp01.group01.android.recipesmobileapp.feature.main.MainActivity
 import com.gtp01.group01.android.recipesmobileapp.shared.model.FoodCategory
 import com.gtp01.group01.android.recipesmobileapp.shared.model.FoodCategoryApp
 import com.gtp01.group01.android.recipesmobileapp.shared.model.Recipe
@@ -37,22 +38,37 @@ import java.io.ByteArrayOutputStream
 
 /**
  * Fragment for adding a new recipe.
+ * This fragment allows users to add a new recipe, including details like recipe name, ingredients, instructions, serving count, cooking time, and image.
+ * Users can also select categories for the recipe and save it.
  */
 @AndroidEntryPoint
 class RecipeAddFragment : Fragment() {
+    // View binding for the fragment
     private var _binding: FragmentRecipeAddBinding? = null
-    private val viewModel: RecipeAddUpdateViewModel by viewModels()
-    private lateinit var adapter: FoodCategoriesAdapter
 
     // Lazily initialize binding using the _binding property
     private val binding get() = _binding!!
 
+    // ViewModel for handling recipe addition/update logic
+    private val viewModel: RecipeAddUpdateViewModel by viewModels()
+
+    // Adapter for displaying food categories
+    private lateinit var adapter: FoodCategoriesAdapter
+
+    // Reference to the MainActivity
+    private lateinit var activity: MainActivity
+
+
+    /**
+     * Opens the gallery to select an image for the recipe.
+     */
     private fun openGallery() {
         val intent = Intent(Intent.ACTION_GET_CONTENT)
         intent.type = "image/*"
         galleryLauncher.launch(intent)
     }
 
+    // Activity result launcher for gallery intent
     private val galleryLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == AppCompatActivity.RESULT_OK) {
@@ -63,7 +79,6 @@ class RecipeAddFragment : Fragment() {
                         binding.ivChooseItemImg.visibility = VISIBLE
                         // Convert the selected image to a byte array
                         viewModel.imageBytes = convertImageUriToByteArray(it)
-                        Log.e("IMAGE", "img-size: ${viewModel.imageBytes?.size}")
                     }
                 } catch (e: Exception) {
                     e.printStackTrace()
@@ -71,10 +86,12 @@ class RecipeAddFragment : Fragment() {
             }
         }
 
+    /**
+     * Converts the selected image URI to a byte array.
+     */
     private fun convertImageUriToByteArray(imageUri: Uri): ByteArray? {
         return try {
             val inputStream = requireContext().contentResolver.openInputStream(imageUri)
-            //inputStream?.readBytes()
             // Resize the image before converting to a byte array
             val options = BitmapFactory.Options()
             options.inSampleSize = 2 // Adjust this value as needed to control image size
@@ -112,6 +129,13 @@ class RecipeAddFragment : Fragment() {
 
             })
 
+        return setupUI()
+    }
+
+    /**
+     * Sets up UI components and event listeners.
+     */
+    private fun setupUI(): View {
         binding.apply {
             lifecycleOwner = viewLifecycleOwner
             addRecipeVM = viewModel
@@ -120,6 +144,27 @@ class RecipeAddFragment : Fragment() {
                     LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
                 it.adapter = adapter
             }
+            // Set HTML formatted text to the TextView
+            mtvInfoIngredient.text = HtmlCompat.fromHtml(
+                getString(R.string.ingredients_html),
+                HtmlCompat.FROM_HTML_MODE_LEGACY
+            )
+            mtvInfoInstruction.text = HtmlCompat.fromHtml(
+                getString(R.string.instructions_html),
+                HtmlCompat.FROM_HTML_MODE_LEGACY
+            )
+
+            eventListeners()
+
+        }
+        return binding.root
+    }
+
+    /**
+     * Sets up event listeners for UI components.
+     */
+    private fun eventListeners() {
+        binding.apply {
             ibIncreServeCount.setOnClickListener {
                 viewModel.increaseCount(TagConstant.TAG_SERVE_COUNT)
             }
@@ -142,20 +187,8 @@ class RecipeAddFragment : Fragment() {
                 openGallery()
             }
             btnSave.setOnClickListener {
-                Log.e("DILAN", "onCreateView: ${viewModel.editableCategoriesList}")
                 validateRecipeDetails()
             }
-
-            // Set HTML formatted text to the TextView
-            mtvInfoIngredient.text = HtmlCompat.fromHtml(
-                getString(R.string.ingredients_html),
-                HtmlCompat.FROM_HTML_MODE_LEGACY
-            )
-            mtvInfoInstruction.text = HtmlCompat.fromHtml(
-                getString(R.string.instructions_html),
-                HtmlCompat.FROM_HTML_MODE_LEGACY
-            )
-
             ivInfoIngredient.setOnClickListener {
                 if (mtvInfoIngredient.visibility == VISIBLE) {
                     mtvInfoIngredient.visibility = GONE
@@ -171,13 +204,24 @@ class RecipeAddFragment : Fragment() {
                     mtvInfoInstruction.visibility = VISIBLE
                 }
             }
+            lytPopupIncluded.ivPopupClose.setOnClickListener {
+                binding.lytPopupIncluded.lytPopupScreen.visibility = GONE
+                activity.binding.navView.visibility = VISIBLE
+            }
         }
-        return binding.root
     }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        activity = requireActivity() as MainActivity
+        initObservers()
+    }
 
+    /**
+     * Initializes observers for LiveData objects in the ViewModel.
+     */
+    private fun initObservers() {
         viewModel.apply {
             // Observe nutrition data changes
             nutritionList.observe(viewLifecycleOwner) {
@@ -185,7 +229,7 @@ class RecipeAddFragment : Fragment() {
                 if (viewModel.calculatedNutrients.sum() == 0) {
                     Toast.makeText(
                         requireContext(),
-                        "Please add ingredients in correct format",
+                        getString(R.string.warn_please_add_ingredients_in_correct_format),
                         Toast.LENGTH_SHORT
                     ).show()
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -214,18 +258,18 @@ class RecipeAddFragment : Fragment() {
             }
             saveRecipeSuccess.observe(viewLifecycleOwner) {
                 if (it != null) {
-                    Toast.makeText(
-                        requireContext(),
-                        "Recipe Save Successfully!",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    showPopup(
+                        0,
+                        getString(R.string.success),
+                        message = getString(R.string.recipe_saved_successfully)
+                    )
                     clearScreenForANewRecipe()
                 } else {
-                    Toast.makeText(
-                        requireContext(),
-                        "Failed to save the recipe!!",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    showPopup(
+                        1,
+                        getString(R.string.error),
+                        getString(R.string.error_occured_while_saving_the_recipe)
+                    )
                 }
             }
             serveCount.observe(viewLifecycleOwner) {
@@ -239,6 +283,34 @@ class RecipeAddFragment : Fragment() {
         }
     }
 
+    /**
+     * Displays a popup message.
+     */
+    private fun showPopup(type: Int, title: String, message: String) {
+        var icon: Int = R.drawable.ic_info_popup
+        when (type) {
+            0 -> {
+                icon = R.drawable.ico_selected_item
+            }
+
+            1 -> {
+                icon = R.drawable.ic_error_popup
+            }
+
+            2 -> {
+                icon = R.drawable.ic_info_popup
+            }
+        }
+        binding.lytPopupIncluded.ivPopupIcon.setImageResource(icon)
+        binding.lytPopupIncluded.mtvPopupTitle.text = title
+        binding.lytPopupIncluded.mtvPopupDescription.text = message
+        binding.lytPopupIncluded.lytPopupScreen.visibility = VISIBLE
+        activity.binding.navView.visibility = GONE
+    }
+
+    /**
+     * Adds a new ingredient field to the UI.
+     */
     private fun addIngredientField() {
         val subBinding = LayoutDuplicateIngredientItemBinding.inflate(layoutInflater)
         subBinding.btnDeleteIngredient.setOnClickListener {
@@ -260,6 +332,9 @@ class RecipeAddFragment : Fragment() {
         binding.lytDynamicIngredients.addView(view)
     }
 
+    /**
+     * Adds a new instruction field to the UI.
+     */
     private fun addInstructionsField() {
         val subBinding = LayoutDuplicateIngredientItemBinding.inflate(layoutInflater)
         subBinding.btnDeleteIngredient.setOnClickListener {
@@ -281,25 +356,28 @@ class RecipeAddFragment : Fragment() {
         binding.lytDynamicInstructions.addView(view)
     }
 
+    /**
+     * Validates recipe details before saving.
+     */
     private fun validateRecipeDetails() {
         val errorString = if (binding.etRecipeName.editText?.text.toString().isBlank()) {
-            "Please add a recipe name"
+            getString(R.string.warn_please_add_a_recipe_name)
         } else if (binding.metServingCount.text.toString()
-                .isBlank() || binding.metServingCount.text.toString() == "0"
+                .isBlank() || binding.metServingCount.text.toString() == getString(R.string.default_zero)
         ) {
-            "Please add a serving count"
+            getString(R.string.warn_please_add_a_serving_count)
         } else if (binding.metCookingTime.text.toString()
-                .isBlank() || binding.metCookingTime.text.toString() == "0"
+                .isBlank() || binding.metCookingTime.text.toString() == getString(R.string.default_zero)
         ) {
-            "Please add a cooking time"
+            getString(R.string.warn_please_add_a_cooking_time)
         } else if (viewModel.editableCategoriesList.size < 1) {
-            "Please choose atleast a category"
+            getString(R.string.warn_please_choose_atleast_a_category)
         } else if ((viewModel.imageBytes?.size ?: 0) == 0) {
-            "Please add an image"
+            getString(R.string.warn_please_add_an_image)
         } else if (binding.lytDynamicIngredients.childCount < 1) {
-            "Please add atleast an ingredient"
+            getString(R.string.warn_please_add_atleast_an_ingredient)
         } else if (binding.lytDynamicInstructions.childCount < 1) {
-            "Please add atleast an instruction"
+            getString(R.string.warn_please_add_atleast_an_instruction)
         } else {
             null
         }
@@ -307,10 +385,14 @@ class RecipeAddFragment : Fragment() {
         if (errorString == null) {
             callNutrientsApi()
         } else {
-            Toast.makeText(requireContext(), errorString, Toast.LENGTH_SHORT).show()
+            Snackbar.make(requireContext(), binding.btnSave, errorString, Snackbar.LENGTH_LONG)
+                .show()
         }
     }
 
+    /**
+     * Calls the API to fetch nutrition information based on ingredients.
+     */
     private fun callNutrientsApi() {
         if (binding.lytDynamicIngredients.childCount > 0) {
             for (i in 0 until binding.lytDynamicIngredients.childCount) {
@@ -329,6 +411,9 @@ class RecipeAddFragment : Fragment() {
         viewModel.getNutritionsVm(ingredients)
     }
 
+    /**
+     * Initiates the process of saving the recipe.
+     */
     private fun callToSaveRecipe() {
         val user = User(idUser = 10)
         val foodCategories = ArrayList<FoodCategory>().toMutableList()
@@ -375,6 +460,9 @@ class RecipeAddFragment : Fragment() {
         viewModel.saveRecipe(10, recipe)
     }
 
+    /**
+     * Clears the screen for adding a new recipe.
+     */
     private fun clearScreenForANewRecipe() {
         // clear recipe name edit text field
         binding.etRecipeName.editText?.text?.clear()

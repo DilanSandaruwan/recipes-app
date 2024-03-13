@@ -402,8 +402,8 @@
                             android:layout_width="200dp"
                             android:layout_height="200dp"
                             android:layout_gravity="center"
-                            android:visibility="visible"
-                            android:layout_marginTop="16dp" />
+                            android:layout_marginTop="16dp"
+                            android:visibility="visible" />
 
                         <View style="@style/ViewSeparator" />
 
@@ -452,5 +452,8 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+        <include
+            android:id="@+id/lyt_popup_included"
+            layout="@layout/layout_top_popup" />
     </FrameLayout>
 </layout>

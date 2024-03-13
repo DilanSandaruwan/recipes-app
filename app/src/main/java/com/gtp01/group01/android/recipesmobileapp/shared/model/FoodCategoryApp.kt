@@ -14,4 +14,4 @@ data class FoodCategoryApp(
     @SerializedName("categoryName") val categoryName: String,
     var categoryImageId: Int,
     var isSelected: Boolean = false,
-):Serializable
+) : Serializable

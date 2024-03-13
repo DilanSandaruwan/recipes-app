@@ -16,7 +16,7 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityMainBinding
+    lateinit var binding: ActivityMainBinding
     private lateinit var bottomNavView: BottomNavigationView
     private lateinit var menu: Menu
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,6 +50,7 @@ class MainActivity : AppCompatActivity() {
             MY_REQUEST_CODE// Pass the request code to identify the result in onActivityResult
         )
     }
+
     /**
      * Initialize the UI components and setup navigation.
      */

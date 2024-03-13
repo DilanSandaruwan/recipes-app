@@ -27,24 +27,38 @@ class RecipeAddUpdateViewModel @Inject constructor(
     private val recipeManagementRepository: RecipeManagementRepository
 ) : ViewModel() {
 
+    // ByteArray for storing the image of the recipe
     var imageBytes: ByteArray? = null
+
+    // List to store calculated nutrients
     var calculatedNutrients = ArrayList<Int>()
+
+    // List of editable food categories
     var editableCategoriesList: MutableList<FoodCategoryApp> = mutableListOf()
+
+    // List of ingredients for the recipe
     var ingredientsList: MutableList<String> = mutableListOf()
+
+    // List of instructions for the recipe
     var instructionsList: MutableList<String> = mutableListOf()
 
+    // LiveData for serving count
     private val _serveCount = MutableLiveData(0)
     val serveCount: LiveData<Int> = _serveCount
 
+    // LiveData for cooking time
     private val _cookingTime = MutableLiveData(0)
     val cookingTime: LiveData<Int> = _cookingTime
 
+    // LiveData for nutrition information
     private val _nutritionList = MutableLiveData<List<NutritionModel>>()
     val nutritionList: LiveData<List<NutritionModel>> = _nutritionList
 
+    // LiveData for category list
     private val _categoryList = MutableLiveData<List<FoodCategory>>()
     val categoryList: LiveData<List<FoodCategory>> = _categoryList
 
+    // LiveData for successful recipe save
     private val _saveRecipeSuccess = MutableLiveData<Recipe?>()
     val saveRecipeSuccess: LiveData<Recipe?> = _saveRecipeSuccess
 
@@ -60,6 +74,9 @@ class RecipeAddUpdateViewModel @Inject constructor(
         }
     }
 
+    /**
+     * Fetches the list of food categories.
+     */
     fun getCategoryList() {
         viewModelScope.launch {
             val response = recipeManagementRepository.getCategoryList()
@@ -67,6 +84,12 @@ class RecipeAddUpdateViewModel @Inject constructor(
         }
     }
 
+    /**
+     * Saves a new recipe.
+     *
+     * @param idLoggedUser The ID of the logged-in user.
+     * @param recipe The recipe to be saved.
+     */
     fun saveRecipe(idLoggedUser: Int, recipe: Recipe) {
         viewModelScope.launch {
             val response = recipeManagementRepository.saveNewRecipe(idLoggedUser, recipe)
@@ -78,6 +101,11 @@ class RecipeAddUpdateViewModel @Inject constructor(
         }
     }
 
+    /**
+     * Resets the serving count or cooking time to default value.
+     *
+     * @param tag The tag indicating whether to reset serving count or cooking time.
+     */
     fun setDefaultCount(tag: Int) {
         when (tag) {
             TagConstant.TAG_SERVE_COUNT -> {
@@ -94,6 +122,11 @@ class RecipeAddUpdateViewModel @Inject constructor(
         }
     }
 
+    /**
+     * Increases the serving count or cooking time by 1.
+     *
+     * @param tag The tag indicating whether to increase serving count or cooking time.
+     */
     fun increaseCount(tag: Int) {
         when (tag) {
             TagConstant.TAG_SERVE_COUNT -> {
@@ -110,6 +143,11 @@ class RecipeAddUpdateViewModel @Inject constructor(
         }
     }
 
+    /**
+     * Decreases the serving count or cooking time by 1.
+     *
+     * @param tag The tag indicating whether to decrease serving count or cooking time.
+     */
     fun decreaseCount(tag: Int) {
         when (tag) {
             TagConstant.TAG_SERVE_COUNT -> {
@@ -134,6 +172,9 @@ class RecipeAddUpdateViewModel @Inject constructor(
         }
     }
 
+    /**
+     * Calculates the total nutrients from the list of nutrition information.
+     */
     fun calculateNutrients() {
         var calorie = 0.0
         var protein = 0.0
