@@ -89,6 +89,13 @@ class FoodCategoriesAdapter(
                 // Bind category name and image to the layout
                 binding.mtvCategoryName.text = this.categoryName
                 binding.ivCategory.setImageResource(this.categoryImageId)
+
+                // Set item selected or not
+                if (this.isSelected)
+                    binding.rimSelectedOrNot.setBackgroundResource(R.drawable.ico_selected_item)
+                else
+                    binding.rimSelectedOrNot.setBackgroundResource(R.drawable.ico_unselected_item)
+
                 // Handle item click events
                 binding.rimSelectedOrNot.setOnClickListener {
                     // Toggle category selection and update UI
