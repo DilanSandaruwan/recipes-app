@@ -28,7 +28,7 @@
     <color name="grey_pale">#ECECEC</color>
     <color name="teal_200">#8692f7</color>
     <color name="teal_700">#ff424242</color>
-
+    <color name="basic">#00000000</color>
     /* Image Button - Background */
     <color name="bg_img_btn_back">#32FFFFFF</color>
 
