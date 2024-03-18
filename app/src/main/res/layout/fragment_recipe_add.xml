@@ -451,8 +451,5 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <include
-            android:id="@+id/lyt_popup_included"
-            layout="@layout/layout_top_popup" />
     </FrameLayout>
 </layout>

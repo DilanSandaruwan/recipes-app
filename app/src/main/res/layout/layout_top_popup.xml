@@ -13,7 +13,7 @@
         android:background="@color/transparent"
         android:clickable="true"
         android:focusable="true"
-        android:visibility="visible">
+        android:visibility="gone">
 
         <LinearLayout
             android:id="@+id/lyt_popup"

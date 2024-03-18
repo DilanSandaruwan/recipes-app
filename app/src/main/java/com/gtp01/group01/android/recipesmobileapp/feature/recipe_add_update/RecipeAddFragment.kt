@@ -187,7 +187,12 @@ class RecipeAddFragment : Fragment() {
                 openGallery()
             }
             btnSave.setOnClickListener {
-                validateRecipeDetails()
+                activity.showPopup(
+                    0,
+                    getString(R.string.success),
+                    message = getString(R.string.recipe_saved_successfully)
+                )
+                //validateRecipeDetails()
             }
             ivInfoIngredient.setOnClickListener {
                 if (mtvInfoIngredient.visibility == VISIBLE) {
@@ -203,10 +208,6 @@ class RecipeAddFragment : Fragment() {
                 } else {
                     mtvInfoInstruction.visibility = VISIBLE
                 }
-            }
-            lytPopupIncluded.ivPopupClose.setOnClickListener {
-                binding.lytPopupIncluded.lytPopupScreen.visibility = GONE
-                activity.binding.navView.visibility = VISIBLE
             }
         }
     }
@@ -258,14 +259,14 @@ class RecipeAddFragment : Fragment() {
             }
             saveRecipeSuccess.observe(viewLifecycleOwner) {
                 if (it != null) {
-                    showPopup(
+                    activity.showPopup(
                         0,
                         getString(R.string.success),
                         message = getString(R.string.recipe_saved_successfully)
                     )
                     clearScreenForANewRecipe()
                 } else {
-                    showPopup(
+                    activity.showPopup(
                         1,
                         getString(R.string.error),
                         getString(R.string.error_occured_while_saving_the_recipe)
@@ -281,31 +282,6 @@ class RecipeAddFragment : Fragment() {
                     Editable.Factory.getInstance().newEditable(it.toString())
             }
         }
-    }
-
-    /**
-     * Displays a popup message.
-     */
-    private fun showPopup(type: Int, title: String, message: String) {
-        var icon: Int = R.drawable.ic_info_popup
-        when (type) {
-            0 -> {
-                icon = R.drawable.ico_selected_item
-            }
-
-            1 -> {
-                icon = R.drawable.ic_error_popup
-            }
-
-            2 -> {
-                icon = R.drawable.ic_info_popup
-            }
-        }
-        binding.lytPopupIncluded.ivPopupIcon.setImageResource(icon)
-        binding.lytPopupIncluded.mtvPopupTitle.text = title
-        binding.lytPopupIncluded.mtvPopupDescription.text = message
-        binding.lytPopupIncluded.lytPopupScreen.visibility = VISIBLE
-        activity.binding.navView.visibility = GONE
     }
 
     /**

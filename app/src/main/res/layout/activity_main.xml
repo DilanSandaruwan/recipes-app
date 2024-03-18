@@ -36,6 +36,8 @@
             app:layout_constraintTop_toTopOf="parent"
             app:navGraph="@navigation/nav_graph" />
 
-
+        <include
+            android:id="@+id/lyt_popup_included"
+            layout="@layout/layout_top_popup" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
