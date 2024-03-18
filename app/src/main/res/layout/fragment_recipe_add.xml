@@ -29,7 +29,7 @@
                 android:id="@+id/app_tool_bar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
+                android:layout_margin="@dimen/margin_app_toolbar"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -38,8 +38,8 @@
 
                 <!-- Back button -->
                 <ImageButton
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
+                    android:layout_width="@dimen/width_app_bar_button"
+                    android:layout_height="@dimen/height_app_bar_button"
                     android:background="@drawable/bg_app_tool_bar_btn_back"
                     android:contentDescription="@string/desc_back_button"
                     android:src="@drawable/ic_img_btn_back" />
@@ -52,13 +52,13 @@
                     android:gravity="center"
                     android:text="@string/title_add_new_recipe"
                     android:textColor="@color/white"
-                    android:textSize="14sp"
+                    android:textSize="@dimen/dimen_text_size_title"
                     android:textStyle="bold" />
 
                 <!-- Placeholder button -->
                 <ImageButton
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
+                    android:layout_width="@dimen/width_app_bar_button"
+                    android:layout_height="@dimen/height_app_bar_button"
                     android:background="@color/bg_img_btn_back"
                     android:contentDescription="@string/desc_back_button"
                     android:src="@drawable/ic_img_btn_back"
@@ -70,7 +70,7 @@
                 style="@style/TopHalfRoundedWhiteBackground"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="@dimen/margin_top_bg_half_rounded"
                 android:paddingBottom="@dimen/bottom_navigation_height"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -82,7 +82,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:fillViewport="true"
-                    android:padding="10dp">
+                    android:padding="@dimen/padding_scroll_view">
 
                     <!-- Content container -->
                     <LinearLayout
@@ -125,20 +125,20 @@
 
                             <ImageButton
                                 android:id="@+id/ibDecreServeCount"
-                                android:layout_width="48dp"
-                                android:layout_height="48dp"
+                                android:layout_width="@dimen/width_button_touch_min"
+                                android:layout_height="@dimen/height_button_touch_min"
                                 android:layout_gravity="center"
-                                android:layout_marginStart="5dp"
+                                android:layout_marginStart="@dimen/margin_start_button_decre"
                                 android:background="@drawable/bg_curved_square_grey"
                                 android:contentDescription="@string/desc_decre"
                                 android:src="@drawable/ico_decrement" />
 
                             <com.google.android.material.textfield.TextInputLayout
-                                android:layout_width="60dp"
-                                android:layout_height="60dp"
+                                android:layout_width="@dimen/width_text_input_count"
+                                android:layout_height="@dimen/height_text_input_count"
                                 android:layout_gravity="center"
-                                android:layout_marginStart="5dp"
-                                android:layout_marginEnd="5dp"
+                                android:layout_marginStart="@dimen/margin_start_text_input_count"
+                                android:layout_marginEnd="@dimen/margin_end_text_input_count"
                                 android:gravity="center"
                                 app:hintEnabled="false">
 
@@ -152,17 +152,17 @@
                                     android:hint="@string/default_zero"
                                     android:inputType="numberSigned"
                                     android:textColorHint="@color/grey_pale"
-                                    android:textSize="20sp"
+                                    android:textSize="@dimen/text_size_text_input_count"
                                     android:textStyle="bold" />
 
                             </com.google.android.material.textfield.TextInputLayout>
 
                             <ImageButton
                                 android:id="@+id/ibIncreServeCount"
-                                android:layout_width="48dp"
-                                android:layout_height="48dp"
+                                android:layout_width="@dimen/width_button_touch_min"
+                                android:layout_height="@dimen/height_button_touch_min"
                                 android:layout_gravity="center"
-                                android:layout_marginEnd="5dp"
+                                android:layout_marginEnd="@dimen/margin_end_button_incre"
                                 android:background="@drawable/bg_curved_square_grey"
                                 android:contentDescription="@string/desc_decre"
                                 android:src="@drawable/ico_increment" />
@@ -187,20 +187,20 @@
 
                             <ImageButton
                                 android:id="@+id/ibDecreCookingTime"
-                                android:layout_width="48dp"
-                                android:layout_height="48dp"
+                                android:layout_width="@dimen/width_button_touch_min"
+                                android:layout_height="@dimen/height_button_touch_min"
                                 android:layout_gravity="center"
-                                android:layout_marginStart="5dp"
+                                android:layout_marginStart="@dimen/margin_start_button_decre"
                                 android:background="@drawable/bg_curved_square_grey"
                                 android:contentDescription="@string/desc_decre"
                                 android:src="@drawable/ico_decrement" />
 
                             <com.google.android.material.textfield.TextInputLayout
-                                android:layout_width="60dp"
-                                android:layout_height="60dp"
+                                android:layout_width="@dimen/width_text_input_count"
+                                android:layout_height="@dimen/height_text_input_count"
                                 android:layout_gravity="center"
-                                android:layout_marginStart="5dp"
-                                android:layout_marginEnd="5dp"
+                                android:layout_marginStart="@dimen/margin_start_text_input_count"
+                                android:layout_marginEnd="@dimen/margin_end_text_input_count"
                                 android:gravity="center"
                                 app:hintEnabled="false">
 
@@ -214,16 +214,16 @@
                                     android:hint="@string/default_zero"
                                     android:inputType="numberSigned"
                                     android:textColorHint="@color/grey_pale"
-                                    android:textSize="20sp"
+                                    android:textSize="@dimen/text_size_text_input_count"
                                     android:textStyle="bold" />
                             </com.google.android.material.textfield.TextInputLayout>
 
                             <ImageButton
                                 android:id="@+id/ibIncreCookingTime"
-                                android:layout_width="48dp"
-                                android:layout_height="48dp"
+                                android:layout_width="@dimen/width_button_touch_min"
+                                android:layout_height="@dimen/height_button_touch_min"
                                 android:layout_gravity="center"
-                                android:layout_marginEnd="5dp"
+                                android:layout_marginEnd="@dimen/margin_end_button_incre"
                                 android:background="@drawable/bg_curved_square_grey"
                                 android:contentDescription="@string/desc_decre"
                                 android:src="@drawable/ico_increment" />
@@ -242,7 +242,7 @@
                             android:id="@+id/rvFoodCategory"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
+                            android:layout_marginTop="@dimen/margin_top_horizontal_recycler_view"
                             android:orientation="horizontal"
                             tools:listitem="@layout/layout_category_item" />
 
@@ -262,9 +262,9 @@
 
                             <ImageView
                                 android:id="@+id/ivInfoIngredient"
-                                android:layout_width="24dp"
-                                android:layout_height="24dp"
-                                android:layout_marginStart="10dp"
+                                android:layout_width="@dimen/size_info_icon"
+                                android:layout_height="@dimen/size_info_icon"
+                                android:layout_marginStart="@dimen/margin_start_info_icon"
                                 android:contentDescription="@string/desc_instructions"
                                 android:src="@drawable/ico_info_circle" />
 
@@ -274,13 +274,13 @@
                             android:id="@+id/mtvInfoIngredient"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:layout_marginBottom="10dp"
+                            android:layout_marginTop="@dimen/margin_top_banner"
+                            android:layout_marginBottom="@dimen/margin_bottom_banner"
                             android:background="@drawable/bg_curved_square_info"
-                            android:paddingStart="30dp"
-                            android:paddingTop="30dp"
-                            android:paddingEnd="10dp"
-                            android:paddingBottom="30dp"
+                            android:paddingStart="@dimen/padding_start_banner"
+                            android:paddingTop="@dimen/padding_top_banner"
+                            android:paddingEnd="@dimen/padding_end_banner"
+                            android:paddingBottom="@dimen/padding_bottom_banner"
                             android:textColor="@color/white" />
 
                         <LinearLayout
@@ -309,7 +309,7 @@
                                 app:iconGravity="textStart"
                                 app:iconTint="@color/md_theme_primary"
                                 app:strokeColor="@color/md_theme_primary"
-                                app:strokeWidth="3dp" />
+                                app:strokeWidth="@dimen/stroke_width_button_add_ingredient" />
                         </LinearLayout>
 
                         <View style="@style/ViewSeparator" />
@@ -328,9 +328,9 @@
 
                             <ImageView
                                 android:id="@+id/ivInfoInstruction"
-                                android:layout_width="24dp"
-                                android:layout_height="24dp"
-                                android:layout_marginStart="10dp"
+                                android:layout_width="@dimen/size_info_icon"
+                                android:layout_height="@dimen/size_info_icon"
+                                android:layout_marginStart="@dimen/margin_start_info_icon"
                                 android:contentDescription="@string/desc_instructions"
                                 android:src="@drawable/ico_info_circle" />
                         </LinearLayout>
@@ -339,14 +339,13 @@
                             android:id="@+id/mtvInfoInstruction"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:layout_marginBottom="10dp"
+                            android:layout_marginTop="@dimen/margin_top_banner"
+                            android:layout_marginBottom="@dimen/margin_bottom_banner"
                             android:background="@drawable/bg_curved_square_info"
-                            android:padding="10dp"
-                            android:paddingStart="30dp"
-                            android:paddingTop="30dp"
-                            android:paddingEnd="10dp"
-                            android:paddingBottom="30dp"
+                            android:paddingStart="@dimen/padding_start_banner"
+                            android:paddingTop="@dimen/padding_top_banner"
+                            android:paddingEnd="@dimen/padding_end_banner"
+                            android:paddingBottom="@dimen/padding_bottom_banner"
                             android:textColor="@color/white" />
 
                         <LinearLayout
@@ -375,7 +374,7 @@
                                 app:iconGravity="textStart"
                                 app:iconTint="@color/md_theme_primary"
                                 app:strokeColor="@color/md_theme_primary"
-                                app:strokeWidth="3dp" />
+                                app:strokeWidth="@dimen/stroke_width_button_add_ingredient" />
                         </LinearLayout>
 
                         <View style="@style/ViewSeparator" />
@@ -392,17 +391,17 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
-                            android:layout_marginTop="20dp"
+                            android:layout_marginTop="@dimen/margin_top_button_choose_image"
                             android:text="@string/select_image"
                             android:textColor="@color/white"
                             android:textSize="16sp" />
 
                         <com.gtp01.group01.android.recipesmobileapp.shared.utils.ui.RoundedImageView
                             android:id="@+id/ivChooseItemImg"
-                            android:layout_width="200dp"
-                            android:layout_height="200dp"
+                            android:layout_width="@dimen/size_image_view_recipe"
+                            android:layout_height="@dimen/size_image_view_recipe"
                             android:layout_gravity="center"
-                            android:layout_marginTop="16dp"
+                            android:layout_marginTop="@dimen/margin_top_image_view_recipe"
                             android:visibility="visible" />
 
                         <View style="@style/ViewSeparator" />
@@ -419,7 +418,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_vertical"
-                                android:layout_margin="5dp"
+                                android:layout_margin="@dimen/margin_button_recipe_action"
                                 android:text="@string/delete"
                                 android:theme="@style/Theme.RecipesMobileApp"
                                 android:visibility="gone" />
@@ -429,7 +428,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_vertical"
-                                android:layout_margin="5dp"
+                                android:layout_margin="@dimen/margin_button_recipe_action"
                                 android:text="@string/update"
                                 android:theme="@style/Theme.RecipesMobileApp"
                                 android:visibility="gone" />
@@ -439,7 +438,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_vertical"
-                                android:layout_margin="5dp"
+                                android:layout_margin="@dimen/margin_button_recipe_action"
                                 android:text="@string/save"
                                 android:theme="@style/Theme.RecipesMobileApp"
                                 android:visibility="visible" />

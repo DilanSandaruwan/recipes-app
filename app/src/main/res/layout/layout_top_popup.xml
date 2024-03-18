@@ -13,15 +13,15 @@
         android:background="@color/transparent"
         android:clickable="true"
         android:focusable="true"
-        android:visibility="gone">
+        android:visibility="visible">
 
         <LinearLayout
             android:id="@+id/lyt_popup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="40dp"
-            android:layout_marginEnd="20dp"
+            android:layout_marginStart="@dimen/margin_start_popup"
+            android:layout_marginTop="@dimen/margin_top_popup"
+            android:layout_marginEnd="@dimen/margin_end_popup"
             android:background="@drawable/bg_rect_grey"
             android:orientation="horizontal"
             android:padding="10dp"
@@ -30,8 +30,8 @@
 
             <ImageView
                 android:id="@+id/iv_popup_icon"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
+                android:layout_width="@dimen/width_image_view_icon_popup"
+                android:layout_height="@dimen/height_image_view_icon_popup"
                 android:contentDescription="@string/desc_icon_of_success"
                 android:src="@drawable/ico_selected_item" />
 
@@ -46,7 +46,7 @@
                     android:id="@+id/mtv_popup_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
+                    android:layout_marginStart="@dimen/margin_start_title_popup"
                     android:hint="@string/success"
                     android:textSize="14sp"
                     android:textStyle="bold" />
@@ -55,14 +55,14 @@
                     android:id="@+id/mtv_popup_description"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
+                    android:layout_marginStart="@dimen/margin_start_message_popup"
                     android:hint="@string/sample_recipe_saved_successfully" />
             </LinearLayout>
 
             <ImageView
                 android:id="@+id/iv_popup_close"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
+                android:layout_width="@dimen/width_image_view_icon_close_popup"
+                android:layout_height="@dimen/height_image_view_icon_close_popup"
                 android:contentDescription="@string/desc_icon_of_close"
                 android:src="@drawable/ic_close_gray" />
         </LinearLayout>
