@@ -15,6 +15,7 @@
     <string name="invalid_username">Not a valid username</string>
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
+
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
     <string name="second_fragment_label">Second Fragment</string>
@@ -24,6 +25,13 @@
     <string name="enter_the_email">Enter The Email</string>
     <string name="logout">Logout</string>
     <string name="username_placeholder">Username Placeholder</string>
+    <string name="hello_home_fragment">home</string>
+    <string name="instructions">Instructions</string>
+    <string name="carbs">Carbs</string>
+    <string name="calorie">Calorie</string>
+    <string name="protein">Protein</string>
+    <string name="time">Time</string>
+    <string name="likecount">LikeCount</string>
     <string name="desc_back_button">Back Button</string>
     <string name="title_add_new_recipe">Add New Recipe</string>
     <string name="hint_recipe_name">Recipe Name</string>
@@ -34,7 +42,6 @@
     <string name="validity_digits">0123456789</string>
     <string name="categories">Categories</string>
     <string name="ingredients">Ingredients</string>
-    <string name="instructions">Instructions</string>
     <string name="save">Save</string>
     <string name="update">Update</string>
     <string name="delete">Delete</string>
@@ -43,6 +50,8 @@
     <string name="desc_ingredient_01">Ingredient 01</string>
     <string name="add_ingredient">Add Ingredient</string>
     <string name="add_instruction">Add Instruction</string>
+    <string name="username">username</string>
+    <string name="navigate_to_home">Navigate to Home</string>
     <string name="desc_add_new_ingredient">Add new ingredient</string>
     <string name="desc_instructions">Instructions</string>
 </resources>

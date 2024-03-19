@@ -19,7 +19,7 @@
     <dimen name="text_small">14sp</dimen>
     <dimen name="text_large">20sp</dimen>
     <dimen name="extra_large">50sp</dimen>
-
+    <dimen name="recipe_name_text_size">18sp</dimen>
     /* ShapeableImageView */
     <dimen name="image_padding">5dp</dimen>
 
@@ -48,4 +48,26 @@
     <dimen name="content_card_view_corner_radius">20dp</dimen>
     <dimen name="content_card_view_elevation">10dp</dimen>
     <dimen name="list_card_view_corner_radius">12dp</dimen>
+    <dimen name="_250sdp">250.00dp</dimen>
+   <dimen name="_16sdp">16dp</dimen>
+   <dimen name="_72sdp">72dp</dimen>
+   <dimen name="_12sdp">12dp</dimen>
+   <dimen name="_8sdp">8dp</dimen>
+   <dimen name="_4sdp">4dp</dimen>
+   <dimen name="_10sdp">10dp</dimen>
+    <dimen name="_5sdp">5dp</dimen>
+    <dimen name="_20sdp">20dp</dimen>
+    <dimen name="_15ssp">15sp</dimen>
+    <dimen name="_10ssp">10sp</dimen>
+    <dimen name="_50sdp">50dp</dimen>
+    <dimen name="_16dp">16dp</dimen>
+    <dimen name="_8dp">8dp</dimen>
+    <dimen name="_15dp">15dp</dimen>
+    <dimen name="_10dp">10dp</dimen>
+    <dimen name="_0dp">0dp</dimen>
+    <dimen name="_18sp">18sp</dimen>
+    <dimen name="_2dp">2dp</dimen>
+    <dimen name="_120dp">120dp</dimen>
+    <dimen name="_24dp">24dp</dimen>
+
 </resources>
