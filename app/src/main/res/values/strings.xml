@@ -26,12 +26,13 @@
     <string name="logout">Logout</string>
     <string name="username_placeholder">Username Placeholder</string>
     <string name="hello_home_fragment">home</string>
-    <string name="instructions">Instructions</string>
     <string name="carbs">Carbs</string>
     <string name="calorie">Calorie</string>
     <string name="protein">Protein</string>
     <string name="time">Time</string>
     <string name="likecount">LikeCount</string>
+
+    <!--  add new recipe  -->
     <string name="desc_back_button">Back Button</string>
     <string name="title_add_new_recipe">Add New Recipe</string>
     <string name="hint_recipe_name">Recipe Name</string>
@@ -42,6 +43,7 @@
     <string name="validity_digits">0123456789</string>
     <string name="categories">Categories</string>
     <string name="ingredients">Ingredients</string>
+    <string name="instructions">Instructions</string>
     <string name="save">Save</string>
     <string name="update">Update</string>
     <string name="delete">Delete</string>
@@ -54,4 +56,47 @@
     <string name="navigate_to_home">Navigate to Home</string>
     <string name="desc_add_new_ingredient">Add new ingredient</string>
     <string name="desc_instructions">Instructions</string>
+    <string name="tag_serve_count">TAG_SERVE_COUNT</string>
+    <string name="tag_cooking_time">TAG_COOKING_TIME</string>
+    <string name="ingredients_html">&lt;div style=\"text-align: center;\"&gt;&lt;h3&gt;&lt;b&gt;Instructions:&lt;/b&gt;&lt;/h3&gt;&lt;/div&gt;&lt;br/&gt;
+    &lt;b&gt;1. quantity with measurement and name&lt;/b&gt;&lt;br/&gt;
+    &lt;br/&gt;
+        example:&lt;br/&gt;
+    &lt;ul&gt;
+        &lt;li&gt;&#160;&#160;&#160;&#160;&lt;b&gt;1 cup of milk&lt;/b&gt;&lt;/li&gt;
+        &lt;li&gt;&#160;&#160;&#160;&#160;&lt;b&gt;200g of flour&lt;/b&gt;&lt;/li&gt;
+        &lt;li&gt;&#160;&#160;&#160;&#160;&lt;b&gt;2 teaspoons of vanilla flavour&lt;/b&gt;&lt;/li&gt;
+        &lt;li&gt;&#160;&#160;&#160;&#160;&lt;b&gt;2 cubes of soup cubes&lt;/b&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+    &lt;br/&gt;
+    &lt;b&gt;2. Enter ingredients one by one dynamically adding via a button&lt;/b&gt;</string>
+    <string name="instructions_html">&lt;div style=\"text-align: center;\"&gt;&lt;h3&gt;&lt;b&gt;Instructions:&lt;/b&gt;&lt;/h3&gt;&lt;/div&gt;&lt;br/&gt;
+    &lt;b&gt;1. quantity with measurement and name&lt;/b&gt;&lt;br/&gt;
+    &lt;br/&gt;
+        example:&lt;br/&gt;
+    &lt;ul&gt;
+        &lt;li &gt;&#160;&#160;&#160;&#160;&lt;b&gt;Step 01: Take a bowl and two tea spoons&lt;/b&gt;&lt;/li&gt;
+        &lt;li&gt;&#160;&#160;&#160;&#160;&lt;b&gt;Step 02: Boil one liter of water&lt;/b&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+    &lt;br/&gt;</string>
+    <string name="desc_add_an_image_to_recipe">Add an image to recipe</string>
+    <string name="select_image">Choose Image</string>
+    <string name="choose_an_image_for_the_recipe">Choose an image for the recipe</string>
+    <string name="desc_icon_of_success">icon of success</string>
+    <string name="success">Success</string>
+    <string name="sample_recipe_saved_successfully">Recipe saved successfully.</string>
+    <string name="desc_icon_of_close">icon of close</string>
+    <string name="category_image">Category Image</string>
+    <string name="error">Error</string>
+    <string name="recipe_saved_successfully">Recipe Saved Successfully!</string>
+    <string name="error_occured_while_saving_the_recipe">Failed to save the recipe!!</string>
+    <string name="warn_please_add_a_recipe_name">Please add a recipe name</string>
+    <string name="warn_please_add_a_serving_count">Please add a serving count</string>
+    <string name="warn_please_add_a_cooking_time">Please add a cooking time</string>
+    <string name="warn_please_choose_atleast_a_category">Please choose atleast a category</string>
+    <string name="warn_please_add_an_image">Please add an image</string>
+    <string name="warn_please_add_atleast_an_ingredient">Please add atleast an ingredient</string>
+    <string name="warn_please_add_atleast_an_instruction">Please add atleast an instruction</string>
+    <string name="warn_please_add_ingredients_in_correct_format">Please add ingredients in correct format</string>
+
 </resources>

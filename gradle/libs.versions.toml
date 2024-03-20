@@ -49,10 +49,11 @@ googleOssPlugin = "0.10.6"
 googleServices = "4.4.1"
 hamcrest = "2.2"
 hilt = "2.50"
-hiltExt = "1.1.0"
+hiltExt = "1.2.0"
 jacoco = "0.8.7"
 junit = "4.13.2"
 junit4 = "4.13.2"
+junitJupiter = "5.8.1"
 junitVersion = "1.1.5"
 kotlin = "1.9.21"
 kotlinxCoroutines = "1.7.3"
@@ -89,6 +90,7 @@ legacy-support-v4 = "1.0.0"
 firebaseAuthKtx = "22.3.1"
 playServicesAuth = "20.7.0"
 annotation = "1.7.1"
+coreKtx = "1.5.0"
 
 [libraries]
 accompanist-permissions = { group = "com.google.accompanist", name = "accompanist-permissions", version.ref = "accompanist" }
@@ -168,6 +170,7 @@ hilt-ext-compiler = { group = "androidx.hilt", name = "hilt-compiler", version.r
 hilt-ext-work = { group = "androidx.hilt", name = "hilt-work", version.ref = "hiltExt" }
 javax-inject = { module = "javax.inject:javax.inject", version = "1" }
 junit = { module = "junit:junit", version.ref = "junit" }
+junit-jupiter = { module = "org.junit.jupiter:junit-jupiter", version.ref = "junitJupiter" }
 kotlin-stdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib-jdk8", version.ref = "kotlin" }
 kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinxCoroutinesAndroid" }
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinxCoroutinesCore" }
@@ -208,6 +211,7 @@ legacy-support-v4 = { group = "androidx.legacy", name = "legacy-support-v4", ver
 firebase-auth-ktx = { group = "com.google.firebase", name = "firebase-auth-ktx", version.ref = "firebaseAuthKtx" }
 play-services-auth = { group = "com.google.android.gms", name = "play-services-auth", version.ref = "playServicesAuth" }
 annotation = { group = "androidx.annotation", name = "annotation", version.ref = "annotation" }
+core-ktx = { group = "androidx.test", name = "core-ktx", version.ref = "coreKtx" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }

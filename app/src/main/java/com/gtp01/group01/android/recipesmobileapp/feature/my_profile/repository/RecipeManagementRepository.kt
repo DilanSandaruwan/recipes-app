@@ -1,5 +1,7 @@
 package com.gtp01.group01.android.recipesmobileapp.repository
 
+import com.gtp01.group01.android.recipesmobileapp.shared.model.FoodCategory
+import com.gtp01.group01.android.recipesmobileapp.shared.model.Recipe
 import com.gtp01.group01.android.recipesmobileapp.shared.models.NutritionModel
 import com.gtp01.group01.android.recipesmobileapp.sources.RecipeManagementApiService
 import kotlinx.coroutines.Dispatchers
@@ -36,6 +38,40 @@ class RecipeManagementRepository @Inject constructor(
      */
     private suspend fun getNutritionsResponseFromRemoteService(ingredients: String): List<NutritionModel>? {
         val response = recipeManagementApiService.getNutritions(ingredients)
+        return if (response.isSuccessful) {
+            response.body()
+        } else {
+            emptyList()
+        }
+    }
+
+    suspend fun saveNewRecipe(idLoggedUser: Int, recipe: Recipe): Recipe? {
+        return withContext(Dispatchers.IO) {
+            return@withContext saveNewRecipeResponseFromRemoteService(idLoggedUser, recipe)
+        }
+    }
+
+    private suspend fun saveNewRecipeResponseFromRemoteService(
+        idLoggedUser: Int,
+        recipe: Recipe
+    ): Recipe? {
+        val response = recipeManagementApiService.saveNewRecipe(idLoggedUser, recipe)
+        return if (response.isSuccessful) {
+            response.body()
+        } else {
+            null
+        }
+    }
+
+    suspend fun getCategoryList(): List<FoodCategory>? {
+        return withContext(Dispatchers.IO) {
+            return@withContext getCategoryListFromRemoteService()
+        }
+
+    }
+
+    private suspend fun getCategoryListFromRemoteService(): List<FoodCategory>? {
+        val response = recipeManagementApiService.getCategoryList()
         return if (response.isSuccessful) {
             response.body()
         } else {

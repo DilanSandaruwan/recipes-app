@@ -2,6 +2,7 @@ package com.gtp01.group01.android.recipesmobileapp.feature.main
 
 import android.os.Bundle
 import android.view.Menu
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.fragment.NavHostFragment
@@ -16,7 +17,7 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityMainBinding
+    lateinit var binding: ActivityMainBinding
     private lateinit var bottomNavView: BottomNavigationView
     private lateinit var menu: Menu
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -26,6 +27,17 @@ class MainActivity : AppCompatActivity() {
         showSignInOptions()
         // Initialize the app and UI
         initViews()
+        eventListeners()
+    }
+
+    /**
+     * Sets up event listeners for UI components.
+     */
+    private fun eventListeners() {
+        binding.lytPopupIncluded.ivPopupClose.setOnClickListener {
+            binding.lytPopupIncluded.lytPopupScreen.visibility = View.GONE
+            binding.navView.visibility = View.VISIBLE
+        }
     }
 
     /**
@@ -50,6 +62,7 @@ class MainActivity : AppCompatActivity() {
             MY_REQUEST_CODE// Pass the request code to identify the result in onActivityResult
         )
     }
+
     /**
      * Initialize the UI components and setup navigation.
      */
@@ -74,5 +87,30 @@ class MainActivity : AppCompatActivity() {
                 setupWithNavController(it)
             }
         }
+    }
+
+    /**
+     * Displays a popup message.
+     */
+    fun showPopup(type: Int, title: String, message: String) {
+        var icon: Int = R.drawable.ic_info_popup
+        when (type) {
+            0 -> {
+                icon = R.drawable.ico_selected_item
+            }
+
+            1 -> {
+                icon = R.drawable.ic_error_popup
+            }
+
+            2 -> {
+                icon = R.drawable.ic_info_popup
+            }
+        }
+        binding.lytPopupIncluded.ivPopupIcon.setImageResource(icon)
+        binding.lytPopupIncluded.mtvPopupTitle.text = title
+        binding.lytPopupIncluded.mtvPopupDescription.text = message
+        binding.lytPopupIncluded.lytPopupScreen.visibility = View.VISIBLE
+        binding.navView.visibility = View.GONE
     }
 }
