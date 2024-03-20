@@ -15,7 +15,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:usesCleartextTraffic="true"
-        android:theme="@style/AppThemeGradient"
+        android:theme="@style/Theme.RecipesMobileApp"
         tools:targetApi="31">
 
 
