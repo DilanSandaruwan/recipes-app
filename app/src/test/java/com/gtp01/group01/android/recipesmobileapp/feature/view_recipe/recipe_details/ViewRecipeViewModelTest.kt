@@ -54,6 +54,9 @@ class ViewRecipeViewModelTest{
         viewModel = ViewRecipeViewModel(viewRecipeRepository)
 
     }
+    /**
+     * Test case to verify that fetchRecipeDetail updates recipeDetails LiveData with Success state.
+     */
     @Test
     fun `fetchRecipeDetail updates recipeDetails LiveData with Success state`() = runBlockingTest {
         // Mock successful result from repository
@@ -92,6 +95,23 @@ class ViewRecipeViewModelTest{
         if (recipe != null) {
             assertEquals(null, recipe.bitmap)
         }
+    }
+
+    @Test
+    fun `fetchRecipeDetail updates recipeDetails LiveData with Failure state`() = runBlockingTest {
+        // Mock failure from repository
+        val userId = 1
+        val recipeId = 1
+        val errorMessage = "Mock Error Message"
+        `when`(viewRecipeRepository.getRecipeDetail(anyInt(), anyInt())).thenThrow(RuntimeException(errorMessage))
+
+        // Invoke the method under test
+        viewModel.fetchRecipeDetail(userId, recipeId)
+
+        // Ensure that recipeDetails LiveData is updated with Failure state and correct error message
+        val resultState = viewModel.recipeDetails.value
+        assertEquals(ResultState.Failure::class.java, resultState?.javaClass)
+        assertEquals(errorMessage, (resultState as? ResultState.Failure)?.error)
     }
 
 }
