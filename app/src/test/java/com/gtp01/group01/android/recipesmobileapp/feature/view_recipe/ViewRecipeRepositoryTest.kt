@@ -13,18 +13,25 @@ import org.mockito.ArgumentMatchers.anyInt
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.`when`
 import retrofit2.Response
-
+/**
+ * Unit tests for the ViewRecipeRepository class.
+ */
 class ViewRecipeRepositoryTest{
-
+    // Mocked AuthApiService
     private lateinit var authApiService: AuthApiService
+    // Repository to be tested
     private lateinit var repository: ViewRecipeRepository
-
+    /**
+     * Setup method to initialize necessary components before each test.
+     */
     @Before
     fun setup() {
         authApiService = mock(AuthApiService::class.java)
         repository = ViewRecipeRepository(authApiService)
     }
-
+    /**
+     * Test case to verify that getRecipeDetail returns recipe when API call is successful.
+     */
     @Test
     fun `getRecipeDetail returns recipe when API call is successful`() = runBlocking {
         // Mock successful API response
@@ -55,7 +62,9 @@ class ViewRecipeRepositoryTest{
         // Verify that the result is as expected
         assertEquals(mockRecipe, result)
     }
-
+    /**
+     * Test case to verify that getRecipeDetail returns null when API call is unsuccessful.
+     */
     @Test
     fun `getRecipeDetail returns null when API call is unsuccessful`() = runBlocking {
         // Mock unsuccessful API response
@@ -69,7 +78,9 @@ class ViewRecipeRepositoryTest{
         // Verify that the result is null
         assertNull(result)
     }
-
+    /**
+     * Test case to verify that getRecipeDetail returns null when exception is thrown.
+     */
     @Test
     fun `getRecipeDetail returns null when exception is thrown`() = runBlocking {
         // Mock exception being thrown by the API call
