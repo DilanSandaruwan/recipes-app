@@ -25,7 +25,7 @@ class ViewRecipeRepository @Inject constructor(private val authApiService: AuthA
                 val recipe = response.body()
                 recipe?.let { item ->
                     val bitmap = if (item.photo != null) {
-                        decodeImage(item.photo)
+                        decodeImage(item.photo as String)
                     } else {
                         null
                     }
