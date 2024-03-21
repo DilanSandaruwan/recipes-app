@@ -67,6 +67,9 @@ dependencies {
     implementation(libs.firebase.auth.ktx)
     implementation(libs.play.services.auth)
     implementation(libs.annotation)
+    implementation(libs.core.ktx)
+    implementation(libs.androidx.test.ext)
+    testImplementation(libs.junit.jupiter)
     ksp(libs.hilt.compiler)
 
     // ——— AndroidX libraries ———//
@@ -118,4 +121,5 @@ dependencies {
     implementation(libs.firebase.ui.auth)
     implementation(libs.firebase.auth)
     implementation(libs.firebase.core)
+
 }

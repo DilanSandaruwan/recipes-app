@@ -2,8 +2,10 @@ package com.gtp01.group01.android.recipesmobileapp.di
 
 import android.util.Log
 import com.gtp01.group01.android.recipesmobileapp.constant.ConstantNetworkService
-import com.gtp01.group01.android.recipesmobileapp.repository.AuthRepository
-import com.gtp01.group01.android.recipesmobileapp.sources.AuthApiService
+import com.gtp01.group01.android.recipesmobileapp.feature.my_profile.repository.AuthRepository
+import com.gtp01.group01.android.recipesmobileapp.repository.RecipeManagementRepository
+import com.gtp01.group01.android.recipesmobileapp.shared.sources.AuthApiService
+import com.gtp01.group01.android.recipesmobileapp.sources.RecipeManagementApiService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -110,7 +112,39 @@ object NetworkModule {
      *
      * @param message The message to be logged.
      */
-        private fun logMessage(message: String) {
-            Log.d("NetworkModule", message)
+    private fun logMessage(message: String) {
+        Log.d("NetworkModule", message)
+    }
+
+    /**
+     * Provides an instance of [RecipeManagementApiService].
+     *
+     * @param retrofit The Retrofit instance used for creating the API service.
+     * @return An instance of [RecipeManagementApiService].
+     */
+    @Singleton
+    @Provides
+    fun provideRecipeManagementApiService(retrofit: Retrofit): RecipeManagementApiService {
+        return retrofit.create(RecipeManagementApiService::class.java)
+    }
+
+    /**
+     * Provides an instance of [RecipeManagementRepository].
+     *
+     * @param recipeManagementApiService The [RecipeManagementApiService] instance used by the repository.
+     * @return An instance of [RecipeManagementRepository].
+     * @throws Exception If an error occurs while creating the repository.
+     */
+    @Singleton
+    @Provides
+    fun provideRecipeManagementRepository(recipeManagementApiService: RecipeManagementApiService): RecipeManagementRepository {
+        try {
+            val recRepo = RecipeManagementRepository(recipeManagementApiService)
+            logMessage("Repository provided")
+            return recRepo
+        } catch (e: Exception) {
+            logMessage("NetworkError while providing bRepository: ${e.message}")
+            throw e  // Re-throw the exception for higher-level error handling
         }
+    }
 }

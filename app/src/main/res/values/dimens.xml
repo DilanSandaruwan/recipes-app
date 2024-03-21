@@ -1,7 +1,7 @@
 <resources>
     <!-- Default screen margins, per the Android Design guidelines. -->
- <dimen name="activity_horizontal_margin">16dp</dimen>
- <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="margin_top">32dp</dimen>
     <dimen name="margin_start">16dp</dimen>
@@ -19,6 +19,7 @@
     <dimen name="text_small">14sp</dimen>
     <dimen name="text_large">20sp</dimen>
     <dimen name="extra_large">50sp</dimen>
+    <dimen name="recipe_name_text_size">18sp</dimen>
 
     /* ShapeableImageView */
     <dimen name="image_padding">5dp</dimen>
@@ -32,17 +33,91 @@
     <dimen name="imageView_layout_width">200dp</dimen>
     <dimen name="imageView_layout_height">200dp</dimen>
 
+    /* Image Button - Background */
+    <dimen name="margin_medium">16dp</dimen>
+
     /* Search View Dimensions */
     <dimen name="search_view_margin">12dp</dimen>
     <dimen name="search_view_corner_radius">30dp</dimen>
     <dimen name="search_view_card_elevation">8dp</dimen>
     <dimen name="search_view_text_size">14sp</dimen>
 
-    <dimen name="bottom_navigation_height">100dp</dimen>
+    <dimen name="bottom_navigation_height">50dp</dimen>
     <dimen name="top_app_bar_height">100dp</dimen>
 
     /* Card Views Dimensions */
     <dimen name="content_card_view_corner_radius">20dp</dimen>
     <dimen name="content_card_view_elevation">10dp</dimen>
     <dimen name="list_card_view_corner_radius">12dp</dimen>
+    <dimen name="_250sdp">250.00dp</dimen>
+    <dimen name="_16sdp">16dp</dimen>
+    <dimen name="_72sdp">72dp</dimen>
+    <dimen name="_12sdp">12dp</dimen>
+    <dimen name="_8sdp">8dp</dimen>
+    <dimen name="_4sdp">4dp</dimen>
+    <dimen name="_10sdp">10dp</dimen>
+    <dimen name="_5sdp">5dp</dimen>
+    <dimen name="_20sdp">20dp</dimen>
+    <dimen name="_15ssp">15sp</dimen>
+    <dimen name="_10ssp">10sp</dimen>
+    <dimen name="_50sdp">50dp</dimen>
+    <dimen name="_16dp">16dp</dimen>
+    <dimen name="_8dp">8dp</dimen>
+    <dimen name="_15dp">15dp</dimen>
+    <dimen name="_10dp">10dp</dimen>
+    <dimen name="_0dp">0dp</dimen>
+    <dimen name="_18sp">18sp</dimen>
+    <dimen name="_2dp">2dp</dimen>
+    <dimen name="_120dp">120dp</dimen>
+    <dimen name="_24dp">24dp</dimen>
+
+
+    /* Add New Recipe Screen */
+    <dimen name="margin_app_toolbar">10dp</dimen>
+    <dimen name="width_app_bar_button">32dp</dimen>
+    <dimen name="height_app_bar_button">32dp</dimen>
+    <dimen name="dimen_default_zero">0dp</dimen>
+    <dimen name="dimen_text_size_title">14sp</dimen>
+    <dimen name="margin_top_bg_half_rounded">10dp</dimen>
+    <dimen name="padding_scroll_view">10dp</dimen>
+    <dimen name="width_button_touch_min">48dp</dimen>
+    <dimen name="height_button_touch_min">48dp</dimen>
+    <dimen name="margin_start_button_decre">5dp</dimen>
+    <dimen name="width_text_input_count">60dp</dimen>
+    <dimen name="height_text_input_count">60dp</dimen>
+    <dimen name="margin_start_text_input_count">5dp</dimen>
+    <dimen name="margin_end_text_input_count">5dp</dimen>
+    <dimen name="text_size_text_input_count">20sp</dimen>
+    <dimen name="margin_end_button_incre">5dp</dimen>
+    <dimen name="margin_top_horizontal_recycler_view">10dp</dimen>
+    <dimen name="size_info_icon">24dp</dimen>
+    <dimen name="margin_start_info_icon">10dp</dimen>
+    <dimen name="margin_bottom_banner">10dp</dimen>
+    <dimen name="margin_top_banner">8dp</dimen>
+    <dimen name="padding_start_banner">30dp</dimen>
+    <dimen name="padding_top_banner">30dp</dimen>
+    <dimen name="padding_end_banner">10dp</dimen>
+    <dimen name="padding_bottom_banner">30dp</dimen>
+    <dimen name="stroke_width_button_add_ingredient">3dp</dimen>
+    <dimen name="margin_top_button_choose_image">20dp</dimen>
+    <dimen name="size_image_view_recipe">200dp</dimen>
+    <dimen name="margin_top_image_view_recipe">16dp</dimen>
+    <dimen name="margin_button_recipe_action">5dp</dimen>
+    <dimen name="margin_start_popup">20dp</dimen>
+    <dimen name="margin_top_popup">40dp</dimen>
+    <dimen name="margin_end_popup">20dp</dimen>
+    <dimen name="width_image_view_icon_popup">48dp</dimen>
+    <dimen name="height_image_view_icon_popup">48dp</dimen>
+    <dimen name="margin_start_title_popup">10dp</dimen>
+    <dimen name="margin_start_message_popup">10dp</dimen>
+    <dimen name="width_image_view_icon_close_popup">48dp</dimen>
+    <dimen name="height_image_view_icon_close_popup">48dp</dimen>
+    <dimen name="width_rv_category_card">100dp</dimen>
+    <dimen name="margin_rv_category_card">10dp</dimen>
+    <dimen name="elevation_rv_category_card">6dp</dimen>
+    <dimen name="corner_radius_rv_category_card">20dp</dimen>
+    <dimen name="image_view_rv_category_card">70dp</dimen>
+    <dimen name="tick_rv_category_card">30dp</dimen>
+    <dimen name="margin_tick_rv_category_card">5dp</dimen>
+    <dimen name="translation_z_tick_rv_category_card">50dp</dimen>
 </resources>

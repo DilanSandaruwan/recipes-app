@@ -1,0 +1,9 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Background shape -->
+<item android:drawable="@drawable/nutri_bg" />
+
+    <!-- SVG image -->
+<item
+    android:drawable="@drawable/vector"
+    android:gravity="center"/>
+    </layer-list>

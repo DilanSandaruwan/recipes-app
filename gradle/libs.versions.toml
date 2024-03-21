@@ -3,11 +3,11 @@ accompanist = "0.32.0"
 androidDesugarJdkLibs = "2.0.4"
 # AGP and tools should be updated together
 androidGradlePlugin = "8.2.2"
-androidTools = "31.2.1"
+androidTools = "31.2.2"
 androidxActivity = "1.8.2"
 androidxAppCompat = "1.6.1"
 androidxBrowser = "1.7.0"
-androidxComposeBom = "2023.10.01"
+androidxComposeBom = "2024.02.00"
 #androidxComposeCompiler = "1.5.7"
 #androidxComposeRuntimeTracing = "1.0.0-beta01"
 androidxCore = "1.12.0"
@@ -16,9 +16,9 @@ androidxDataStore = "1.0.0"
 androidxEspresso = "3.5.1"
 androidxHiltNavigationCompose = "1.1.0"
 androidxLifecycle = "2.7.0"
-androidxMacroBenchmark = "1.2.2"
+androidxMacroBenchmark = "1.2.3"
 androidxMetrics = "1.0.0-beta01"
-androidxNavigation = "2.7.6"
+androidxNavigation = "2.7.7"
 androidxProfileinstaller = "1.3.1"
 androidxTestCore = "1.5.0"
 androidxTestExt = "1.1.5"
@@ -29,13 +29,14 @@ androidxUiAutomator = "2.2.0"
 androidxWindowManager = "1.2.0"
 androidxWork = "2.9.0"
 coil = "2.5.0"
+compiler = "4.13.2"
 constraintlayout = "2.1.4"
 converterGson = "2.9.0"
 coreTesting = "2.2.0"
 dependencyGuard = "0.4.3"
 espressoContrib = "3.5.1"
 firebaseAuth = "22.3.1"
-firebaseBom = "32.7.1"
+firebaseBom = "32.7.2"
 firebaseCore = "21.1.1"
 firebaseCrashlyticsPlugin = "2.9.9"
 firebasePerfPlugin = "1.4.2"
@@ -45,13 +46,14 @@ fragmentTesting = "1.6.2"
 gmsPlugin = "4.4.0"
 googleOss = "17.0.1"
 googleOssPlugin = "0.10.6"
-googleServices = "4.4.0"
+googleServices = "4.4.1"
 hamcrest = "2.2"
 hilt = "2.50"
-hiltExt = "1.1.0"
+hiltExt = "1.2.0"
 jacoco = "0.8.7"
 junit = "4.13.2"
 junit4 = "4.13.2"
+junitJupiter = "5.8.1"
 junitVersion = "1.1.5"
 kotlin = "1.9.21"
 kotlinxCoroutines = "1.7.3"
@@ -66,8 +68,8 @@ lifecycleViewmodelKtx = "2.7.0"
 material = "1.11.0"
 mockitoAndroid = "5.7.0"
 mockitoCore = "5.7.0"
-navigationFragmentKtx = "2.7.6"
-navigationUiKtx = "2.7.6"
+navigationFragmentKtx = "2.7.7"
+navigationUiKtx = "2.7.7"
 okhttp = "4.12.0"
 preferenceKtx = "1.2.1"
 protobuf = "3.24.4"
@@ -88,6 +90,7 @@ legacy-support-v4 = "1.0.0"
 firebaseAuthKtx = "22.3.1"
 playServicesAuth = "20.7.0"
 annotation = "1.7.1"
+coreKtx = "1.5.0"
 
 [libraries]
 accompanist-permissions = { group = "com.google.accompanist", name = "accompanist-permissions", version.ref = "accompanist" }
@@ -145,6 +148,7 @@ androidx-work-testing = { group = "androidx.work", name = "work-testing", versio
 coil-kt = { group = "io.coil-kt", name = "coil", version.ref = "coil" }
 coil-kt-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
 coil-kt-svg = { group = "io.coil-kt", name = "coil-svg", version.ref = "coil" }
+compiler = { module = "com.github.bumptech.glide:compiler", version.ref = "compiler" }
 converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "converterGson" }
 firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics-ktx" }
 firebase-auth = { module = "com.google.firebase:firebase-auth", version.ref = "firebaseAuth" }
@@ -166,6 +170,7 @@ hilt-ext-compiler = { group = "androidx.hilt", name = "hilt-compiler", version.r
 hilt-ext-work = { group = "androidx.hilt", name = "hilt-work", version.ref = "hiltExt" }
 javax-inject = { module = "javax.inject:javax.inject", version = "1" }
 junit = { module = "junit:junit", version.ref = "junit" }
+junit-jupiter = { module = "org.junit.jupiter:junit-jupiter", version.ref = "junitJupiter" }
 kotlin-stdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib-jdk8", version.ref = "kotlin" }
 kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinxCoroutinesAndroid" }
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinxCoroutinesCore" }
@@ -206,6 +211,7 @@ legacy-support-v4 = { group = "androidx.legacy", name = "legacy-support-v4", ver
 firebase-auth-ktx = { group = "com.google.firebase", name = "firebase-auth-ktx", version.ref = "firebaseAuthKtx" }
 play-services-auth = { group = "com.google.android.gms", name = "play-services-auth", version.ref = "playServicesAuth" }
 annotation = { group = "androidx.annotation", name = "annotation", version.ref = "annotation" }
+core-ktx = { group = "androidx.test", name = "core-ktx", version.ref = "coreKtx" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }

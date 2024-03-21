@@ -4,8 +4,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseAuth
-import com.gtp01.group01.android.recipesmobileapp.data.AuthUser
-import com.gtp01.group01.android.recipesmobileapp.repository.AuthRepository
+import com.gtp01.group01.android.recipesmobileapp.shared.model.AuthUser
+import com.gtp01.group01.android.recipesmobileapp.feature.my_profile.repository.AuthRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -27,9 +27,9 @@ class ProfileViewModel  @Inject constructor(private  val authRepository: AuthRep
             if (currentUser != null) {
                 // Create an AuthUser object with the retrieved details
                 val authUser = AuthUser(
-                    iduser = 1, // You might get this ID from Firebase or another source
+                    idUser = 1, // You might get this ID from Firebase or another source
                     email = currentUser.email.orEmpty(),
-                    fullname = currentUser.displayName.orEmpty()
+                    fullName = currentUser.displayName.orEmpty()
                 )
 
                 // Save the user details using the AuthRepository
