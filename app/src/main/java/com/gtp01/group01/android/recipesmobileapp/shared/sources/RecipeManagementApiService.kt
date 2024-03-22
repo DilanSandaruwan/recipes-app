@@ -1,5 +1,6 @@
-package com.gtp01.group01.android.recipesmobileapp.sources
+package com.gtp01.group01.android.recipesmobileapp.shared.sources
 
+import com.gtp01.group01.android.recipesmobileapp.constant.ConstantNetworkService
 import com.gtp01.group01.android.recipesmobileapp.constant.ConstantNetworkService.RAPID_HEADER_1
 import com.gtp01.group01.android.recipesmobileapp.constant.ConstantNetworkService.RAPID_HEADER_2
 import com.gtp01.group01.android.recipesmobileapp.constant.ConstantNetworkService.RECIPE_BASE_NUTRITION_VALUES_URL
@@ -7,7 +8,6 @@ import com.gtp01.group01.android.recipesmobileapp.constant.ConstantNetworkServic
 import com.gtp01.group01.android.recipesmobileapp.constant.ConstantNetworkService.RECIPE_GET_NUTRITION_VALUES_END_POINT
 import com.gtp01.group01.android.recipesmobileapp.constant.ConstantNetworkService.RECIPE_POST_RECIPE_END_POINT
 import com.gtp01.group01.android.recipesmobileapp.shared.model.FoodCategory
-import com.gtp01.group01.android.recipesmobileapp.shared.model.FoodCategoryApp
 import com.gtp01.group01.android.recipesmobileapp.shared.model.Recipe
 import com.gtp01.group01.android.recipesmobileapp.shared.models.NutritionModel
 import retrofit2.Response
@@ -15,6 +15,7 @@ import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Headers
 import retrofit2.http.POST
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 /**
@@ -38,5 +39,20 @@ interface RecipeManagementApiService {
     suspend fun getCategoryList(): Response<List<FoodCategory>>
 
     @POST(RECIPE_POST_RECIPE_END_POINT)
-    suspend fun saveNewRecipe(@Query("idLoggedUser") idLoggedUser: Int, @Body recipe: Recipe):Response<Recipe>
+    suspend fun saveNewRecipe(
+        @Query("idLoggedUser") idLoggedUser: Int,
+        @Body recipe: Recipe
+    ): Response<Recipe>
+
+    /**
+     * Filters a list of active recipes by preparation time.
+     * @param idLoggedUser The USER ID of the logged in user.
+     * @param maxduration The MAXIMUM DURATION of food preparation time.
+     * @return A list of [Recipe] containing the filtered list of [Recipe].
+     */
+    @GET(ConstantNetworkService.FILTER_RECIPE_BY_DURATION_ENDPOINT)
+    suspend fun filterRecipesByDuration(
+        @Path(value = "idLoggedUser") idLoggedUser: Int,
+        @Path(value = "maxduration") maxduration: Int
+    ): Response<List<Recipe>>
 }

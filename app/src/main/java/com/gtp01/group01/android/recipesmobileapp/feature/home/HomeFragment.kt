@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.gtp01.group01.android.recipesmobileapp.feature.home.compose.views.HomeScreen
 
 /**
@@ -14,6 +15,8 @@ import com.gtp01.group01.android.recipesmobileapp.feature.home.compose.views.Hom
  * This Fragment displays a list of recipe previews using Jetpack Compose.
  */
 class HomeFragment : Fragment() {
+
+    private val navController by lazy { findNavController() }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -29,7 +32,11 @@ class HomeFragment : Fragment() {
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
             setContent {
                 // Display the HomeScreen Composable as the main layout of the home screen
-                HomeScreen()
+                HomeScreen(
+                    navigateToViewRecipe = { recipeId ->
+                        navController.navigate("com.gtp01.group01.android.recipesmobileapp.feature.view_recipe.recipe_details.ViewRecipe/$recipeId")
+                    }
+                )
             }
         }
     }

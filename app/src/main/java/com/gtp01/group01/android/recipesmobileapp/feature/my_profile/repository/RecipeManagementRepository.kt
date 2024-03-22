@@ -1,9 +1,9 @@
-package com.gtp01.group01.android.recipesmobileapp.repository
+package com.gtp01.group01.android.recipesmobileapp.feature.my_profile.repository
 
 import com.gtp01.group01.android.recipesmobileapp.shared.model.FoodCategory
 import com.gtp01.group01.android.recipesmobileapp.shared.model.Recipe
 import com.gtp01.group01.android.recipesmobileapp.shared.models.NutritionModel
-import com.gtp01.group01.android.recipesmobileapp.sources.RecipeManagementApiService
+import com.gtp01.group01.android.recipesmobileapp.shared.sources.RecipeManagementApiService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -76,6 +76,8 @@ class RecipeManagementRepository @Inject constructor(
             response.body()
         } else {
             emptyList()
+        }
+    }
     /**
      * Retrieves a list of active recipes filtered by preparation time duration.
      *
@@ -95,5 +97,4 @@ class RecipeManagementRepository @Inject constructor(
             }
         }
     }
-
 }

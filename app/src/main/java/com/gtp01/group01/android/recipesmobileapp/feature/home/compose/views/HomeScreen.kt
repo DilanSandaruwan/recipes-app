@@ -30,6 +30,7 @@ import com.gtp01.group01.android.recipesmobileapp.feature.home.viewmodel.HomeVie
 @Composable
 fun HomeScreen(
     homeViewModel: HomeViewModel = hiltViewModel(),
+    navigateToViewRecipe: (Int) -> Unit
 ) {
     val timeBasedRecipeList by homeViewModel.timeBasedRecipeList.observeAsState(emptyList())
 
@@ -58,7 +59,8 @@ fun HomeScreen(
 //            SearchBar()
             RecipeSuggestionByTimeSection(
                 timeBasedRecipeList = timeBasedRecipeList,
-                filterByTime = filterByTime
+                filterByTime = filterByTime,
+                navigateToViewRecipe = navigateToViewRecipe
             )
         }
     }

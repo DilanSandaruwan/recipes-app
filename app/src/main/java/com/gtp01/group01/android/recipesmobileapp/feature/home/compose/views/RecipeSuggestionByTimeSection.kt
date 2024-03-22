@@ -1,6 +1,7 @@
 package com.gtp01.group01.android.recipesmobileapp.feature.home.compose.views
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -39,12 +40,16 @@ import com.gtp01.group01.android.recipesmobileapp.shared.model.Recipe
 fun RecipeSuggestionByTimeSection(
     timeBasedRecipeList: List<Recipe> = emptyList(),
     filterByTime: Int,
+    navigateToViewRecipe: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val title = stringResource(R.string.home_suggestion_bytime_title, filterByTime)
     Column {
         RecipeSuggestionByTimeTitle(title)
-        RecipeSuggestionByTimeGrid(timeBasedRecipeList)
+        RecipeSuggestionByTimeGrid(
+            timeBasedRecipeList = timeBasedRecipeList,
+            navigateToViewRecipe = navigateToViewRecipe
+        )
     }
 }
 
@@ -57,6 +62,7 @@ fun RecipeSuggestionByTimeSection(
 @Composable
 fun RecipeSuggestionByTimeGrid(
     timeBasedRecipeList: List<Recipe>,
+    navigateToViewRecipe: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
     LazyHorizontalGrid(
@@ -66,7 +72,10 @@ fun RecipeSuggestionByTimeGrid(
             .height(dimensionResource(id = R.dimen.large_suggestion_card_view_max_height))
     ) {
         items(timeBasedRecipeList) {
-            RecipeByTimeCard(recipe = it)
+            RecipeByTimeCard(
+                recipe = it,
+                navigateToViewRecipe = navigateToViewRecipe
+            )
         }
     }
 }
@@ -80,12 +89,15 @@ fun RecipeSuggestionByTimeGrid(
 @Composable
 fun RecipeByTimeCard(
     recipe: Recipe,
+    navigateToViewRecipe: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Surface(
         color = colorResource(id = R.color.md_theme_surface),
     ) {
-        Column {
+        Column(modifier = modifier.clickable {
+            navigateToViewRecipe(recipe.idRecipe)
+        }) {
             Image(
                 painter = painterResource(R.drawable.img_burger_meal_with_french_fries),
                 contentDescription = null,
@@ -162,6 +174,9 @@ fun RecipeSuggestionByTimeTitle(title: String) {
 fun PreviewRecipeSuggestionByTimeSection() {
     val recipeListTestData = RecipeListTestData.getRecipeList()
     MaterialTheme {
-        RecipeSuggestionByTimeSection(timeBasedRecipeList = recipeListTestData, filterByTime = 30)
+        RecipeSuggestionByTimeSection(
+            timeBasedRecipeList = recipeListTestData,
+            filterByTime = 30,
+            navigateToViewRecipe = {})
     }
 }

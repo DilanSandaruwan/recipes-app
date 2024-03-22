@@ -3,9 +3,9 @@ package com.gtp01.group01.android.recipesmobileapp.di
 import android.util.Log
 import com.gtp01.group01.android.recipesmobileapp.constant.ConstantNetworkService
 import com.gtp01.group01.android.recipesmobileapp.feature.my_profile.repository.AuthRepository
-import com.gtp01.group01.android.recipesmobileapp.repository.RecipeManagementRepository
+import com.gtp01.group01.android.recipesmobileapp.feature.my_profile.repository.RecipeManagementRepository
 import com.gtp01.group01.android.recipesmobileapp.shared.sources.AuthApiService
-import com.gtp01.group01.android.recipesmobileapp.sources.RecipeManagementApiService
+import com.gtp01.group01.android.recipesmobileapp.shared.sources.RecipeManagementApiService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

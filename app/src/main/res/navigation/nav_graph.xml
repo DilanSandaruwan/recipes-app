@@ -9,7 +9,7 @@
         android:id="@+id/homeFragment"
         android:name="com.gtp01.group01.android.recipesmobileapp.feature.home.HomeFragment"
         android:label="fragment_home"
-        tools:layout="@layout/fragment_home" >
+        tools:layout="@layout/fragment_home">
         <action
             android:id="@+id/action_homeFragment_to_viewRecipe"
             app:destination="@id/viewRecipe" />
@@ -33,10 +33,16 @@
         android:id="@+id/viewRecipe"
         android:name="com.gtp01.group01.android.recipesmobileapp.feature.view_recipe.recipe_details.ViewRecipe"
         android:label="fragment_view_recipe"
-        tools:layout="@layout/fragment_view_recipe" >
+        tools:layout="@layout/fragment_view_recipe">
         <action
             android:id="@+id/action_viewRecipe_to_homeFragment"
             app:destination="@id/homeFragment" />
+        <argument
+            android:name="recipeId"
+            app:argType="integer" />
+        <deepLink
+            android:id="@+id/deepLink"
+            app:uri="android-app://androidx.navigation/com.gtp01.group01.android.recipesmobileapp.feature.view_recipe.recipe_details.ViewRecipe/{recipeId}" />
     </fragment>
     <fragment
         android:id="@+id/ingredientsFragment"

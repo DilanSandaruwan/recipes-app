@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.navArgs
 import coil.ImageLoader
 import coil.request.ImageRequest
 import com.google.android.material.snackbar.Snackbar
@@ -29,6 +30,7 @@ class ViewRecipe : Fragment() {
     private var binding: FragmentViewRecipeBinding? = null
     private lateinit var viewModel: ViewRecipeViewModel
     private val tabTitles = arrayListOf("Instructions", "Ingredients")
+
     /**
      * Inflates the layout for this fragment.
      */
@@ -38,8 +40,6 @@ class ViewRecipe : Fragment() {
     ): View? {
         binding = FragmentViewRecipeBinding.inflate(layoutInflater)
         return binding?.root
-
-
     }
 
     /**
@@ -51,8 +51,8 @@ class ViewRecipe : Fragment() {
         setUpTabLayoutWithViewPager()
 
         val idLoggedUser = 10
-        val idrecipe = 1
-
+        val args: ViewRecipeArgs by navArgs()
+        val idrecipe = args.recipeId
 
         // Make the network request to fetch recipe details
         viewModel.fetchRecipeDetail(idLoggedUser, idrecipe)
@@ -65,11 +65,12 @@ class ViewRecipe : Fragment() {
             setCollapsedTitleTextColor(Color.WHITE)
             setExpandedTitleColor(Color.WHITE)
         }
-        binding?.imgToolbarBtnBack?.setOnClickListener{
+        binding?.imgToolbarBtnBack?.setOnClickListener {
             requireActivity().onBackPressed()
         }
 
     }
+
     /**
      * Sets up the tab layout with the ViewPager for switching between instructions and ingredients.
      */
@@ -90,6 +91,7 @@ class ViewRecipe : Fragment() {
             binding?.tabLayout?.getTabAt(i)?.customView = textView
         }
     }
+
     /**
      * Initializes observers to observe changes in recipe details.
      */
@@ -131,7 +133,7 @@ class ViewRecipe : Fragment() {
                         binding?.proteinTextView?.text = formattedProtein
                         val recipeImageBitmap = recipe.bitmap
                         if (recipeImageBitmap != null) {
-                            binding?.let {binding ->
+                            binding?.let { binding ->
                                 val imageView = binding.ivRecipeImage
                                 val imageLoader = ImageLoader.Builder(requireContext()).build()
                                 val request = ImageRequest.Builder(requireContext())
@@ -161,6 +163,7 @@ class ViewRecipe : Fragment() {
         }
 
     }
+
     /**
      * Clears the binding reference to avoid memory leaks.
      */
