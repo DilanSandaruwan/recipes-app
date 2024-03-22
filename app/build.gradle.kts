@@ -4,6 +4,7 @@ plugins {
     id("com.google.devtools.ksp")
     id("dagger.hilt.android.plugin")
     id("com.google.gms.google-services")
+    id("androidx.navigation.safeargs.kotlin")
 }
 
 android {
@@ -39,6 +40,10 @@ android {
         //noinspection DataBindingWithoutKapt
         dataBinding = true
         viewBinding = true
+        compose = true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.5.8"
     }
 }
 
@@ -77,7 +82,6 @@ dependencies {
     implementation(libs.androidx.preference.ktx)
 
     //  ———  retrofit ——— //
-
     implementation(libs.retrofit.core)
     implementation(libs.converter.gson)
 
@@ -92,6 +96,20 @@ dependencies {
     implementation(libs.room.runtime)
     ksp(libs.room.compiler)
     implementation(libs.room.ktx)
+
+    //  ———  Compose ——— //
+    implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.androidx.compose.runtime)
+    implementation(libs.androidx.compose.ui)
+    implementation(libs.androidx.compose.ui.tooling)
+    implementation(libs.androidx.compose.foundation)
+    implementation(libs.androidx.compose.foundation.layout)
+    implementation(libs.androidx.compose.material3)
+    implementation(libs.androidx.compose.runtime.livedata)
+    implementation(libs.androidx.compose.ui.tooling)
+    implementation(libs.androidx.compose.ui.tooling.preview)
+    implementation(libs.androidx.hilt.navigation.compose)
+    implementation(libs.androidx.navigation.compose)
 
     // ——— ActivityTestRule ——— //
     androidTestImplementation(libs.androidx.test.rules)
@@ -116,6 +134,9 @@ dependencies {
 
     // ——— Coroutine Test ——— //
     implementation(libs.kotlinx.coroutines.test)
+
+    //  ———  Compose Test ——— //
+    androidTestImplementation(platform(libs.androidx.compose.bom))
 
     //services for handling user authentication
     implementation(libs.firebase.ui.auth)

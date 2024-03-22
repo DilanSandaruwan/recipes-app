@@ -31,4 +31,9 @@ object ConstantNetworkService {
     const val RECIPE_GET_CATEGORIES_END_POINT = "/api/v1/category/all"
     const val RECIPE_POST_RECIPE_END_POINT = "/api/v1/reader/{idLoggedUser}/recipe"
 
+    /***
+     * Endpoints for retrieving recipes within time duration
+     */
+    const val FILTER_RECIPE_BY_DURATION_ENDPOINT =
+        "/api/v1/reader/{idLoggedUser}/recipe/filterby/duration/{maxduration}"
 }

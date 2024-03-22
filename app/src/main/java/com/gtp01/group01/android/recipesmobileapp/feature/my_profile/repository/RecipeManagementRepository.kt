@@ -1,9 +1,9 @@
-package com.gtp01.group01.android.recipesmobileapp.repository
+package com.gtp01.group01.android.recipesmobileapp.feature.my_profile.repository
 
 import com.gtp01.group01.android.recipesmobileapp.shared.model.FoodCategory
 import com.gtp01.group01.android.recipesmobileapp.shared.model.Recipe
 import com.gtp01.group01.android.recipesmobileapp.shared.models.NutritionModel
-import com.gtp01.group01.android.recipesmobileapp.sources.RecipeManagementApiService
+import com.gtp01.group01.android.recipesmobileapp.shared.sources.RecipeManagementApiService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -78,5 +78,23 @@ class RecipeManagementRepository @Inject constructor(
             emptyList()
         }
     }
-
+    /**
+     * Retrieves a list of active recipes filtered by preparation time duration.
+     *
+     * @return A list of [Recipe] containing the filtered list of [Recipe].
+     */
+    suspend fun filterRecipesByDuration(idLoggedUser: Int, maxduration: Int): List<Recipe> {
+        return withContext(Dispatchers.IO) {
+            return@withContext try {
+                val response = recipeManagementApiService.filterRecipesByDuration(idLoggedUser, maxduration)
+                if (response.isSuccessful) {
+                    response.body() ?: emptyList()
+                } else {
+                    emptyList<Recipe>()
+                }
+            } catch (e: Exception) {
+                emptyList<Recipe>()
+            }
+        }
+    }
 }

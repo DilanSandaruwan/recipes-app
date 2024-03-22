@@ -99,4 +99,9 @@
     <string name="warn_please_add_atleast_an_instruction">Please add atleast an instruction</string>
     <string name="warn_please_add_ingredients_in_correct_format">Please add ingredients in correct format</string>
 
+    <!-- Strings used in home screen -->
+    <string name="home_suggestion_bytime_title">Make It In %d Min</string>
+    <string name="placeholder_search">Enter Recipe Name</string>
+    <string name="likes">Likes</string>
+    <string name="min">min</string>
 </resources>
