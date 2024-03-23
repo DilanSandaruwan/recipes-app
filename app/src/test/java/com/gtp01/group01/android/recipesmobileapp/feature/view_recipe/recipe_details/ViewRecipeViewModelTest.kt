@@ -3,7 +3,6 @@ package com.gtp01.group01.android.recipesmobileapp.feature.view_recipe.recipe_de
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.gtp01.group01.android.recipesmobileapp.feature.view_recipe.ViewRecipeRepository
 import com.gtp01.group01.android.recipesmobileapp.shared.common.ResultState
-import com.gtp01.group01.android.recipesmobileapp.shared.model.AuthUser
 import com.gtp01.group01.android.recipesmobileapp.shared.model.FoodCategory
 import com.gtp01.group01.android.recipesmobileapp.shared.model.Recipe
 import com.gtp01.group01.android.recipesmobileapp.shared.model.User
@@ -25,7 +24,7 @@ import org.mockito.junit.MockitoJUnitRunner
 
 @ExperimentalCoroutinesApi
 @RunWith(MockitoJUnitRunner::class)
-class ViewRecipeViewModelTest{
+class ViewRecipeViewModelTest {
 
     // Coroutine dispatcher for testing
     private val testDispatcher = TestCoroutineDispatcher()
@@ -55,6 +54,7 @@ class ViewRecipeViewModelTest{
         viewModel = ViewRecipeViewModel(viewRecipeRepository)
 
     }
+
     /**
      * Test case to verify that fetchRecipeDetail updates recipeDetails LiveData with Success state.
      */
@@ -65,7 +65,7 @@ class ViewRecipeViewModelTest{
         val recipeId = 1
         val mockRecipe = Recipe(
             recipeId,
-           User(1,"p@gmail.com","sadun"),
+            User(1, "p@gmail.com", "sadun"),
             "Mock Recipe",
             "Mock Ingredients",
             "Mock Instruction",
@@ -75,7 +75,7 @@ class ViewRecipeViewModelTest{
             30,
             4,
             "Mock Photo",
-            listOf(FoodCategory(1,"psa")),
+            listOf(FoodCategory(1, "psa")),
             1,
             10,
             true,
@@ -104,7 +104,11 @@ class ViewRecipeViewModelTest{
         val userId = 1
         val recipeId = 1
         val errorMessage = "Mock Error Message"
-        `when`(viewRecipeRepository.getRecipeDetail(anyInt(), anyInt())).thenThrow(RuntimeException(errorMessage))
+        `when`(viewRecipeRepository.getRecipeDetail(anyInt(), anyInt())).thenThrow(
+            RuntimeException(
+                errorMessage
+            )
+        )
 
         // Invoke the method under test
         viewModel.fetchRecipeDetail(userId, recipeId)
