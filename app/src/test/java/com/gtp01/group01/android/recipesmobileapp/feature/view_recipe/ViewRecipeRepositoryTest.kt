@@ -3,6 +3,7 @@ package com.gtp01.group01.android.recipesmobileapp.feature.view_recipe
 import com.gtp01.group01.android.recipesmobileapp.shared.model.AuthUser
 import com.gtp01.group01.android.recipesmobileapp.shared.model.FoodCategory
 import com.gtp01.group01.android.recipesmobileapp.shared.model.Recipe
+import com.gtp01.group01.android.recipesmobileapp.shared.model.User
 import com.gtp01.group01.android.recipesmobileapp.shared.sources.AuthApiService
 import kotlinx.coroutines.runBlocking
 import okhttp3.ResponseBody
@@ -37,7 +38,7 @@ class ViewRecipeRepositoryTest{
         // Mock successful API response
         val recipeId = 1
         val userId = 1
-        val mockRecipe = Recipe(recipeId, AuthUser(1,"p@gmail.com","sadun"),
+        val mockRecipe = Recipe(recipeId, User(1,"p@gmail.com","sadun"),
             "Mock Recipe",
             "Mock Ingredients",
             "Mock Instruction",

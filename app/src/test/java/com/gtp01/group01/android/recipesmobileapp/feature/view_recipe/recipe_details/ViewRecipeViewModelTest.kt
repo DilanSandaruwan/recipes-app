@@ -6,6 +6,7 @@ import com.gtp01.group01.android.recipesmobileapp.shared.common.ResultState
 import com.gtp01.group01.android.recipesmobileapp.shared.model.AuthUser
 import com.gtp01.group01.android.recipesmobileapp.shared.model.FoodCategory
 import com.gtp01.group01.android.recipesmobileapp.shared.model.Recipe
+import com.gtp01.group01.android.recipesmobileapp.shared.model.User
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.TestCoroutineDispatcher
@@ -64,7 +65,7 @@ class ViewRecipeViewModelTest{
         val recipeId = 1
         val mockRecipe = Recipe(
             recipeId,
-            AuthUser(1,"p@gmail.com","sadun"),
+           User(1,"p@gmail.com","sadun"),
             "Mock Recipe",
             "Mock Ingredients",
             "Mock Instruction",
