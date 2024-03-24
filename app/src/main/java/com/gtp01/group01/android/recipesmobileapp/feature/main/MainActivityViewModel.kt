@@ -1,7 +1,6 @@
 package com.gtp01.group01.android.recipesmobileapp.feature.main
 
 import android.util.Log
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -20,11 +19,10 @@ class MainActivityViewModel @Inject constructor(
     private val authRepository: AuthRepository,
     private val getUserIdRepository: GetUserIdRepository,
     private val localDataSource: LocalDataSource // Inject LocalDataSource
-) : ViewModel() { private val _saveUserResult = MutableLiveData<Boolean>()
+) : ViewModel() {
+    private val _saveUserResult = MutableLiveData<Boolean>()
 
     private val _userId = MutableLiveData<ResultState>()
-    val saveUserResult: LiveData<Boolean> = _saveUserResult
-    val userId: LiveData<ResultState> = _userId
 
     /**
      * Save the user details to the backend using the [authRepository].
@@ -45,7 +43,6 @@ class MainActivityViewModel @Inject constructor(
                 // Save the user details using the AuthRepository
                 val response = authRepository.saveUser(authUser)
                 _saveUserResult.value = response.isSuccessful
-                Log.d("saveUser", "User details saved successfully")
             } else {
                 // Handle the case where the user is not authenticated
                 _saveUserResult.value = false
@@ -66,7 +63,6 @@ class MainActivityViewModel @Inject constructor(
                 val result = getUserIdRepository.getUserId(email)
                 _userId.value = ResultState.Success(result)
                 localDataSource.saveUserId(result.iduser)
-                Log.d("getUserId", "User ID fetched successfully: ${result.iduser}")
             } catch (e: Exception) {
                 _userId.value = ResultState.Failure("Failed to fetch user ID")
             }
