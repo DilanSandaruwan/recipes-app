@@ -153,14 +153,28 @@ object NetworkModule {
             throw e  // Re-throw the exception for higher-level error handling
         }
     }
+
+    /**
+     * Provides a UserIdApiService instance using the provided Retrofit instance.
+     *
+     * @param retrofit The Retrofit instance.
+     * @return UserIdApiService instance.
+     */
     @Provides
     fun provideUserIdApiService(retrofit: Retrofit): UserIdApiService {
 
         return retrofit.create(UserIdApiService::class.java)
     }
+
+    /**
+     * Provides a singleton instance of GetUserIdRepository.
+     *
+     * @param userIdApiService The UserIdApiService instance.
+     * @return GetUserIdRepository instance.
+     */
     @Singleton
     @Provides
-    fun provideGetUserIdRepository(userIdApiService: UserIdApiService):GetUserIdRepository{
+    fun provideGetUserIdRepository(userIdApiService: UserIdApiService): GetUserIdRepository {
 
         return GetUserIdRepository(userIdApiService)
 
