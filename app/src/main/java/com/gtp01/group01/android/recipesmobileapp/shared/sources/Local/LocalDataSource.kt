@@ -8,4 +8,7 @@ class LocalDataSource@Inject constructor(private val sharePreferences: SharedPre
     fun saveUserId(userId: Int) {
         sharePreferences.edit().putInt("USERID", userId).apply()
     }
+    fun deleteUserId() {
+        sharePreferences.edit().remove("USERID").apply()
+    }
 }
