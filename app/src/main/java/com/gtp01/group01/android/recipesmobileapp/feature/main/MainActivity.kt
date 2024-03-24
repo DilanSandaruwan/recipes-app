@@ -41,7 +41,6 @@ class MainActivity : AppCompatActivity() {
         // Initialize the app and UI
         initViews()
         eventListeners()
-        // Call the saveUser function to initiate the user-saving process
 
     }
 
