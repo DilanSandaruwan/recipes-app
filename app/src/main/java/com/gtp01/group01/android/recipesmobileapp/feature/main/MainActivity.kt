@@ -17,7 +17,6 @@ import com.gtp01.group01.android.recipesmobileapp.R
 import com.gtp01.group01.android.recipesmobileapp.constant.AuthProviders.providers
 import com.gtp01.group01.android.recipesmobileapp.constant.ConstantRequestCode.MY_REQUEST_CODE
 import com.gtp01.group01.android.recipesmobileapp.databinding.ActivityMainBinding
-import com.gtp01.group01.android.recipesmobileapp.feature.my_profile.ProfileViewModel
 import com.gtp01.group01.android.recipesmobileapp.shared.sources.Local.LocalDataSource
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -28,6 +27,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var binding: ActivityMainBinding
     private lateinit var bottomNavView: BottomNavigationView
     private lateinit var menu: Menu
+
     // Inject LocalDataSource
     @Inject
     lateinit var localDataSource: LocalDataSource
@@ -44,6 +44,7 @@ class MainActivity : AppCompatActivity() {
         // Call the saveUser function to initiate the user-saving process
 
     }
+
     /**
      * Handle the result of Firebase Authentication sign-in.
      */
@@ -56,7 +57,8 @@ class MainActivity : AppCompatActivity() {
                 val currentUser = FirebaseAuth.getInstance().currentUser
                 val userId = currentUser?.uid
                 userId?.let {
-                    val userIdInt = it.toIntOrNull() ?: return@let  // Convert to Int, or return if conversion fails
+                    val userIdInt = it.toIntOrNull()
+                        ?: return@let  // Convert to Int, or return if conversion fails
                     localDataSource.saveUserId(userIdInt)
                 }  // Call the saveUser and getUserId functions
                 viewModel.saveUser()
@@ -64,10 +66,11 @@ class MainActivity : AppCompatActivity() {
             } else {
                 // Sign-in failed or cancelled
                 // Handle the failure or cancellation
-                // Example: showPopup(1, "Sign-in Failed", "Unable to sign in. Please try again.")
+                showPopup(1, "Sign-in Failed", "Unable to sign in. You are now a guest user.")
             }
         }
     }
+
     /**
      * Sets up event listeners for UI components.
      */
