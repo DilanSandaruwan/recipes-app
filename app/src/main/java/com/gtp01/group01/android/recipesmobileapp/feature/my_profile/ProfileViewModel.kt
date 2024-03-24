@@ -10,6 +10,7 @@ import com.gtp01.group01.android.recipesmobileapp.shared.model.AuthUser
 import com.gtp01.group01.android.recipesmobileapp.feature.my_profile.repository.AuthRepository
 import com.gtp01.group01.android.recipesmobileapp.feature.my_profile.repository.GetUserIdRepository
 import com.gtp01.group01.android.recipesmobileapp.shared.common.ResultState
+import com.gtp01.group01.android.recipesmobileapp.shared.sources.Local.LocalDataSource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -17,7 +18,9 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
-class ProfileViewModel  @Inject constructor(private  val authRepository: AuthRepository, private  val getUserIdRepository: GetUserIdRepository
+class ProfileViewModel  @Inject constructor(private  val authRepository: AuthRepository,
+                                            private  val getUserIdRepository: GetUserIdRepository,
+                                            private val localDataSource: LocalDataSource // Inject LocalDataSource
 ): ViewModel(){
 
     private val _saveUserResult = MutableLiveData<Boolean>()
@@ -62,6 +65,7 @@ class ProfileViewModel  @Inject constructor(private  val authRepository: AuthRep
             val email= currentUser?.email.orEmpty()
             val result = getUserIdRepository.getUserId(email)
             _userId.value = ResultState.Success(result)
+                localDataSource.saveUserId(result.iduser)
                 // Log the user ID
                 Log.d("ProfileViewModel", "User ID: $result")
             }catch (e: Exception) {
