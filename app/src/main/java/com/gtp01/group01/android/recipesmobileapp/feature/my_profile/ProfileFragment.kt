@@ -48,9 +48,7 @@ class ProfileFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         // Access the list of providers
         val providers = AuthProviders.providers
-        // Call the saveUser function to initiate the user-saving process
-        viewModel.saveUser()
-        viewModel.getUserId()
+
         viewUserDetails()
         // Sign-out from Firebase Authentication
         binding.btnLogout.setOnClickListener {

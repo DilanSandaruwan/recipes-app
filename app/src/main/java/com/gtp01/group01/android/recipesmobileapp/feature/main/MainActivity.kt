@@ -1,35 +1,73 @@
 package com.gtp01.group01.android.recipesmobileapp.feature.main
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.firebase.ui.auth.AuthUI
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.auth.FirebaseAuth
 import com.gtp01.group01.android.recipesmobileapp.R
 import com.gtp01.group01.android.recipesmobileapp.constant.AuthProviders.providers
 import com.gtp01.group01.android.recipesmobileapp.constant.ConstantRequestCode.MY_REQUEST_CODE
 import com.gtp01.group01.android.recipesmobileapp.databinding.ActivityMainBinding
+import com.gtp01.group01.android.recipesmobileapp.feature.my_profile.ProfileViewModel
+import com.gtp01.group01.android.recipesmobileapp.shared.sources.Local.LocalDataSource
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
+    private lateinit var viewModel: MainActivityViewModel
     lateinit var binding: ActivityMainBinding
     private lateinit var bottomNavView: BottomNavigationView
     private lateinit var menu: Menu
+    // Inject LocalDataSource
+    @Inject
+    lateinit var localDataSource: LocalDataSource
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        // Initialize ViewModel
+        viewModel = ViewModelProvider(this).get(MainActivityViewModel::class.java)
         // Access the list of providers
         providers
         showSignInOptions()
         // Initialize the app and UI
         initViews()
         eventListeners()
-    }
+        // Call the saveUser function to initiate the user-saving process
 
+    }
+    /**
+     * Handle the result of Firebase Authentication sign-in.
+     */
+    @Deprecated("Deprecated in Java")
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == MY_REQUEST_CODE) {
+            if (resultCode == Activity.RESULT_OK) {
+                // Sign-in successful, retrieve user ID and save it
+                val currentUser = FirebaseAuth.getInstance().currentUser
+                val userId = currentUser?.uid
+                userId?.let {
+                    val userIdInt = it.toIntOrNull() ?: return@let  // Convert to Int, or return if conversion fails
+                    localDataSource.saveUserId(userIdInt)
+                }  // Call the saveUser and getUserId functions
+                viewModel.saveUser()
+                viewModel.getUserId()
+            } else {
+                // Sign-in failed or cancelled
+                // Handle the failure or cancellation
+                // Example: showPopup(1, "Sign-in Failed", "Unable to sign in. Please try again.")
+            }
+        }
+    }
     /**
      * Sets up event listeners for UI components.
      */
