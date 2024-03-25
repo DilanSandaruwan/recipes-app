@@ -1,6 +1,5 @@
 package com.gtp01.group01.android.recipesmobileapp.feature.my_profile
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.gtp01.group01.android.recipesmobileapp.feature.my_profile.repository.AuthRepository
@@ -20,9 +19,6 @@ class ProfileViewModel @Inject constructor(
     private val _saveUserResult = MutableLiveData<Boolean>()
 
     private val _userId = MutableLiveData<ResultState>()
-    val saveUserResult: LiveData<Boolean> = _saveUserResult
-    val userId: LiveData<ResultState> = _userId
-
 
 
 }
