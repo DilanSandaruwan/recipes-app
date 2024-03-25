@@ -106,6 +106,9 @@
     <string name="home_suggestion_bytime_title">Make It In %d Min</string>
     <string name="home_suggestion_bycalorie_title">Make It below %dKcal</string>
     <string name="placeholder_search">Enter Recipe Name</string>
+    <string name="likes">Likes</string>
+    <string name="min">min</string>
+    <string name="Profile">Profile</string>
     <string name="like_count">" %d"</string>
     <string name="calories">Calories</string>
     <string name="calorie_kcal">%dKcal</string>
