@@ -10,6 +10,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.gtp01.group01.android.recipesmobileapp.feature.my_profile.repository.RecipeManagementRepository
+import com.gtp01.group01.android.recipesmobileapp.repository.RecipeManagementRepository
 import com.gtp01.group01.android.recipesmobileapp.shared.model.Recipe
 import com.gtp01.group01.android.recipesmobileapp.shared.model.User
 import dagger.hilt.android.lifecycle.HiltViewModel

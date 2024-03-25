@@ -71,7 +71,6 @@
     <dimen name="_120dp">120dp</dimen>
     <dimen name="_24dp">24dp</dimen>
 
-
     /* Add New Recipe Screen */
     <dimen name="margin_app_toolbar">10dp</dimen>
     <dimen name="width_app_bar_button">32dp</dimen>
@@ -120,11 +119,6 @@
     <dimen name="tick_rv_category_card">30dp</dimen>
     <dimen name="margin_tick_rv_category_card">5dp</dimen>
     <dimen name="translation_z_tick_rv_category_card">50dp</dimen>
-    <dimen name="large_suggestion_card_view_width">255dp</dimen>
-    <dimen name="large_suggestion_card_view_min_height">205dp</dimen>
-    <dimen name="large_suggestion_card_view_max_height">275dp</dimen>
-    <dimen name="large_suggestion_card_view_img_height">142.94dp</dimen>
-    <dimen name="large_suggestion_card_view_name_width">195dp</dimen>
     <dimen name="home_large_suggestion_card_width">255dp</dimen>
     <dimen name="home_large_suggestion_card_height">205dp</dimen>
     <dimen name="home_large_suggestion_card_img_height">142.94dp</dimen>
