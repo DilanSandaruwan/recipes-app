@@ -125,4 +125,20 @@
     <dimen name="large_suggestion_card_view_max_height">275dp</dimen>
     <dimen name="large_suggestion_card_view_img_height">142.94dp</dimen>
     <dimen name="large_suggestion_card_view_name_width">195dp</dimen>
+    <dimen name="home_large_suggestion_card_width">255dp</dimen>
+    <dimen name="home_large_suggestion_card_height">205dp</dimen>
+    <dimen name="home_large_suggestion_card_img_height">142.94dp</dimen>
+    <dimen name="home_large_suggestion_card_name_width">195dp</dimen>
+    <dimen name="home_small_suggestion_card_height">178dp</dimen>
+    <dimen name="home_small_suggestion_card_width">165dp</dimen>
+    <dimen name="home_small_suggestion_card_img_height">108dp</dimen>
+    <dimen name="home_small_suggestion_card_img_width">142dp</dimen>
+    <dimen name="home_recipe_name_label_height">27dp</dimen>
+    <dimen name="home_likes_label_height">21dp</dimen>
+    <dimen name="home_likes_label_padding">3dp</dimen>
+    <dimen name="home_label_padding">5dp</dimen>
+    <dimen name="home_category_item_height">65dp</dimen>
+    <dimen name="home_category_item_width">80dp</dimen>
+    <dimen name="home_category_item_img_height">56dp</dimen>
+    <dimen name="home_category_item_img_width">56dp</dimen>
 </resources>

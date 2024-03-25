@@ -1,5 +1,10 @@
 package com.gtp01.group01.android.recipesmobileapp.feature.home.viewmodel
 
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -29,6 +34,11 @@ class HomeViewModel @Inject constructor(private val recipeManagementRepository: 
     private val _timeBasedRecipeList = MutableLiveData<List<Recipe>>(emptyList())
     val timeBasedRecipeList: LiveData<List<Recipe>> = _timeBasedRecipeList
 
+    // LiveData for holding calorie-based recipe list
+    private val _calorieBasedRecipeList = MutableLiveData<List<Recipe>>(emptyList())
+    val calorieBasedRecipeList: LiveData<List<Recipe>> = _calorieBasedRecipeList
+
+    var searchKeyword by mutableStateOf("")
 
     /**
      * Filters recipes based on duration.
@@ -42,4 +52,19 @@ class HomeViewModel @Inject constructor(private val recipeManagementRepository: 
                 recipeManagementRepository.filterRecipesByDuration(idLoggedUser, maxduration)
         }
     }
+    fun filterRecipesByCalorie(idLoggedUser: Int, maxCalorie: Int) {
+        viewModelScope.launch {
+            _calorieBasedRecipeList.value =
+                recipeManagementRepository.filterRecipesByDuration(idLoggedUser, maxCalorie)
+        }
+    }
+
+    fun updateSearchKeyword(enteredKeyword:String){
+        searchKeyword=enteredKeyword
+    }
+    fun decodeImageStringToBitmap(base64String: String): Bitmap? {
+        val decodedBytes: ByteArray = android.util.Base64.decode(base64String, android.util.Base64.DEFAULT)
+        return BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.size)
+    }
+
 }
