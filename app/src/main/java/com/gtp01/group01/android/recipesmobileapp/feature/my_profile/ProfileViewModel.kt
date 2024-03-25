@@ -18,16 +18,18 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
-class ProfileViewModel  @Inject constructor(private  val authRepository: AuthRepository,
-                                            private  val getUserIdRepository: GetUserIdRepository,
-                                            private val localDataSource: LocalDataSource // Inject LocalDataSource
-): ViewModel(){
+class ProfileViewModel @Inject constructor(
+    private val authRepository: AuthRepository,
+    private val getUserIdRepository: GetUserIdRepository,
+    private val localDataSource: LocalDataSource // Inject LocalDataSource
+) : ViewModel() {
 
     private val _saveUserResult = MutableLiveData<Boolean>()
 
     private val _userId = MutableLiveData<ResultState>()
     val saveUserResult: LiveData<Boolean> = _saveUserResult
     val userId: LiveData<ResultState> = _userId
+
     /**
      * Save the user details to the backend using the [authRepository].
      * Retrieves the current authenticated user's details from Firebase Authentication
@@ -53,22 +55,22 @@ class ProfileViewModel  @Inject constructor(private  val authRepository: AuthRep
             }
         }
     }
+
     /**
      * Fetches the user ID based on the provided email.
      */
 
-    fun getUserId (){
+    fun getUserId() {
         val currentUser = FirebaseAuth.getInstance().currentUser
         viewModelScope.launch {
 
             try {
-            val email= currentUser?.email.orEmpty()
-            val result = getUserIdRepository.getUserId(email)
-            _userId.value = ResultState.Success(result)
+                val email = currentUser?.email.orEmpty()
+                val result = getUserIdRepository.getUserId(email)
+                _userId.value = ResultState.Success(result)
                 localDataSource.saveUserId(result.iduser)
-                // Log the user ID
-                Log.d("ProfileViewModel", "User ID: $result")
-            }catch (e: Exception) {
+
+            } catch (e: Exception) {
                 _userId.value = ResultState.Failure("Failed to fetch user ID")
             }
         }
