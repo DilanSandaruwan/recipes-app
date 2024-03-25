@@ -66,7 +66,10 @@ class MainActivity : AppCompatActivity() {
             } else {
                 // Sign-in failed or cancelled
                 // Handle the failure or cancellation
-                showPopup(1, "Sign-in Failed", "Unable to sign in. You are now a guest user.")
+                showPopup(
+                    1, getString(R.string.popup_title_error),
+                    getString(R.string.popup_message_guest)
+                )
             }
         }
     }
@@ -134,6 +137,7 @@ class MainActivity : AppCompatActivity() {
      * Displays a popup message.
      */
     fun showPopup(type: Int, title: String, message: String) {
+
         var icon: Int = R.drawable.ic_info_popup
         when (type) {
             0 -> {
