@@ -10,7 +10,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.gtp01.group01.android.recipesmobileapp.feature.my_profile.repository.RecipeManagementRepository
-import com.gtp01.group01.android.recipesmobileapp.repository.RecipeManagementRepository
 import com.gtp01.group01.android.recipesmobileapp.shared.model.Recipe
 import com.gtp01.group01.android.recipesmobileapp.shared.model.User
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -53,6 +52,7 @@ class HomeViewModel @Inject constructor(private val recipeManagementRepository: 
                 recipeManagementRepository.filterRecipesByDuration(idLoggedUser, maxduration)
         }
     }
+
     fun filterRecipesByCalorie(idLoggedUser: Int, maxCalorie: Int) {
         viewModelScope.launch {
             _calorieBasedRecipeList.value =
@@ -60,11 +60,13 @@ class HomeViewModel @Inject constructor(private val recipeManagementRepository: 
         }
     }
 
-    fun updateSearchKeyword(enteredKeyword:String){
-        searchKeyword=enteredKeyword
+    fun updateSearchKeyword(enteredKeyword: String) {
+        searchKeyword = enteredKeyword
     }
+
     fun decodeImageStringToBitmap(base64String: String): Bitmap? {
-        val decodedBytes: ByteArray = android.util.Base64.decode(base64String, android.util.Base64.DEFAULT)
+        val decodedBytes: ByteArray =
+            android.util.Base64.decode(base64String, android.util.Base64.DEFAULT)
         return BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.size)
     }
 

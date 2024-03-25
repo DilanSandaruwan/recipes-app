@@ -3,6 +3,7 @@ package com.gtp01.group01.android.recipesmobileapp.feature.home.compose.views
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -19,11 +20,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.asImageBitmap
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.dimensionResource
@@ -111,26 +110,38 @@ fun RecipeByTimeCard(
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
                 modifier = modifier.size(
-                    dimensionResource(id = R.dimen.large_suggestion_card_view_width),
-                    dimensionResource(id = R.dimen.large_suggestion_card_view_img_height)
+                    dimensionResource(id = R.dimen.home_large_suggestion_card_width),
+                    dimensionResource(id = R.dimen.home_large_suggestion_card_img_height)
                 )
             )
-        Column {
-            recipe.photo?.let {
-                val bitmap: Bitmap? = decodeBase64ToBitmap(recipe.photo)
-                bitmap?.let {
-                    Image(
-                        bitmap = it.asImageBitmap(),
-                        contentDescription = null,
-                        contentScale = ContentScale.Crop,
-                        modifier = modifier
-                            .size(
-                            dimensionResource(id = R.dimen.home_large_suggestion_card_width),
-                            dimensionResource(id = R.dimen.home_large_suggestion_card_img_height))
-                            .fillMaxSize()
-                            .clip(RoundedCornerShape(10.dp)),
-                    )
-                }?:run{
+            Column {
+                recipe.photo?.let {
+                    val bitmap: Bitmap? = decodeBase64ToBitmap(recipe.photo.toString())
+                    bitmap?.let {
+                        Image(
+                            bitmap = it.asImageBitmap(),
+                            contentDescription = null,
+                            contentScale = ContentScale.Crop,
+                            modifier = modifier
+                                .size(
+                                    dimensionResource(id = R.dimen.home_large_suggestion_card_width),
+                                    dimensionResource(id = R.dimen.home_large_suggestion_card_img_height)
+                                )
+                                .fillMaxSize()
+                                .clip(RoundedCornerShape(10.dp)),
+                        )
+                    } ?: run {
+                        Image(
+                            painter = painterResource(R.drawable.img_burger_meal_with_french_fries),
+                            contentDescription = null,
+                            contentScale = ContentScale.Crop,
+                            modifier = modifier.size(
+                                dimensionResource(id = R.dimen.home_large_suggestion_card_width),
+                                dimensionResource(id = R.dimen.home_large_suggestion_card_img_height)
+                            )
+                        )
+                    }
+                } ?: run {
                     Image(
                         painter = painterResource(R.drawable.img_burger_meal_with_french_fries),
                         contentDescription = null,
@@ -141,109 +152,98 @@ fun RecipeByTimeCard(
                         )
                     )
                 }
-            }?:run{
-                Image(
-                    painter = painterResource(R.drawable.img_burger_meal_with_french_fries),
-                    contentDescription = null,
-                    contentScale = ContentScale.Crop,
-                    modifier = modifier.size(
-                        dimensionResource(id = R.dimen.home_large_suggestion_card_width),
-                        dimensionResource(id = R.dimen.home_large_suggestion_card_img_height)
-                    )
-                )
-            }
 
 
-            Row(
-                horizontalArrangement = Arrangement.SpaceBetween,
-//                verticalAlignment = Alignment.Top,
-                modifier = modifier
-                    .width(dimensionResource(id = R.dimen.home_large_suggestion_card_width))
-                    .padding(vertical = dimensionResource(id = R.dimen.home_label_padding))
-            ) {
-                Text(
-                    text = recipe.recipeName,
-                    style = MaterialTheme.typography.bodyLarge,
-                    color = colorResource(id = R.color.md_theme_onSurface),
-                    overflow = TextOverflow.Ellipsis,
-                    modifier = Modifier
-                        .width(dimensionResource(id = R.dimen.home_large_suggestion_card_name_width))
-                        .height(dimensionResource(id = R.dimen.home_recipe_name_label_height))
-                )
                 Row(
+                    horizontalArrangement = Arrangement.SpaceBetween,
+//                verticalAlignment = Alignment.Top,
                     modifier = modifier
-//                    .height(dimensionResource(id = R.dimen.home_likes_label_height))
-                        .padding(vertical = dimensionResource(id = R.dimen.home_likes_label_padding))
+                        .width(dimensionResource(id = R.dimen.home_large_suggestion_card_width))
+                        .padding(vertical = dimensionResource(id = R.dimen.home_label_padding))
                 ) {
                     Text(
-                        text = stringResource(id = R.string.likes),
+                        text = recipe.recipeName,
+                        style = MaterialTheme.typography.bodyLarge,
+                        color = colorResource(id = R.color.md_theme_onSurface),
+                        overflow = TextOverflow.Ellipsis,
+                        modifier = Modifier
+                            .width(dimensionResource(id = R.dimen.home_large_suggestion_card_name_width))
+                            .height(dimensionResource(id = R.dimen.home_recipe_name_label_height))
+                    )
+                    Row(
+                        modifier = modifier
+//                    .height(dimensionResource(id = R.dimen.home_likes_label_height))
+                            .padding(vertical = dimensionResource(id = R.dimen.home_likes_label_padding))
+                    ) {
+                        Text(
+                            text = stringResource(id = R.string.likes),
+                            style = MaterialTheme.typography.bodySmall,
+                            color = colorResource(id = R.color.md_theme_outline_mediumContrast),
+//                        modifier = modifier
+//                            .height(dimensionResource(id = R.dimen.home_likes_label_height))
+//                            .padding(vertical = dimensionResource(id = R.dimen.home_likes_label_padding))
+                        )
+                        Text(
+                            text = recipe.likeCount.toString(),
+                            style = MaterialTheme.typography.bodySmall,
+                            overflow = TextOverflow.Ellipsis,
+                            color = colorResource(id = R.color.md_theme_onSurface),
+//                        modifier = modifier
+//                            .height(dimensionResource(id = R.dimen.home_likes_label_height))
+//                            .padding(vertical = dimensionResource(id = R.dimen.home_likes_label_padding))
+                        )
+                    }
+                }
+                Row {
+                    Text(
+                        text = stringResource(R.string.duration_min, recipe.preparationTime),
                         style = MaterialTheme.typography.bodySmall,
                         color = colorResource(id = R.color.md_theme_outline_mediumContrast),
-//                        modifier = modifier
-//                            .height(dimensionResource(id = R.dimen.home_likes_label_height))
-//                            .padding(vertical = dimensionResource(id = R.dimen.home_likes_label_padding))
-                    )
-                    Text(
-                        text = recipe.likeCount.toString(),
-                        style = MaterialTheme.typography.bodySmall,
-                        overflow = TextOverflow.Ellipsis,
-                        color = colorResource(id = R.color.md_theme_onSurface),
-//                        modifier = modifier
-//                            .height(dimensionResource(id = R.dimen.home_likes_label_height))
-//                            .padding(vertical = dimensionResource(id = R.dimen.home_likes_label_padding))
+                        fontWeight = FontWeight.Light,
                     )
                 }
-            }
-            Row {
-                Text(
-                    text = stringResource(R.string.duration_min, recipe.preparationTime),
-                    style = MaterialTheme.typography.bodySmall,
-                    color = colorResource(id = R.color.md_theme_outline_mediumContrast),
-                    fontWeight = FontWeight.Light,
-                )
             }
         }
     }
 }
-
-/**
- * Composable function to display the section title for recipe suggestion based on the specified time duration.
- *
- * @param title String: The title to display.
- */
-@Composable
-fun RecipeSuggestionByTimeTitle(title: String) {
-    Column(
-        modifier = Modifier
-            .height(dimensionResource(id = R.dimen.editText_height))
-            .padding(vertical = dimensionResource(id = R.dimen.padding))
-    ) {
-        Text(
-            text = title,
-            style = MaterialTheme.typography.titleLarge,
-            fontWeight = FontWeight.SemiBold
-        )
+    /**
+     * Composable function to display the section title for recipe suggestion based on the specified time duration.
+     *
+     * @param title String: The title to display.
+     */
+    @Composable
+    fun RecipeSuggestionByTimeTitle(title: String) {
+        Column(
+            modifier = Modifier
+                .height(dimensionResource(id = R.dimen.editText_height))
+                .padding(vertical = dimensionResource(id = R.dimen.padding))
+        ) {
+            Text(
+                text = title,
+                style = MaterialTheme.typography.titleLarge,
+                fontWeight = FontWeight.SemiBold
+            )
+        }
     }
-}
 
-fun decodeBase64ToBitmap(base64String: String): Bitmap? {
-    val decodedBytes: ByteArray =
-        android.util.Base64.decode(base64String, android.util.Base64.DEFAULT)
-    return BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.size)
-}
-
-/**
- * Below are preview composable functions.
- * These functions are intended for use in a preview environment during development.
- */
-@Composable
-@Preview(showBackground = true, showSystemUi = true)
-fun PreviewRecipeSuggestionByTimeSection() {
-    val recipeListTestData = RecipeListTestData.getRecipeList()
-    MaterialTheme {
-        RecipeSuggestionByTimeSection(
-            timeBasedRecipeList = recipeListTestData,
-            filterByTime = 30,
-            navigateToViewRecipe = {})
+    fun decodeBase64ToBitmap(base64String: String): Bitmap? {
+        val decodedBytes: ByteArray =
+            android.util.Base64.decode(base64String, android.util.Base64.DEFAULT)
+        return BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.size)
     }
-}
+
+    /**
+     * Below are preview composable functions.
+     * These functions are intended for use in a preview environment during development.
+     */
+    @Composable
+    @Preview(showBackground = true, showSystemUi = true)
+    fun PreviewRecipeSuggestionByTimeSection() {
+        val recipeListTestData = RecipeListTestData.getRecipeList()
+        MaterialTheme {
+            RecipeSuggestionByTimeSection(
+                timeBasedRecipeList = recipeListTestData,
+                filterByTime = 30,
+                navigateToViewRecipe = {})
+        }
+    }
