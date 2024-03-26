@@ -2,6 +2,7 @@ package com.gtp01.group01.android.recipesmobileapp.feature.home.viewmodel
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -83,8 +84,17 @@ class HomeViewModel @Inject constructor(private val recipeManagementRepository: 
      * @return The decoded Bitmap image.
      */
     fun decodeImageToBitmap(imageValue: String): Bitmap? {
-        val decodedBytes: ByteArray =
-            android.util.Base64.decode(imageValue, android.util.Base64.DEFAULT)
-        return BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.size)
+        return try {
+            // Decode the Base64 string into a byte array.
+            val decodedBytes: ByteArray =
+                android.util.Base64.decode(imageValue, android.util.Base64.DEFAULT)
+
+            // Attempt to create a Bitmap from the decoded bytes.
+            BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.size)
+        } catch (e: Exception) {
+            // Handle decoding errors gracefully.
+            Log.e("DecodeImageError", "Error decoding image from Base64 string: $e")
+            null
+        }
     }
 }
