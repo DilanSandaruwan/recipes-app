@@ -18,15 +18,15 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.dimensionResource
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.gtp01.group01.android.recipesmobileapp.R
 import com.gtp01.group01.android.recipesmobileapp.feature.home.viewmodel.HomeViewModel
 
 /**
- * Composable function for displaying a Home screen layout.
+ * Composable function for displaying the Home screen layout.
  *
  * @param homeViewModel The view model for managing home screen data.
+ * @param navigateToViewRecipe Callback to navigate to a recipe details screen.
  */
 @Composable
 fun HomeScreen(
@@ -40,49 +40,62 @@ fun HomeScreen(
     val user by homeViewModel.user.observeAsState(null)
 
     // User preferred time duration to filter recipes
-    var filterByTime by remember { mutableIntStateOf(30) }
+    var timeFilterValue by remember { mutableIntStateOf(30) }
 
     // User preferred maximum calorie to filter recipes
-    var filterByCalorie by remember { mutableIntStateOf(300) }
+    var calorieFilterValue by remember { mutableIntStateOf(300) }
 
-    // Trigger recipe filtering and update filterByTime when user changes
+    // If user is null, default values are provided for userId, preferDuration, and preferCalorie.
     LaunchedEffect(user) {
-        user?.let {
-            filterByTime = it.preferDuration
-            filterByCalorie = it.preferCalorie
-            homeViewModel.filterRecipesByDuration(it.idUser, filterByTime)
-            homeViewModel.filterRecipesByCalorie(it.idUser, filterByCalorie)
-        } ?: run {
-            homeViewModel.filterRecipesByDuration(0, filterByTime)
-            homeViewModel.filterRecipesByCalorie(0, filterByCalorie)
-        }
+        // If user is not null, update filter values and filter recipes based on user preferences
+        val userId = user?.idUser ?: 0
+        val preferDuration = user?.preferDuration ?: timeFilterValue
+        val preferCalorie = user?.preferCalorie ?: calorieFilterValue
+
+        homeViewModel.filterRecipesByDuration(userId, preferDuration)
+        homeViewModel.filterRecipesByCalorie(userId, preferCalorie)
     }
+
     MaterialTheme {
         Column(
             Modifier
                 .verticalScroll(rememberScrollState())
-                .background(color = colorResource(id = R.color.md_theme_inverseOnSurface))
+                .background(color = colorResource(id = R.color.md_theme_surfaceContainer))
                 .padding(horizontal = dimensionResource(id = R.dimen.activity_vertical_margin))
-                .padding(top = dimensionResource(id = R.dimen.margin_top), bottom = 60.dp)
+                .padding(
+                    top = dimensionResource(id = R.dimen.margin_top),
+                    bottom = dimensionResource(id = R.dimen.bottom_navigation_height)
+                )
         ) {
             Spacer(Modifier.height(dimensionResource(id = R.dimen.activity_horizontal_margin)))
+
+            // Section for displaying the search bar
             SearchBarSection(
                 searchKeyword = homeViewModel.searchKeyword,
                 onSearchKeywordChange = { homeViewModel.updateSearchKeyword(it) },
                 onKeyboardDone = {}
             )
             Spacer(Modifier.height(dimensionResource(id = R.dimen.activity_horizontal_margin)))
+
+            // Section for displaying the categories to select
             CategorySection()
             Spacer(Modifier.height(dimensionResource(id = R.dimen.activity_horizontal_margin)))
+
+            // Section for displaying the filtered recipes based on preferred preparation time
             RecipeSuggestionByTimeSection(
                 timeBasedRecipeList = timeBasedRecipeList,
-                filterByTime = filterByTime,
+                timeFilterValue = timeFilterValue,
+                decodeImageToBitmap = { homeViewModel.decodeImageToBitmap(it) },
                 navigateToViewRecipe = navigateToViewRecipe
             )
             Spacer(Modifier.height(dimensionResource(id = R.dimen.activity_horizontal_margin)))
+
+            // Section for displaying the filtered recipes based on preferred calorie
             RecipeSuggestionByCalorieSection(
-                calorieBasedRecipeList = timeBasedRecipeList,
-                filterByCalorie = filterByCalorie
+                calorieBasedRecipeList = calorieBasedRecipeList,
+                calorieFilterValue = calorieFilterValue,
+                decodeImageToBitmap = { homeViewModel.decodeImageToBitmap(it) },
+                navigateToViewRecipe = navigateToViewRecipe
             )
             Spacer(Modifier.height(dimensionResource(id = R.dimen.bottom_navigation_height)))
         }

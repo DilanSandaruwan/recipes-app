@@ -38,6 +38,7 @@ class HomeViewModel @Inject constructor(private val recipeManagementRepository: 
     private val _calorieBasedRecipeList = MutableLiveData<List<Recipe>>(emptyList())
     val calorieBasedRecipeList: LiveData<List<Recipe>> = _calorieBasedRecipeList
 
+    // The current search keyword entered by the user
     var searchKeyword by mutableStateOf("")
 
     /**
@@ -53,6 +54,12 @@ class HomeViewModel @Inject constructor(private val recipeManagementRepository: 
         }
     }
 
+    /**
+     * Filters recipes based on calorie.
+     *
+     * @param idLoggedUser The ID of the logged-in user.
+     * @param maxCalorie The maximum calorie count for filtering recipes.
+     */
     fun filterRecipesByCalorie(idLoggedUser: Int, maxCalorie: Int) {
         viewModelScope.launch {
             _calorieBasedRecipeList.value =
@@ -60,14 +67,24 @@ class HomeViewModel @Inject constructor(private val recipeManagementRepository: 
         }
     }
 
+    /**
+     * Updates the search keyword.
+     *
+     * @param enteredKeyword The new search keyword entered by the user.
+     */
     fun updateSearchKeyword(enteredKeyword: String) {
         searchKeyword = enteredKeyword
     }
 
-    fun decodeImageStringToBitmap(base64String: String): Bitmap? {
+    /**
+     * Decodes Base64 encoded image data to Bitmap.
+     *
+     * @param imageValue The Base64 encoded string representing the image.
+     * @return The decoded Bitmap image.
+     */
+    fun decodeImageToBitmap(imageValue: String): Bitmap? {
         val decodedBytes: ByteArray =
-            android.util.Base64.decode(base64String, android.util.Base64.DEFAULT)
+            android.util.Base64.decode(imageValue, android.util.Base64.DEFAULT)
         return BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.size)
     }
-
 }
