@@ -11,9 +11,14 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.gtp01.group01.android.recipesmobileapp.feature.my_profile.repository.RecipeManagementRepository
+import com.gtp01.group01.android.recipesmobileapp.shared.common.Result
 import com.gtp01.group01.android.recipesmobileapp.shared.model.Recipe
 import com.gtp01.group01.android.recipesmobileapp.shared.model.User
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -26,45 +31,39 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(private val recipeManagementRepository: RecipeManagementRepository) :
     ViewModel() {
+    // Logging tag for this class
+    private val TAG = this::class.java.simpleName
 
-    // LiveData for holding logged in user
+    // LiveData for holding logged-in user
     private val _user = MutableLiveData<User?>(null)
     val user: LiveData<User?> = _user
 
-    // LiveData for holding time-based recipe list
-    private val _timeBasedRecipeList = MutableLiveData<List<Recipe>>(emptyList())
-    val timeBasedRecipeList: LiveData<List<Recipe>> = _timeBasedRecipeList
+    // StateFlow for holding time-based recipe list state
+    private val _timeBasedRecipeListState = MutableStateFlow<Result<List<Recipe>>>(Result.Loading)
+    val timeBasedRecipeListState: StateFlow<Result<List<Recipe>>> = _timeBasedRecipeListState
 
-    // LiveData for holding calorie-based recipe list
-    private val _calorieBasedRecipeList = MutableLiveData<List<Recipe>>(emptyList())
-    val calorieBasedRecipeList: LiveData<List<Recipe>> = _calorieBasedRecipeList
-
-    // The current search keyword entered by the user
+    // MutableState for holding search keyword
     var searchKeyword by mutableStateOf("")
 
     /**
-     * Filters recipes based on duration.
+     * Fetches recipes filtered by cooking time asynchronously.
      *
-     * @param idLoggedUser The ID of the logged-in user.
-     * @param maxDuration The maximum duration for filtering recipes.
+     * @param loggedUserId The ID of the logged-in user.
+     * @param maxDuration The maximum cooking time of the recipes to filter.
      */
-    fun filterRecipesByDuration(idLoggedUser: Int, maxduration: Int) {
+    fun filterRecipesByDuration(loggedUserId: Int, maxDuration: Int) {
         viewModelScope.launch {
-            _timeBasedRecipeList.value =
-                recipeManagementRepository.filterRecipesByDuration(idLoggedUser, maxduration)
-        }
-    }
-
-    /**
-     * Filters recipes based on calorie.
-     *
-     * @param idLoggedUser The ID of the logged-in user.
-     * @param maxCalorie The maximum calorie count for filtering recipes.
-     */
-    fun filterRecipesByCalorie(idLoggedUser: Int, maxCalorie: Int) {
-        viewModelScope.launch {
-            _calorieBasedRecipeList.value =
-                recipeManagementRepository.filterRecipesByDuration(idLoggedUser, maxCalorie)
+            try {
+                _timeBasedRecipeListState.value = Result.Loading
+                recipeManagementRepository.filterRecipesByDuration(loggedUserId, maxDuration)
+                    .flowOn(Dispatchers.IO)
+                    .collect { recipeList ->
+                        _timeBasedRecipeListState.value = recipeList
+                    }
+            } catch (ex: Exception) {
+                _timeBasedRecipeListState.value = Result.Failure("Exception")
+                Log.e(TAG, ex.message ?: "An error occurred", ex)
+            }
         }
     }
 
