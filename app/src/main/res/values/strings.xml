@@ -15,6 +15,7 @@
     <string name="invalid_username">Not a valid username</string>
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
+    <string name="retry">Retry</string>
 
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
@@ -121,4 +122,8 @@
     <string name="sides">Sides</string>
     <string name="soup">Soup</string>
     <string name="vegetarian">Vegetarian</string>
+    <string name="home_error_404">Sorry, the requested recipe was not found.</string>
+    <string name="home_error_500">Oops! Something went wrong on our server. Please try again later.</string>
+    <string name="home_error_exception">Oops! Something unexpected occurred. Please try again.</string>
+    <string name="home_error_ioexception">Oops! Network error. Please check your internet connection and try again.</string>
 </resources>

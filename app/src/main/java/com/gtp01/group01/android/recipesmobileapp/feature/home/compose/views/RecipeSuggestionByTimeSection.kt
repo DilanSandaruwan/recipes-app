@@ -52,7 +52,7 @@ import com.gtp01.group01.android.recipesmobileapp.shared.model.Recipe
  */
 @Composable
 fun RecipeSuggestionByTimeSection(
-    timeBasedRecipeList: List<Recipe> = emptyList(),
+    timeBasedRecipeList: List<Recipe>? = emptyList(),
     timeFilterValue: Int,
     decodeImageToBitmap: (String) -> Bitmap?,
     navigateToViewRecipe: (Int) -> Unit,
@@ -61,11 +61,13 @@ fun RecipeSuggestionByTimeSection(
     val title = stringResource(R.string.home_suggestion_bytime_title, timeFilterValue)
     Column {
         RecipeSuggestionByTimeTitle(title)
-        RecipeSuggestionByTimeGrid(
-            timeBasedRecipeList = timeBasedRecipeList,
-            decodeImageToBitmap = decodeImageToBitmap,
-            navigateToViewRecipe = navigateToViewRecipe
-        )
+        if (timeBasedRecipeList != null) {
+            RecipeSuggestionByTimeGrid(
+                timeBasedRecipeList = timeBasedRecipeList,
+                decodeImageToBitmap = decodeImageToBitmap,
+                navigateToViewRecipe = navigateToViewRecipe
+            )
+        }
     }
 }
 
