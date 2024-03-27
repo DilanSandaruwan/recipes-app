@@ -101,7 +101,24 @@
 
     <!-- Strings used in home screen -->
     <string name="home_suggestion_bytime_title">Make It In %d Min</string>
+    <string name="home_suggestion_bycalorie_title">Make It below %dKcal</string>
     <string name="placeholder_search">Enter Recipe Name</string>
-    <string name="likes">Likes</string>
-    <string name="min">min</string>
+    <string name="like_count">" %d"</string>
+    <string name="calories">Calories</string>
+    <string name="calorie_kcal">%dKcal</string>
+    <string name="duration_min">%d min</string>
+    <string name="bread">Bread</string>
+    <string name="breakfast">Breakfast</string>
+    <string name="dessert">Dessert</string>
+    <string name="dinner">Dinner</string>
+    <string name="drinks">Drinks</string>
+    <string name="lunch">Lunch</string>
+    <string name="meat">Meat</string>
+    <string name="noodles">Noodles</string>
+    <string name="pizza">Pizza</string>
+    <string name="rice">Rice</string>
+    <string name="salad">Salad</string>
+    <string name="sides">Sides</string>
+    <string name="soup">Soup</string>
+    <string name="vegetarian">Vegetarian</string>
 </resources>

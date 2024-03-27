@@ -1,5 +1,11 @@
 package com.gtp01.group01.android.recipesmobileapp.feature.home.viewmodel
 
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.util.Log
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -29,6 +35,12 @@ class HomeViewModel @Inject constructor(private val recipeManagementRepository: 
     private val _timeBasedRecipeList = MutableLiveData<List<Recipe>>(emptyList())
     val timeBasedRecipeList: LiveData<List<Recipe>> = _timeBasedRecipeList
 
+    // LiveData for holding calorie-based recipe list
+    private val _calorieBasedRecipeList = MutableLiveData<List<Recipe>>(emptyList())
+    val calorieBasedRecipeList: LiveData<List<Recipe>> = _calorieBasedRecipeList
+
+    // The current search keyword entered by the user
+    var searchKeyword by mutableStateOf("")
 
     /**
      * Filters recipes based on duration.
@@ -40,6 +52,49 @@ class HomeViewModel @Inject constructor(private val recipeManagementRepository: 
         viewModelScope.launch {
             _timeBasedRecipeList.value =
                 recipeManagementRepository.filterRecipesByDuration(idLoggedUser, maxduration)
+        }
+    }
+
+    /**
+     * Filters recipes based on calorie.
+     *
+     * @param idLoggedUser The ID of the logged-in user.
+     * @param maxCalorie The maximum calorie count for filtering recipes.
+     */
+    fun filterRecipesByCalorie(idLoggedUser: Int, maxCalorie: Int) {
+        viewModelScope.launch {
+            _calorieBasedRecipeList.value =
+                recipeManagementRepository.filterRecipesByDuration(idLoggedUser, maxCalorie)
+        }
+    }
+
+    /**
+     * Updates the search keyword.
+     *
+     * @param enteredKeyword The new search keyword entered by the user.
+     */
+    fun updateSearchKeyword(enteredKeyword: String) {
+        searchKeyword = enteredKeyword
+    }
+
+    /**
+     * Decodes Base64 encoded image data to Bitmap.
+     *
+     * @param imageValue The Base64 encoded string representing the image.
+     * @return The decoded Bitmap image.
+     */
+    fun decodeImageToBitmap(imageValue: String): Bitmap? {
+        return try {
+            // Decode the Base64 string into a byte array.
+            val decodedBytes: ByteArray =
+                android.util.Base64.decode(imageValue, android.util.Base64.DEFAULT)
+
+            // Attempt to create a Bitmap from the decoded bytes.
+            BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.size)
+        } catch (e: Exception) {
+            // Handle decoding errors gracefully.
+            Log.e("DecodeImageError", "Error decoding image from Base64 string: $e")
+            null
         }
     }
 }

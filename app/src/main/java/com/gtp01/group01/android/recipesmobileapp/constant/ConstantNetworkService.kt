@@ -12,6 +12,7 @@ object ConstantNetworkService {
      * The base URL of the application's API. This URL is used to make network requests.
      */
     const val BASE_URL = "http://ec2-54-234-237-74.compute-1.amazonaws.com:5000"
+
     /**
      * Endpoint for user authorization-related save new user API requests.
      */
