@@ -75,8 +75,8 @@ class RecipeAddFragment : Fragment() {
                 val galleryUri = result.data?.data
                 try {
                     galleryUri?.let {
-                        binding.ivChooseItemImg.setImageURI(it)
-                        binding.ivChooseItemImg.visibility = VISIBLE
+                        binding.lytImportedRecipe.ivChooseItemImg.setImageURI(it)
+                        binding.lytImportedRecipe.ivChooseItemImg.visibility = VISIBLE
                         // Convert the selected image to a byte array
                         viewModel.imageBytes = convertImageUriToByteArray(it)
                     }
@@ -139,17 +139,17 @@ class RecipeAddFragment : Fragment() {
         binding.apply {
             lifecycleOwner = viewLifecycleOwner
             addRecipeVM = viewModel
-            rvFoodCategory.also {
+            lytImportedRecipe.rvFoodCategory.also {
                 it.layoutManager =
                     LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
                 it.adapter = adapter
             }
             // Set HTML formatted text to the TextView
-            mtvInfoIngredient.text = HtmlCompat.fromHtml(
+            lytImportedRecipe.mtvInfoIngredient.text = HtmlCompat.fromHtml(
                 getString(R.string.ingredients_html),
                 HtmlCompat.FROM_HTML_MODE_LEGACY
             )
-            mtvInfoInstruction.text = HtmlCompat.fromHtml(
+            lytImportedRecipe.mtvInfoInstruction.text = HtmlCompat.fromHtml(
                 getString(R.string.instructions_html),
                 HtmlCompat.FROM_HTML_MODE_LEGACY
             )
@@ -164,7 +164,7 @@ class RecipeAddFragment : Fragment() {
      * Sets up event listeners for UI components.
      */
     private fun eventListeners() {
-        binding.apply {
+        binding.lytImportedRecipe.apply {
             ibIncreServeCount.setOnClickListener {
                 viewModel.increaseCount(TagConstant.TAG_SERVE_COUNT)
             }
@@ -187,12 +187,7 @@ class RecipeAddFragment : Fragment() {
                 openGallery()
             }
             btnSave.setOnClickListener {
-                activity.showPopup(
-                    0,
-                    getString(R.string.success),
-                    message = getString(R.string.recipe_saved_successfully)
-                )
-                //validateRecipeDetails()
+                validateRecipeDetails()
             }
             ivInfoIngredient.setOnClickListener {
                 if (mtvInfoIngredient.visibility == VISIBLE) {
@@ -234,7 +229,7 @@ class RecipeAddFragment : Fragment() {
                         Toast.LENGTH_SHORT
                     ).show()
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                        binding.lytDynamicIngredients.focusable
+                        binding.lytImportedRecipe.lytDynamicIngredients.focusable
                     }
                 } else {
                     callToSaveRecipe()
@@ -274,11 +269,11 @@ class RecipeAddFragment : Fragment() {
                 }
             }
             serveCount.observe(viewLifecycleOwner) {
-                binding.metServingCount.text =
+                binding.lytImportedRecipe.metServingCount.text =
                     Editable.Factory.getInstance().newEditable(it.toString())
             }
             cookingTime.observe(viewLifecycleOwner) {
-                binding.metCookingTime.text =
+                binding.lytImportedRecipe.metCookingTime.text =
                     Editable.Factory.getInstance().newEditable(it.toString())
             }
         }
@@ -290,11 +285,11 @@ class RecipeAddFragment : Fragment() {
     private fun addIngredientField() {
         val subBinding = LayoutDuplicateIngredientItemBinding.inflate(layoutInflater)
         subBinding.btnDeleteIngredient.setOnClickListener {
-            binding.lytDynamicIngredients.removeView(subBinding.root)
+            binding.lytImportedRecipe.lytDynamicIngredients.removeView(subBinding.root)
         }
 
-        if (binding.lytDynamicIngredients.childCount > 0) {
-            for (i in binding.lytDynamicIngredients.children) {
+        if (binding.lytImportedRecipe.lytDynamicIngredients.childCount > 0) {
+            for (i in binding.lytImportedRecipe.lytDynamicIngredients.children) {
                 val metInsertIngredient =
                     i.findViewById<TextInputEditText>(R.id.metDynamicInserter)
                 if (metInsertIngredient.text.toString()
@@ -305,7 +300,7 @@ class RecipeAddFragment : Fragment() {
             }
         }
         val view = subBinding.root
-        binding.lytDynamicIngredients.addView(view)
+        binding.lytImportedRecipe.lytDynamicIngredients.addView(view)
     }
 
     /**
@@ -314,11 +309,11 @@ class RecipeAddFragment : Fragment() {
     private fun addInstructionsField() {
         val subBinding = LayoutDuplicateIngredientItemBinding.inflate(layoutInflater)
         subBinding.btnDeleteIngredient.setOnClickListener {
-            binding.lytDynamicInstructions.removeView(subBinding.root)
+            binding.lytImportedRecipe.lytDynamicInstructions.removeView(subBinding.root)
         }
 
-        if (binding.lytDynamicInstructions.childCount > 0) {
-            for (i in binding.lytDynamicInstructions.children) {
+        if (binding.lytImportedRecipe.lytDynamicInstructions.childCount > 0) {
+            for (i in binding.lytImportedRecipe.lytDynamicInstructions.children) {
                 val metInsertInstructions =
                     i.findViewById<TextInputEditText>(R.id.metDynamicInserter)
                 if (metInsertInstructions.text.toString()
@@ -329,40 +324,49 @@ class RecipeAddFragment : Fragment() {
             }
         }
         val view = subBinding.root
-        binding.lytDynamicInstructions.addView(view)
+        binding.lytImportedRecipe.lytDynamicInstructions.addView(view)
     }
 
     /**
      * Validates recipe details before saving.
      */
     private fun validateRecipeDetails() {
-        val errorString = if (binding.etRecipeName.editText?.text.toString().isBlank()) {
-            getString(R.string.warn_please_add_a_recipe_name)
-        } else if (binding.metServingCount.text.toString()
-                .isBlank() || binding.metServingCount.text.toString() == getString(R.string.default_zero)
-        ) {
-            getString(R.string.warn_please_add_a_serving_count)
-        } else if (binding.metCookingTime.text.toString()
-                .isBlank() || binding.metCookingTime.text.toString() == getString(R.string.default_zero)
-        ) {
-            getString(R.string.warn_please_add_a_cooking_time)
-        } else if (viewModel.editableCategoriesList.size < 1) {
-            getString(R.string.warn_please_choose_atleast_a_category)
-        } else if ((viewModel.imageBytes?.size ?: 0) == 0) {
-            getString(R.string.warn_please_add_an_image)
-        } else if (binding.lytDynamicIngredients.childCount < 1) {
-            getString(R.string.warn_please_add_atleast_an_ingredient)
-        } else if (binding.lytDynamicInstructions.childCount < 1) {
-            getString(R.string.warn_please_add_atleast_an_instruction)
-        } else {
-            null
-        }
+        val errorString =
+            if (binding.lytImportedRecipe.etRecipeName.editText?.text.toString().isBlank()) {
+                getString(R.string.warn_please_add_a_recipe_name)
+            } else if (binding.lytImportedRecipe.metServingCount.text.toString()
+                    .isBlank() || binding.lytImportedRecipe.metServingCount.text.toString() == getString(
+                    R.string.default_zero
+                )
+            ) {
+                getString(R.string.warn_please_add_a_serving_count)
+            } else if (binding.lytImportedRecipe.metCookingTime.text.toString()
+                    .isBlank() || binding.lytImportedRecipe.metCookingTime.text.toString() == getString(
+                    R.string.default_zero
+                )
+            ) {
+                getString(R.string.warn_please_add_a_cooking_time)
+            } else if (viewModel.editableCategoriesList.size < 1) {
+                getString(R.string.warn_please_choose_atleast_a_category)
+            } else if ((viewModel.imageBytes?.size ?: 0) == 0) {
+                getString(R.string.warn_please_add_an_image)
+            } else if (binding.lytImportedRecipe.lytDynamicIngredients.childCount < 1) {
+                getString(R.string.warn_please_add_atleast_an_ingredient)
+            } else if (binding.lytImportedRecipe.lytDynamicInstructions.childCount < 1) {
+                getString(R.string.warn_please_add_atleast_an_instruction)
+            } else {
+                null
+            }
 
         if (errorString == null) {
             callNutrientsApi()
         } else {
-            Snackbar.make(requireContext(), binding.btnSave, errorString, Snackbar.LENGTH_LONG)
-                .show()
+            Snackbar.make(
+                requireContext(),
+                binding.lytImportedRecipe.btnSave,
+                errorString,
+                Snackbar.LENGTH_LONG
+            ).show()
         }
     }
 
@@ -370,9 +374,9 @@ class RecipeAddFragment : Fragment() {
      * Calls the API to fetch nutrition information based on ingredients.
      */
     private fun callNutrientsApi() {
-        if (binding.lytDynamicIngredients.childCount > 0) {
-            for (i in 0 until binding.lytDynamicIngredients.childCount) {
-                val childView = binding.lytDynamicIngredients.getChildAt(i)
+        if (binding.lytImportedRecipe.lytDynamicIngredients.childCount > 0) {
+            for (i in 0 until binding.lytImportedRecipe.lytDynamicIngredients.childCount) {
+                val childView = binding.lytImportedRecipe.lytDynamicIngredients.getChildAt(i)
                 val metInsertIngredients =
                     childView.findViewById<TextInputEditText>(R.id.metDynamicInserter)
                 if (!(metInsertIngredients.text.toString()
@@ -401,9 +405,9 @@ class RecipeAddFragment : Fragment() {
 
         val ingredients = viewModel.ingredientsList.joinToString("\n")
 
-        if (binding.lytDynamicInstructions.childCount > 0) {
-            for (i in 0 until binding.lytDynamicInstructions.childCount) {
-                val childView = binding.lytDynamicInstructions.getChildAt(i)
+        if (binding.lytImportedRecipe.lytDynamicInstructions.childCount > 0) {
+            for (i in 0 until binding.lytImportedRecipe.lytDynamicInstructions.childCount) {
+                val childView = binding.lytImportedRecipe.lytDynamicInstructions.getChildAt(i)
                 val metInsertInstructions =
                     childView.findViewById<TextInputEditText>(R.id.metDynamicInserter)
                 if (!(metInsertInstructions.text.toString()
@@ -418,14 +422,14 @@ class RecipeAddFragment : Fragment() {
 
         val recipe = Recipe(
             owner = user,
-            recipeName = binding.etRecipeName.editText?.text.toString(),
+            recipeName = binding.lytImportedRecipe.etRecipeName.editText?.text.toString(),
             ingredients = ingredients,
             instruction = instructions,
-            preparationTime = binding.metCookingTime.text.toString().toInt(),
+            preparationTime = binding.lytImportedRecipe.metCookingTime.text.toString().toInt(),
             calorie = viewModel.calculatedNutrients[0],
             protein = viewModel.calculatedNutrients[1],
             carbs = viewModel.calculatedNutrients[2],
-            serving = binding.metServingCount.text.toString().toInt(),
+            serving = binding.lytImportedRecipe.metServingCount.text.toString().toInt(),
             photo = viewModel.imageBytes,
             categories = foodCategories,
             isActive = 1,
@@ -441,7 +445,7 @@ class RecipeAddFragment : Fragment() {
      */
     private fun clearScreenForANewRecipe() {
         // clear recipe name edit text field
-        binding.etRecipeName.editText?.text?.clear()
+        binding.lytImportedRecipe.etRecipeName.editText?.text?.clear()
 
         // clear checked category list
         viewModel.editableCategoriesList.forEach { i -> i.isSelected = false }
@@ -457,10 +461,10 @@ class RecipeAddFragment : Fragment() {
         viewModel.instructionsList.clear()
 
         // Remove all child views from lytDynamicIngredients
-        binding.lytDynamicIngredients.removeAllViews()
+        binding.lytImportedRecipe.lytDynamicIngredients.removeAllViews()
 
         // Remove all child views from lytDynamicIngredients
-        binding.lytDynamicInstructions.removeAllViews()
+        binding.lytImportedRecipe.lytDynamicInstructions.removeAllViews()
 
         // default counts
         viewModel.setDefaultCount(TagConstant.TAG_SERVE_COUNT)
@@ -470,7 +474,7 @@ class RecipeAddFragment : Fragment() {
         viewModel.imageBytes = null
 
         // hide the image
-        binding.ivChooseItemImg.visibility = GONE
+        binding.lytImportedRecipe.ivChooseItemImg.visibility = GONE
     }
 
     override fun onDestroy() {
