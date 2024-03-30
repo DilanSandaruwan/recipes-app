@@ -14,7 +14,8 @@
     <dimen name="margin_top_constraint_layout">0dp</dimen>
     <dimen name="margin_end_constraint_layout">0dp</dimen>
     <dimen name="margin_bottom_constraint_layout">32dp</dimen>
-
+    <dimen name="image_view_margin_start">188dp</dimen>
+    <dimen name="calory_image_view_margin_top">8dp</dimen>
     <!-- Dimensions Profile-->
     <dimen name="image_view_width">25dp</dimen>
     <dimen name="image_view_height">25dp</dimen>
