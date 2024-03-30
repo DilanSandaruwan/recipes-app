@@ -9,7 +9,14 @@
         android:id="@+id/homeFragment"
         android:name="com.gtp01.group01.android.recipesmobileapp.feature.home.HomeFragment"
         android:label="fragment_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home">
+
+        <argument
+            android:name="Recipes"
+            app:argType="com.gtp01.group01.android.recipesmobileapp.feature.my_favourites.models.Recipes"/>
+    </fragment>
+
+
     <fragment
         android:id="@+id/profileFragment"
         android:name="com.gtp01.group01.android.recipesmobileapp.feature.my_profile.ProfileFragment"
@@ -19,7 +26,11 @@
         android:id="@+id/favouriteFragment"
         android:name="com.gtp01.group01.android.recipesmobileapp.feature.my_favourites.FavouriteFragment"
         android:label="fragment_favourite"
-        tools:layout="@layout/fragment_favourite" />
+        tools:layout="@layout/fragment_favourite" >
+        <action
+            android:id="@+id/action_favouriteFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </fragment>
     <fragment
         android:id="@+id/recipeAddFragment"
         android:name="com.gtp01.group01.android.recipesmobileapp.feature.recipe_add_update.RecipeAddFragment"

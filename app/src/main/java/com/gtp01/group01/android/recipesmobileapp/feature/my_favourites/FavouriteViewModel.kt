@@ -13,4 +13,7 @@ class FavouriteViewModel(app: Application, val Repository: Repository ): Android
         Repository.upsert(recipes)
     }
     fun getFavoriteRecipes() = Repository.getFavorite()
+    fun deleteRecipe (recipes: Recipes) = viewModelScope.launch {
+        Repository.deleteRecipe(recipes)
+    }
 }

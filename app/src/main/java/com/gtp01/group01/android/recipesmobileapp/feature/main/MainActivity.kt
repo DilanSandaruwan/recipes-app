@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.Menu
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.firebase.ui.auth.AuthUI
@@ -12,15 +13,34 @@ import com.gtp01.group01.android.recipesmobileapp.R
 import com.gtp01.group01.android.recipesmobileapp.constant.AuthProviders.providers
 import com.gtp01.group01.android.recipesmobileapp.constant.ConstantRequestCode.MY_REQUEST_CODE
 import com.gtp01.group01.android.recipesmobileapp.databinding.ActivityMainBinding
+import com.gtp01.group01.android.recipesmobileapp.feature.my_favourites.FavouriteViewModel
+import com.gtp01.group01.android.recipesmobileapp.feature.my_favourites.database.RecipesDatabase
+import com.gtp01.group01.android.recipesmobileapp.feature.my_favourites.repository.Repository
+import com.gtp01.group01.android.recipesmobileapp.feature.my_favourites.util.FavoriteViewModelFactory
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
+    lateinit var favouriteViewModel: FavouriteViewModel
+
+
+
+
+
+
     private lateinit var binding: ActivityMainBinding
     private lateinit var bottomNavView: BottomNavigationView
     private lateinit var menu: Menu
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+
+        val repository = Repository(RecipesDatabase(this))
+        val viewModelProviderFactory = FavoriteViewModelFactory(application,repository)
+        favouriteViewModel = ViewModelProvider(this,viewModelProviderFactory).get(FavouriteViewModel::class.java)
+
         // Access the list of providers
         providers
         showSignInOptions()

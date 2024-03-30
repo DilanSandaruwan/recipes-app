@@ -1,13 +1,15 @@
 package com.gtp01.group01.android.recipesmobileapp.feature.my_favourites.database
 
 import android.content.Context
+
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.gtp01.group01.android.recipesmobileapp.feature.my_favourites.models.Recipes
 
 
 @Database(
-    entities = [ FavoritesEntity::class],
+    entities = [ Recipes::class],
     version = 1,
     exportSchema = false
 )
