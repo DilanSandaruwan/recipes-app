@@ -61,7 +61,7 @@
             <RelativeLayout
                 style="@style/TopHalfRoundedWhiteBackground"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
+                android:layout_height="@dimen/_0dp"
                 android:layout_marginTop="@dimen/margin_top_bg_half_rounded"
                 android:paddingBottom="@dimen/bottom_navigation_height"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -70,75 +70,286 @@
                 app:layout_constraintTop_toBottomOf="@+id/app_tool_bar">
 
                 <!-- Scrollable content -->
-                <ScrollView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:fillViewport="true"
-                    android:padding="@dimen/padding_scroll_view">
+
 
                     <!-- Content container -->
-                    <LinearLayout
-                        android:layout_width="match_parent"
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="@dimen/constraint_layout_width"
+                    android:layout_height="@dimen/constraint_layout_height"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginStart="@dimen/constraint_layout_start_margin"
+                    android:layout_marginTop="@dimen/constraint_layout_top_margin"
+                    android:layout_marginEnd="@dimen/constraint_layout_end_margin"
+                    android:layout_marginBottom="@dimen/constraint_layout_bottom_margin">
+                    <!-- Separator -->
+
+
+                    <TextView
+                        android:id="@+id/usernameTextView"
+                        android:layout_width="192dp"
+                        android:layout_height="26dp"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="16dp"
+                        android:hint="@string/username_placeholder"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_24dp"
+                        app:endIconMode="clear_text"
+                        app:hintTextColor="@color/black"
+                        app:layout_constraintBottom_toTopOf="@+id/btnLogout"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.644"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="0.0" />
+
+                    <Button
+                        android:id="@+id/btnLogout"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical">
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginEnd="220dp"
+                        android:layout_marginBottom="52dp"
+                        android:text="@string/logout"
+                        android:textColor="@color/white"
+                        android:textSize="16sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent" />
 
-                        <!-- Recipe name input -->
-                        <TextView
-                            android:id="@+id/usernameTextView"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="@string/username_placeholder"
-                            app:endIconMode="clear_text"
-                            app:hintTextColor="@color/black" />
+                    <TextView
+                        android:id="@+id/tvUserEmail"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/sample_gmail_com"
+                        android:textColor="@color/profileTextBlack"
+                        app:layout_constraintEnd_toEndOf="@+id/usernameTextView"
+                        app:layout_constraintHorizontal_bias="0.448"
+                        app:layout_constraintStart_toStartOf="@+id/usernameTextView"
+                        app:layout_constraintTop_toBottomOf="@+id/usernameTextView" />
+
+                    <ImageView
+                        android:id="@+id/ivMyrecipes"
+                        android:layout_width="@dimen/my_recipes_width"
+                        android:layout_height="@dimen/my_recipes_height"
+                        android:layout_marginStart="@dimen/my_recipes_start_margin"
+                        android:layout_marginTop="@dimen/my_recipes_top_margin"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/tvUserEmail"
+                        app:srcCompat="@drawable/my_recipe" />
+
+                    <TextView
+                        android:id="@+id/tvmyRecipes"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_20dp"
+                        android:text="@string/my_recipes"
+                        android:textColor="@color/black"
+                        app:layout_constraintStart_toEndOf="@+id/ivMyrecipes"
+                        app:layout_constraintTop_toTopOf="@+id/ivMyrecipes" />
+
+                    <View
+                        style="@style/ViewSeparator"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/tvPopular"
+                        app:layout_constraintVertical_bias="0.03" />
+
+                    <TextView
+                        android:id="@+id/tvTotal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_12dp"
+                        android:text="@string/total_0"
+                        android:textColor="@color/profileTextBlack"
+                        app:layout_constraintStart_toStartOf="@+id/tvmyRecipes"
+                        app:layout_constraintTop_toBottomOf="@+id/tvmyRecipes" />
+
+                    <TextView
+                        android:id="@+id/tvPopular"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_36dp"
+                        android:text="@string/populer_0"
+                        android:textColor="@color/profileTextBlack"
+                        app:layout_constraintBottom_toBottomOf="@+id/tvTotal"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.075"
+                        app:layout_constraintStart_toEndOf="@+id/tvTotal"
+                        app:layout_constraintTop_toTopOf="@+id/tvTotal"
+                        app:layout_constraintVertical_bias="0.0" />
+
+                    <ImageView
+                        android:id="@+id/ivEdit_profile"
+                        android:layout_width="@dimen/image_view_width"
+                        android:layout_height="@dimen/image_view_height"
+                        android:layout_marginTop="@dimen/_44dp"
+                        app:layout_constraintEnd_toEndOf="@+id/ivMyrecipes"
+                        app:layout_constraintHorizontal_bias="0.466"
+                        app:layout_constraintStart_toStartOf="@+id/ivMyrecipes"
+                        app:layout_constraintTop_toBottomOf="@+id/ivMyrecipes"
+                        app:srcCompat="@drawable/editprofile" />
+
+                    <ImageView
+                        android:id="@+id/ivNotification"
+                        android:layout_width="@dimen/image_view_width"
+                        android:layout_height="@dimen/image_view_height"
+                        android:layout_marginTop="@dimen/image_view_margin_top"
+                        app:layout_constraintEnd_toEndOf="@+id/ivEdit_profile"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="@+id/ivEdit_profile"
+                        app:layout_constraintTop_toBottomOf="@+id/ivEdit_profile"
+                        app:srcCompat="@drawable/notification" />
+
+                    <ImageView
+                        android:id="@+id/ivLanguage"
+                        android:layout_width="@dimen/image_view_width"
+                        android:layout_height="@dimen/image_view_height"
+                        android:layout_marginTop="@dimen/image_view_margin_top"
+                        app:layout_constraintEnd_toEndOf="@+id/ivNotification"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="@+id/ivNotification"
+                        app:layout_constraintTop_toBottomOf="@+id/ivNotification"
+                        app:srcCompat="@drawable/language" />
+
+                    <ImageView
+                        android:id="@+id/ivTheme"
+                        android:layout_width="@dimen/image_view_width"
+                        android:layout_height="@dimen/image_view_height"
+                        android:layout_marginTop="@dimen/image_view_margin_top"
+                        app:layout_constraintEnd_toEndOf="@+id/ivLanguage"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="@+id/ivLanguage"
+                        app:layout_constraintTop_toBottomOf="@+id/ivLanguage"
+                        app:srcCompat="@drawable/theme" />
+
+                    <ImageView
+                        android:id="@+id/ivLogout"
+                        android:layout_width="@dimen/image_view_width"
+                        android:layout_height="@dimen/image_view_height"
+                        android:layout_marginTop="@dimen/image_view_margin_top"
+                        app:layout_constraintEnd_toEndOf="@+id/ivTheme"
+                        app:layout_constraintHorizontal_bias="1.0"
+                        app:layout_constraintStart_toStartOf="@+id/ivTheme"
+                        app:layout_constraintTop_toBottomOf="@+id/ivTheme"
+                        app:srcCompat="@drawable/logout" />
+
+                    <TextView
+                        android:id="@+id/tvEditProfile"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:text="@string/edit_profile_information"
+                        android:textColor="@color/black"
+                        app:layout_constraintBottom_toBottomOf="@+id/ivEdit_profile"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.086"
+                        app:layout_constraintStart_toEndOf="@+id/ivEdit_profile"
+                        app:layout_constraintTop_toTopOf="@+id/ivEdit_profile"
+                        app:layout_constraintVertical_bias="1.0" />
+
+                    <TextView
+                        android:id="@+id/tvNotification"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:text="@string/notification"
+                        android:textColor="@color/black"
+                        app:layout_constraintBottom_toBottomOf="@+id/ivNotification"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.057"
+                        app:layout_constraintStart_toEndOf="@+id/ivNotification"
+                        app:layout_constraintTop_toTopOf="@+id/ivNotification"
+                        app:layout_constraintVertical_bias="0.0" />
+
+                    <TextView
+                        android:id="@+id/tvLanguage"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:text="@string/language"
+                        android:textColor="@color/black"
+                        app:layout_constraintBottom_toBottomOf="@+id/ivLanguage"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.054"
+                        app:layout_constraintStart_toEndOf="@+id/ivLanguage"
+                        app:layout_constraintTop_toTopOf="@+id/ivLanguage"
+                        app:layout_constraintVertical_bias="0.0" />
+
+                    <TextView
+                        android:id="@+id/tvTheme"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:text="@string/theme"
+                        android:textColor="@color/black"
+                        app:layout_constraintBottom_toBottomOf="@+id/ivTheme"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.05"
+                        app:layout_constraintStart_toEndOf="@+id/ivTheme"
+                        app:layout_constraintTop_toTopOf="@+id/ivTheme"
+                        app:layout_constraintVertical_bias="0.0" />
+
+                    <TextView
+                        android:id="@+id/tvLogout"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:text="@string/logout"
+                        android:textColor="@color/profileTextBlack"
+                        app:layout_constraintBottom_toBottomOf="@+id/ivLogout"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.05"
+                        app:layout_constraintStart_toEndOf="@+id/ivLogout"
+                        app:layout_constraintTop_toTopOf="@+id/ivLogout"
+                        app:layout_constraintVertical_bias="1.0" />
+
+                    <TextView
+                        android:id="@+id/tvNotification_on_off"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/off"
+                        android:textColor="@color/blue"
+                        app:layout_constraintBottom_toBottomOf="@+id/tvNotification"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.733"
+                        app:layout_constraintStart_toEndOf="@+id/tvNotification"
+                        app:layout_constraintTop_toTopOf="@+id/tvNotification"
+                        app:layout_constraintVertical_bias="0.0" />
+
+                    <TextView
+                        android:id="@+id/tvLanguage_view"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/english"
+                        android:textColor="@color/blue"
+                        app:layout_constraintBottom_toBottomOf="@+id/tvLanguage"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.758"
+                        app:layout_constraintStart_toEndOf="@+id/tvLanguage"
+                        app:layout_constraintTop_toTopOf="@+id/tvLanguage"
+                        app:layout_constraintVertical_bias="0.0" />
+
+                    <TextView
+                        android:id="@+id/tvTheme_mode"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/light_mode"
+                        android:textColor="@color/blue"
+                        app:layout_constraintBottom_toBottomOf="@+id/tvTheme"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.785"
+                        app:layout_constraintStart_toEndOf="@+id/tvTheme"
+                        app:layout_constraintTop_toTopOf="@+id/tvTheme"
+                        app:layout_constraintVertical_bias="0.0" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-                        <!-- Separator -->
-                        <View style="@style/ViewSeparator" />
-
-                        <!-- Estimated serving portion -->
 
 
-                        <!-- Separator -->
-                        <View style="@style/ViewSeparator" />
-
-                        <!-- Estimated cooking time -->
-
-
-                        <View style="@style/ViewSeparator" />
-
-                        <!-- Categories -->
-
-                        <View style="@style/ViewSeparator" />
-
-
-
-                        <View style="@style/ViewSeparator" />
-
-
-
-                        <View style="@style/ViewSeparator" />
-
-                        <!-- Choose an image -->
-
-
-                        <Button
-                            android:id="@+id/btnLogout"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal"
-                            android:layout_marginTop="@dimen/margin_top_button_choose_image"
-                            android:text="@string/logout"
-                            android:textColor="@color/white"
-                            android:textSize="16sp" />
-
-
-                        <View style="@style/ViewSeparator" />
-
-                        <!-- Action buttons -->
-
-
-                    </LinearLayout>
-                </ScrollView>
             </RelativeLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>

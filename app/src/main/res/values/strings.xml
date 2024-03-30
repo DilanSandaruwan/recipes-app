@@ -107,4 +107,17 @@
     <string name="likes">Likes</string>
     <string name="min">min</string>
     <string name="Profile">Profile</string>
+    <string name="edit_profile">Edit Profile</string>
+    <string name="full_name">FULL NAME</string>
+    <string name="sample_gmail_com">sample@gmail.com</string>
+    <string name="my_recipes">My Recipes</string>
+    <string name="total_0">Total 0</string>
+    <string name="populer_0">Populer 0</string>
+    <string name="edit_profile_information">Edit profile information</string>
+    <string name="notification">Notification</string>
+    <string name="language">Language</string>
+    <string name="theme">Theme</string>
+    <string name="off">Off</string>
+    <string name="english">English</string>
+    <string name="light_mode">Light Mode</string>
 </resources>
