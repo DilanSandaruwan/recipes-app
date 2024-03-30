@@ -94,36 +94,22 @@
                         android:layout_marginStart="16dp"
                         android:layout_marginTop="8dp"
                         android:layout_marginEnd="16dp"
-                        android:hint="@string/username_placeholder"
+                        android:hint="@string/guest_user"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_24dp"
                         app:endIconMode="clear_text"
                         app:hintTextColor="@color/black"
-                        app:layout_constraintBottom_toTopOf="@+id/btnLogout"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.644"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_bias="0.0" />
-
-                    <Button
-                        android:id="@+id/btnLogout"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentBottom="true"
-                        android:layout_marginEnd="220dp"
-                        android:layout_marginBottom="52dp"
-                        android:text="@string/logout"
-                        android:textColor="@color/white"
-                        android:textSize="16sp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
                         android:id="@+id/tvUserEmail"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/sample_gmail_com"
+                        android:hint="@string/guest_user"
                         android:textColor="@color/profileTextBlack"
                         app:layout_constraintEnd_toEndOf="@+id/usernameTextView"
                         app:layout_constraintHorizontal_bias="0.448"

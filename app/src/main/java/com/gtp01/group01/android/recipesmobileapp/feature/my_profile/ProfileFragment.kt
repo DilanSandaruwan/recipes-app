@@ -16,6 +16,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.gtp01.group01.android.recipesmobileapp.R
 import com.gtp01.group01.android.recipesmobileapp.constant.AuthProviders
+import com.gtp01.group01.android.recipesmobileapp.constant.AuthProviders.providers
 import com.gtp01.group01.android.recipesmobileapp.constant.AuthUtils
 import com.gtp01.group01.android.recipesmobileapp.constant.ConstantRequestCode.MY_REQUEST_CODE
 import com.gtp01.group01.android.recipesmobileapp.databinding.FragmentProfileBinding
@@ -73,19 +74,31 @@ class ProfileFragment : Fragment() {
         viewUserDetails()
         binding.tvNotification
         // Sign-out from Firebase Authentication
-        binding.btnLogout.setOnClickListener {
-            // Remove user ID from SharedPreferences
-            localDataSource.deleteUserId()
-            // Signout
-            AuthUI.getInstance().signOut(requireContext()).addOnCompleteListener {
-                // Redirect to the sign-in options after successful sign-out
-                AuthUtils.showSignInOptions(requireActivity(), MY_REQUEST_CODE, providers)
-            }.addOnFailureListener { e ->
-                // Log the error for debugging purposes
-                // Show a Toast on sign-out failure
-                Toast.makeText(requireContext(), e.message, Toast.LENGTH_SHORT).show()
-                Log.e("ProfileFragment", "Sign-out failed: ${e.message}")
-            }
+
+
+        binding.ivLogout.setOnClickListener {
+            logout()
+        }
+
+        binding.tvLogout.setOnClickListener {
+            logout()
+        }
+
+    }
+
+    private fun logout() {
+
+        // Remove user ID from SharedPreferences
+        localDataSource.deleteUserId()
+        // Signout
+        AuthUI.getInstance().signOut(requireContext()).addOnCompleteListener {
+            // Redirect to the sign-in options after successful sign-out
+            AuthUtils.showSignInOptions(requireActivity(), MY_REQUEST_CODE, providers)
+        }.addOnFailureListener { e ->
+            // Log the error for debugging purposes
+            // Show a Toast on sign-out failure
+            Toast.makeText(requireContext(), e.message, Toast.LENGTH_SHORT).show()
+            Log.e("ProfileFragment", "Sign-out failed: ${e.message}")
         }
     }
 
@@ -100,12 +113,13 @@ class ProfileFragment : Fragment() {
             val userEmail = currentUser.email
             val userDisplayName = currentUser.displayName
             // Now 'username' contains the display name of the currently logged-in user
-            // You can set the username to your TextView or wherever you want to display it
             binding.usernameTextView.text = userDisplayName
+            binding.tvUserEmail.text = userEmail
             Log.d("ProfileFragment", "Username: $userDisplayName,$userEmail,$userId")
         } else {
             // Handle the case where no user is logged in
-            binding.usernameTextView.text = "Guest User" // Placeholder text for the username
+            binding.usernameTextView.text = getString(R.string.guest_user) // Placeholder text for the username
+            binding.tvUserEmail.text=getString(R.string.guest_user)
             // Example:
             Toast.makeText(
                 requireContext(), "Please log in to view your profile", Toast.LENGTH_SHORT
