@@ -209,7 +209,7 @@ fun ShowError(
 fun getErrorMessageForCode(errorCode: String): Int {
     return when (errorCode) {
         "404" -> R.string.home_error_404
-        "500" -> R.string.home_error_404
+        "500" -> R.string.home_error_500
         "IOException" -> R.string.home_error_ioexception
         else -> R.string.home_error_exception
     }
