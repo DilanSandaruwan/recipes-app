@@ -17,7 +17,7 @@ import com.gtp01.group01.android.recipesmobileapp.shared.model.FoodCategoryApp
  * @param onCheckItemClickListener Listener for item click events.
  */
 class FoodCategoriesAdapter(
-    val context: RecipeAddFragment,
+    val context: Any,
     private val onCheckItemClickListener: OnCheckItemClickListener
 ) : ListAdapter<FoodCategoryApp, FoodCategoriesAdapter.ViewHolder>(diff_util) {
 
@@ -58,6 +58,7 @@ class FoodCategoriesAdapter(
             ): Boolean {
                 return oldItem.idFoodCategory == newItem.idFoodCategory
             }
+
             /**
              * Checks if the contents of two items are the same.
              */

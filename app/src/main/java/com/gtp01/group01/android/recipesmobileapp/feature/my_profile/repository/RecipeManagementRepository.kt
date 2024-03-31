@@ -78,6 +78,7 @@ class RecipeManagementRepository @Inject constructor(
             emptyList()
         }
     }
+
     /**
      * Retrieves a list of active recipes filtered by preparation time duration.
      *
@@ -86,7 +87,8 @@ class RecipeManagementRepository @Inject constructor(
     suspend fun filterRecipesByDuration(idLoggedUser: Int, maxduration: Int): List<Recipe> {
         return withContext(Dispatchers.IO) {
             return@withContext try {
-                val response = recipeManagementApiService.filterRecipesByDuration(idLoggedUser, maxduration)
+                val response =
+                    recipeManagementApiService.filterRecipesByDuration(idLoggedUser, maxduration)
                 if (response.isSuccessful) {
                     response.body() ?: emptyList()
                 } else {
@@ -95,6 +97,59 @@ class RecipeManagementRepository @Inject constructor(
             } catch (e: Exception) {
                 emptyList<Recipe>()
             }
+        }
+    }
+
+    suspend fun updateRecipe(idLoggedUser: Int, recipe: Recipe): Recipe? {
+        return withContext(Dispatchers.IO) {
+            return@withContext updateRecipeResponseFromRemoteService(idLoggedUser, recipe)
+        }
+    }
+
+    private suspend fun updateRecipeResponseFromRemoteService(
+        idLoggedUser: Int,
+        recipe: Recipe
+    ): Recipe? {
+        val response = recipeManagementApiService.updateRecipe(idLoggedUser, recipe)
+        return if (response.isSuccessful) {
+            response.body()
+        } else {
+            null
+        }
+    }
+
+    suspend fun getOneRecipe(idLoggedUser: Int, idRecipe: Int): Recipe? {
+        return withContext(Dispatchers.IO) {
+            return@withContext getOneRecipeResponseFromRemoteService(idLoggedUser, idRecipe)
+        }
+    }
+
+    private suspend fun getOneRecipeResponseFromRemoteService(
+        idLoggedUser: Int,
+        idRecipe: Int
+    ): Recipe? {
+        val response = recipeManagementApiService.getOneRecipe(idLoggedUser, idRecipe)
+        return if (response.isSuccessful) {
+            var bitmap: ByteArray?
+            response.body().let {
+                bitmap = if (it != null) {
+                    run {
+                        val imageData =
+                            android.util.Base64.decode(
+                                it.photo as String,
+                                android.util.Base64.DEFAULT
+                            )
+                        imageData
+                        //BitmapFactory.decodeByteArray(imageData,0,imageData.size)
+                    }
+                } else {
+                    null
+                }
+                response.body()?.photo = bitmap as ByteArray
+            }
+            response.body()
+        } else {
+            null
         }
     }
 }

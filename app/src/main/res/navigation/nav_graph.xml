@@ -54,4 +54,15 @@
         android:name="com.gtp01.group01.android.recipesmobileapp.feature.view_recipe.recipe_details.InstructionFragment"
         android:label="Instruction"
         tools:layout="@layout/fragment_instruction" />
+    <fragment
+        android:id="@+id/recipeUpdateFragment"
+        android:name="com.gtp01.group01.android.recipesmobileapp.feature.recipe_delete_update.RecipeUpdateFragment"
+        android:label="fragment_recipe_update"
+        tools:layout="@layout/fragment_recipe_update">
+        <argument
+            android:name="recipe"
+            android:defaultValue="@null"
+            app:argType="com.gtp01.group01.android.recipesmobileapp.shared.model.Recipe"
+            app:nullable="true" />
+    </fragment>
 </navigation>

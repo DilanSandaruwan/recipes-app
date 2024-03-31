@@ -106,4 +106,10 @@
     <string name="placeholder_search">Enter Recipe Name</string>
     <string name="likes">Likes</string>
     <string name="min">min</string>
+
+    <!--  Update Recipe  -->
+    <string name="nothing_to_update">Nothing to update.</string>
+    <string name="info_nothing">Nothing?</string>
+    <string name="error_occured_while_getting_the_recipe">Error occured when retrieving the recipe</string>
+    <string name="got_recipe">Received recipe</string>
 </resources>

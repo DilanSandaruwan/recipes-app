@@ -32,6 +32,13 @@ object ConstantNetworkService {
     const val RECIPE_POST_RECIPE_END_POINT = "/api/v1/reader/{idLoggedUser}/recipe"
 
     /***
+     * Endpoints for Update Recipe
+     */
+    const val RECIPE_PUT_RECIPE_END_POINT = "/api/v1/reader/{idLoggedUser}/recipe"
+    const val RECIPE_GET_SPECIFIC_RECIPE_END_POINT =
+        "/api/v1/reader/{idLoggedUser}/recipe/id/{idrecipe}"
+
+    /***
      * Endpoints for retrieving recipes within time duration
      */
     const val FILTER_RECIPE_BY_DURATION_ENDPOINT =
