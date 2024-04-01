@@ -150,4 +150,5 @@
     <dimen name="home_favorite_icon_box_corner_radius">5.5dp</dimen>
     <dimen name="home_favorite_icon_box_padding">8dp</dimen>
     <dimen name="home_like_icon_size">20dp</dimen>
+    <dimen name="home_circular_progress_indicator_size">50dp</dimen>
 </resources>
