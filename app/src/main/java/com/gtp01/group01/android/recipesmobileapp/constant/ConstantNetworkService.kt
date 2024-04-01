@@ -8,6 +8,7 @@ object ConstantNetworkService {
      * Value for the Accept header indicating JSON content with UTF-8 encoding.
      */
     const val ACCEPT_JSON_UTF8 = "Accept: application/json; utf-8"
+
     /**
      * The base URL of the application's API. This URL is used to make network requests.
      */
@@ -17,11 +18,14 @@ object ConstantNetworkService {
      * Endpoint for user authorization-related save new user API requests.
      */
     const val AUTH_DETAIL_USER_ENDPOINT = "/api/v1/user"
+
     /**
      * Endpoint for retrieving recipe details by recipe ID.
      * Use placeholders `{idLoggedUser}` and `{idrecipe}` to specify user ID and recipe ID respectively.
      */
-    const val RECIPE_DETAIL_BY_RECIPE_id_ENDPOINT= "api/v1/reader/{idLoggedUser}/recipe/id/{idrecipe}"
+    const val RECIPE_DETAIL_BY_RECIPE_id_ENDPOINT =
+        "api/v1/reader/{idLoggedUser}/recipe/id/{idrecipe}"
+
     /***
      * Endpoints for Add New Recipe
      */
@@ -37,4 +41,10 @@ object ConstantNetworkService {
      */
     const val FILTER_RECIPE_BY_DURATION_ENDPOINT =
         "/api/v1/reader/{idLoggedUser}/recipe/filterby/duration/{maxduration}"
+
+    /***
+     * Endpoints for retrieving recipes containing given calorie count or less
+     */
+    const val FILTER_RECIPE_BY_CALORIE_ENDPOINT =
+        "/api/v1/reader/{idLoggedUser}/recipe/filterby/calory/{maxcalory}"
 }
