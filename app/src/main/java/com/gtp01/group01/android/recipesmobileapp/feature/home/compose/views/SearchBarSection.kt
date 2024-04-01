@@ -28,14 +28,14 @@ import com.gtp01.group01.android.recipesmobileapp.R
  *
  * @param searchKeyword String: The current search keyword entered by the user.
  * @param onSearchKeywordChange Function: Callback triggered when the search keyword changes.
- * @param onKeyboardDone Function: Callback triggered when the keyboard's "Done" action is pressed.
+ * @param onKeyboardSearch Function: Callback triggered when the keyboard's "Search" action is pressed.
  * @param modifier Modifier: The modifier for styling the layout. Default is [Modifier].
  */
 @Composable
 fun SearchBarSection(
     searchKeyword: String,
     onSearchKeywordChange: (String) -> Unit,
-    onKeyboardDone: () -> Unit,
+    onKeyboardSearch: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Card(
@@ -65,7 +65,7 @@ fun SearchBarSection(
                 Text(stringResource(R.string.placeholder_search))
             },
             keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Search),
-            keyboardActions = KeyboardActions(onDone = { onKeyboardDone() }),
+            keyboardActions = KeyboardActions(onSearch = { onKeyboardSearch(searchKeyword) }),
             modifier = modifier.fillMaxWidth()
         )
     }
@@ -79,6 +79,10 @@ fun SearchBarSection(
 @Preview(showBackground = true, showSystemUi = true)
 fun PreviewSearchBarSection() {
     MaterialTheme {
-        SearchBarSection(onKeyboardDone = {}, searchKeyword = "", onSearchKeywordChange = {})
+        SearchBarSection(
+            onKeyboardSearch = {},
+            searchKeyword = "",
+            onSearchKeywordChange = {},
+        )
     }
 }

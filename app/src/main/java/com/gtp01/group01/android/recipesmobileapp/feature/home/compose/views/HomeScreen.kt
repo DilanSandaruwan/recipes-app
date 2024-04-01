@@ -53,7 +53,8 @@ import com.gtp01.group01.android.recipesmobileapp.shared.model.Recipe
 @Composable
 fun HomeScreen(
     homeViewModel: HomeViewModel = hiltViewModel(),
-    navigateToViewRecipe: (Int) -> Unit
+    navigateToViewRecipe: (Int) -> Unit,
+    onKeyboardSearch: (String) -> Unit
 ) {
     // Collecting time-based recipe list state
     val timeRecipeListState = homeViewModel.timeBasedRecipeListState.collectAsState()
@@ -105,7 +106,7 @@ fun HomeScreen(
             SearchBarSection(
                 searchKeyword = homeViewModel.searchKeyword,
                 onSearchKeywordChange = { homeViewModel.updateSearchKeyword(it) },
-                onKeyboardDone = {}
+                onKeyboardSearch = onKeyboardSearch,
             )
             Spacer(Modifier.height(dimensionResource(id = R.dimen.activity_horizontal_margin)))
 

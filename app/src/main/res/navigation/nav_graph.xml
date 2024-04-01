@@ -54,4 +54,17 @@
         android:name="com.gtp01.group01.android.recipesmobileapp.feature.view_recipe.recipe_details.InstructionFragment"
         android:label="Instruction"
         tools:layout="@layout/fragment_instruction" />
+
+    <fragment
+        android:id="@+id/searchResultFragment"
+        android:name="com.gtp01.group01.android.recipesmobileapp.feature.home.SearchResultFragment"
+        android:label="Search Result"
+        tools:layout="@layout/fragment_search_result">
+        <argument
+            android:name="recipeName"
+            app:argType="string" />
+        <deepLink
+            android:id="@+id/deepLink"
+            app:uri="android-app://androidx.navigation/com.gtp01.group01.android.recipesmobileapp.feature.home.SearchResultFragment/{recipeName}" />
+    </fragment>
 </navigation>
