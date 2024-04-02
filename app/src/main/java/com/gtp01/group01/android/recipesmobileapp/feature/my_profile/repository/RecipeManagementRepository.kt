@@ -179,4 +179,49 @@ class RecipeManagementRepository @Inject constructor(
             }
         }
     }
+    /**
+     * Fetches recipes filtered by name from the remote server asynchronously.
+     *
+     * @param loggedUserId The ID of the logged-in user.
+     * @param recipeName The name of the recipes to filter.
+     * @return A flow emitting [Result] objects containing either a list of filtered recipes or an error.
+     */
+    suspend fun filterRecipesByName(
+        loggedUserId: Int,
+        recipeName: String
+    ): Flow<Result<List<Recipe>>> {
+        return withContext(Dispatchers.IO) {
+            return@withContext flow {
+                emit(Result.Loading) // Indicate loading state
+                try {
+                    val response = recipeManagementApiService.filterRecipesByName(
+                        loggedUserId,
+                        recipeName
+                    )
+                    if (response.isSuccessful) {
+                        // Emit a successful result with the response body
+                        emit(Result.Success(response.body() ?: emptyList()))
+                    } else {
+                        // Emit a failure result with the HTTP error code
+                        emit(Result.Failure(response.code().toString()))
+                        val errorMessage =
+                            "Failed to filter recipes for user $loggedUserId, name $recipeName: ${
+                                response.errorBody().toString()
+                            }"
+                        Log.e(TAG, errorMessage)
+                    }
+                } catch (ex: IOException) {
+                    // Emit a failure result for network errors
+                    emit(Result.Failure(ConstantResponseCode.IOEXCEPTION))
+                    val errorMessage = "Network error occurred: ${ex.message}"
+                    Log.e(TAG, errorMessage, ex)
+                } catch (ex: Exception) {
+                    // Emit a failure result for unexpected errors
+                    emit(Result.Failure(ConstantResponseCode.EXCEPTION))
+                    val errorMessage = "An unexpected error occurred: ${ex.message}"
+                    Log.e(TAG, errorMessage, ex)
+                }
+            }
+        }
+    }
 }

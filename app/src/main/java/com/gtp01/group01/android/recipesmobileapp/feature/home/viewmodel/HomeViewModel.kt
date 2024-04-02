@@ -106,6 +106,28 @@ class HomeViewModel @Inject constructor(private val recipeManagementRepository: 
     }
 
     /**
+     * Checks the validity of the entered keyword.
+     *
+     * A valid keyword contains only letters (both uppercase and lowercase) and numbers,
+     * and it is trimmed (i.e., no leading or trailing whitespace characters).
+     *
+     * @param enteredKeyword The keyword entered by the user to be validated.
+     * @return `true` if the entered keyword is valid, `false` otherwise.
+     */
+    fun isValidKeyword(enteredKeyword: String): Boolean {
+        // regular expression pattern that matches letters and numbers only
+        val pattern = Regex("[a-zA-Z0-9]+")
+        return enteredKeyword.trim().matches(pattern)
+    }
+
+    /**
+     * Clear the search keyword.
+     */
+    fun clearSearchKeyword() {
+        searchKeyword = ""
+    }
+
+    /**
      * Decodes Base64 encoded image data to Bitmap.
      *
      * @param imageValue The Base64 encoded string representing the image.
