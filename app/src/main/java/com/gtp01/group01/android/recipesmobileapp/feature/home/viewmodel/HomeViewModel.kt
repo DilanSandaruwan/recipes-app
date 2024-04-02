@@ -10,6 +10,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.gtp01.group01.android.recipesmobileapp.constant.ConstantResponseCode.EXCEPTION
 import com.gtp01.group01.android.recipesmobileapp.feature.my_profile.repository.RecipeManagementRepository
 import com.gtp01.group01.android.recipesmobileapp.shared.common.Result
 import com.gtp01.group01.android.recipesmobileapp.shared.model.Recipe
@@ -42,6 +43,12 @@ class HomeViewModel @Inject constructor(private val recipeManagementRepository: 
     private val _timeBasedRecipeListState = MutableStateFlow<Result<List<Recipe>>>(Result.Loading)
     val timeBasedRecipeListState: StateFlow<Result<List<Recipe>>> = _timeBasedRecipeListState
 
+    // StateFlow for holding calorie-based recipe list state
+    private val _calorieBasedRecipeListState =
+        MutableStateFlow<Result<List<Recipe>>>(Result.Loading)
+    val calorieBasedRecipeListState: StateFlow<Result<List<Recipe>>> = _calorieBasedRecipeListState
+
+
     // MutableState for holding search keyword
     var searchKeyword by mutableStateOf("")
 
@@ -61,7 +68,29 @@ class HomeViewModel @Inject constructor(private val recipeManagementRepository: 
                         _timeBasedRecipeListState.value = recipeList
                     }
             } catch (ex: Exception) {
-                _timeBasedRecipeListState.value = Result.Failure("Exception")
+                _timeBasedRecipeListState.value = Result.Failure(EXCEPTION)
+                Log.e(TAG, ex.message ?: "An error occurred", ex)
+            }
+        }
+    }
+
+    /**
+     * Fetches recipes filtered by calorie count asynchronously.
+     *
+     * @param loggedUserId The ID of the logged-in user.
+     * @param maxCalorie The maximum calorie count of the recipes to filter.
+     */
+    fun filterRecipesByCalorie(loggedUserId: Int, maxCalorie: Int) {
+        viewModelScope.launch {
+            try {
+                _calorieBasedRecipeListState.value = Result.Loading
+                recipeManagementRepository.filterRecipesByCalorie(loggedUserId, maxCalorie)
+                    .flowOn(Dispatchers.IO)
+                    .collect { recipeList ->
+                        _calorieBasedRecipeListState.value = recipeList
+                    }
+            } catch (ex: Exception) {
+                _calorieBasedRecipeListState.value = Result.Failure(EXCEPTION)
                 Log.e(TAG, ex.message ?: "An error occurred", ex)
             }
         }
@@ -91,8 +120,7 @@ class HomeViewModel @Inject constructor(private val recipeManagementRepository: 
             // Attempt to create a Bitmap from the decoded bytes.
             BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.size)
         } catch (e: Exception) {
-            // Handle decoding errors gracefully.
-            Log.e("DecodeImageError", "Error decoding image from Base64 string: $e")
+            Log.e(TAG, "Error decoding image from Base64 string: $e")
             null
         }
     }

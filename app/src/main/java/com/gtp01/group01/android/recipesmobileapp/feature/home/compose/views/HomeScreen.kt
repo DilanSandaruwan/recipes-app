@@ -21,6 +21,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -36,8 +37,12 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.gtp01.group01.android.recipesmobileapp.R
+import com.gtp01.group01.android.recipesmobileapp.constant.ConstantResponseCode.INTERNAL_SERVER_ERROR
+import com.gtp01.group01.android.recipesmobileapp.constant.ConstantResponseCode.IOEXCEPTION
+import com.gtp01.group01.android.recipesmobileapp.constant.ConstantResponseCode.SERVER_NOT_FOUND
 import com.gtp01.group01.android.recipesmobileapp.feature.home.viewmodel.HomeViewModel
 import com.gtp01.group01.android.recipesmobileapp.shared.common.Result
+import com.gtp01.group01.android.recipesmobileapp.shared.model.Recipe
 
 /**
  * Composable function for displaying the Home screen UI.
@@ -53,12 +58,15 @@ fun HomeScreen(
     // Collecting time-based recipe list state
     val timeRecipeListState = homeViewModel.timeBasedRecipeListState.collectAsState()
 
+    // Collecting calorie-based recipe list state
+    val calorieRecipeListState = homeViewModel.calorieBasedRecipeListState.collectAsState()
+
     // Observing user LiveData to get logged-in user information
     val user by homeViewModel.user.observeAsState(null)
 
     // Mutable state variables for filtering preferences
-    var timeFilterValue by remember { mutableStateOf(30) }
-    var calorieFilterValue by remember { mutableStateOf(300) }
+    var timeFilterValue by remember { mutableIntStateOf(30) }
+    var calorieFilterValue by remember { mutableIntStateOf(300) }
 
     // Mutable state variables for user information
     var userId by remember { mutableIntStateOf(0) }
@@ -70,16 +78,14 @@ fun HomeScreen(
         userId = user?.idUser ?: 0
         preferDuration = user?.preferDuration ?: timeFilterValue
         preferCalorie = user?.preferCalorie ?: calorieFilterValue
-
-        homeViewModel.filterRecipesByDuration(userId, preferDuration)
+        homeViewModel.filterRecipesByDuration(loggedUserId = userId, maxDuration = preferDuration)
+        homeViewModel.filterRecipesByCalorie(loggedUserId = userId, maxCalorie = preferCalorie)
     }
 
     // Monitor network availability
     checkNetworkConnectivity(onRetry = {
-        homeViewModel.filterRecipesByDuration(
-            userId,
-            preferDuration
-        )
+        homeViewModel.filterRecipesByDuration(loggedUserId = userId, maxDuration = preferDuration)
+        homeViewModel.filterRecipesByCalorie(loggedUserId = userId, maxCalorie = preferCalorie)
     })
 
     MaterialTheme {
@@ -108,29 +114,114 @@ fun HomeScreen(
             Spacer(Modifier.height(dimensionResource(id = R.dimen.activity_horizontal_margin)))
 
             // Section for displaying the filtered recipes based on preferred preparation time
-            when (val timeRecipeState = timeRecipeListState.value) {
-                is Result.Success -> {
-                    RecipeSuggestionByTimeSection(
-                        timeBasedRecipeList = timeRecipeState.result,
-                        timeFilterValue = timeFilterValue,
-                        decodeImageToBitmap = { homeViewModel.decodeImageToBitmap(it) },
-                        navigateToViewRecipe = navigateToViewRecipe
-                    )
-                }
-
-                is Result.Failure -> {
-                    ShowError(
-                        errorCode = timeRecipeState.error,
-                        onRetry = { homeViewModel.filterRecipesByDuration(userId, preferDuration) }
-                    )
-                }
-
-                is Result.Loading -> {
-                    ShowLoading()
-                }
+            if (timeRecipeListState.value is Result.Success) {
+                val recipeResult = timeRecipeListState.value as Result.Success<List<Recipe>>
+                RecipeSuggestionByTimeSection(
+                    timeBasedRecipeList = recipeResult.result,
+                    timeFilterValue = timeFilterValue,
+                    decodeImageToBitmap = { homeViewModel.decodeImageToBitmap(it) },
+                    navigateToViewRecipe = navigateToViewRecipe
+                )
             }
+
+            // Section for displaying the filtered recipes based on preferred calorie count
+            if (calorieRecipeListState.value is Result.Success) {
+                val recipeResult = calorieRecipeListState.value as Result.Success<List<Recipe>>
+                RecipeSuggestionByCalorieSection(
+                    calorieBasedRecipeList = recipeResult.result,
+                    calorieFilterValue = calorieFilterValue,
+                    decodeImageToBitmap = { homeViewModel.decodeImageToBitmap(it) },
+                    navigateToViewRecipe = navigateToViewRecipe
+                )
+            }
+
+            // Section for displaying errors when loading recipes
+            HandleRecipeResponseErrorSection(
+                timeRecipeListState = timeRecipeListState,
+                calorieRecipeListState = calorieRecipeListState,
+                onRetryFilterRecipesByDuration = {
+                    homeViewModel.filterRecipesByDuration(
+                        loggedUserId = userId,
+                        maxDuration = preferDuration
+                    )
+                },
+                onRetryFilterRecipesByCalorie = {
+                    homeViewModel.filterRecipesByCalorie(
+                        loggedUserId = userId,
+                        maxCalorie = preferCalorie
+                    )
+                },
+            )
+            Spacer(Modifier.height(dimensionResource(id = R.dimen.bottom_navigation_height)))
+
+            // Section for displaying loading progress
+            HandleRecipeLoadingSection(
+                timeRecipeListState = timeRecipeListState,
+                calorieRecipeListState = calorieRecipeListState
+            )
             Spacer(Modifier.height(dimensionResource(id = R.dimen.bottom_navigation_height)))
         }
+    }
+}
+
+/**
+ * Handles displaying error messages related to recipe fetching for both time-based and calorie-based recipes.
+ *
+ * @param timeRecipeListState The state representing the time-based recipe list.
+ * @param calorieRecipeListState The state representing the calorie-based recipe list.
+ * @param onRetryFilterRecipesByDuration Callback function to retry fetching recipes based on duration.
+ * @param onRetryFilterRecipesByCalorie Callback function to retry fetching recipes based on calorie count.
+ */
+@Composable
+private fun HandleRecipeResponseErrorSection(
+    timeRecipeListState: State<Result<List<Recipe>>>,
+    calorieRecipeListState: State<Result<List<Recipe>>>,
+    onRetryFilterRecipesByDuration: () -> Unit,
+    onRetryFilterRecipesByCalorie: () -> Unit
+) {
+    val timeError = timeRecipeListState.value is Result.Failure
+    val calorieError = calorieRecipeListState.value is Result.Failure
+
+    if (timeError && calorieError) {
+        val timeRecipeState = timeRecipeListState.value as Result.Failure
+        ShowError(
+            errorCode = timeRecipeState.error,
+            onRetry = { onRetryFilterRecipesByDuration }
+        )
+    } else {
+        if (timeError) {
+            val timeRecipeState = timeRecipeListState.value as Result.Failure
+            ShowError(
+                errorCode = timeRecipeState.error,
+                onRetry = { onRetryFilterRecipesByDuration }
+            )
+        }
+        if (calorieError) {
+            val calorieRecipeState = calorieRecipeListState.value as Result.Failure
+            ShowError(
+                errorCode = calorieRecipeState.error,
+                onRetry = { onRetryFilterRecipesByCalorie }
+            )
+        }
+    }
+}
+
+/**
+ * Handles displaying loading indicator while fetching time-based and calorie-based recipes.
+ *
+ * @param timeRecipeListState The state representing the time-based recipe list.
+ * @param calorieRecipeListState The state representing the calorie-based recipe list.
+ */
+@Composable
+private fun HandleRecipeLoadingSection(
+    timeRecipeListState: State<Result<List<Recipe>>>,
+    calorieRecipeListState: State<Result<List<Recipe>>>,
+) {
+    val timeLoading = timeRecipeListState.value is Result.Loading
+    val calorieLoading = calorieRecipeListState.value is Result.Loading
+
+    if (timeLoading || calorieLoading) {
+        ShowLoading()
     }
 }
 
@@ -157,6 +248,7 @@ fun checkNetworkConnectivity(
                 // Trigger auto-refresh
                 onRetry()
             }
+
             override fun onLost(network: Network) {
                 networkAvailable.value = false
             }
@@ -208,9 +300,9 @@ fun ShowError(
 @Composable
 fun getErrorMessageForCode(errorCode: String): Int {
     return when (errorCode) {
-        "404" -> R.string.home_error_404
-        "500" -> R.string.home_error_500
-        "IOException" -> R.string.home_error_ioexception
+        SERVER_NOT_FOUND.toString() -> R.string.home_error_404
+        INTERNAL_SERVER_ERROR.toString() -> R.string.home_error_500
+        IOEXCEPTION -> R.string.home_error_ioexception
         else -> R.string.home_error_exception
     }
 }
