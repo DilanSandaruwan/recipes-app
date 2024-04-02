@@ -1,45 +1,27 @@
 package com.gtp01.group01.android.recipesmobileapp.feature.home.compose.views
 
-import android.content.Context
-import android.net.ConnectivityManager
-import android.net.Network
-import android.net.NetworkRequest
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Button
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.dimensionResource
-import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.gtp01.group01.android.recipesmobileapp.R
-import com.gtp01.group01.android.recipesmobileapp.constant.ConstantResponseCode.INTERNAL_SERVER_ERROR
-import com.gtp01.group01.android.recipesmobileapp.constant.ConstantResponseCode.IOEXCEPTION
-import com.gtp01.group01.android.recipesmobileapp.constant.ConstantResponseCode.SERVER_NOT_FOUND
 import com.gtp01.group01.android.recipesmobileapp.feature.home.viewmodel.HomeViewModel
 import com.gtp01.group01.android.recipesmobileapp.shared.common.Result
 import com.gtp01.group01.android.recipesmobileapp.shared.model.Recipe
@@ -84,7 +66,7 @@ fun HomeScreen(
     }
 
     // Monitor network availability
-    checkNetworkConnectivity(onRetry = {
+    CheckNetworkConnectivity(onRetry = {
         homeViewModel.filterRecipesByDuration(loggedUserId = userId, maxDuration = preferDuration)
         homeViewModel.filterRecipesByCalorie(loggedUserId = userId, maxCalorie = preferCalorie)
     })
@@ -106,7 +88,9 @@ fun HomeScreen(
             SearchBarSection(
                 searchKeyword = homeViewModel.searchKeyword,
                 onSearchKeywordChange = { homeViewModel.updateSearchKeyword(it) },
+                isValidKeyword = { homeViewModel.isValidKeyword(it) },
                 onKeyboardSearch = onKeyboardSearch,
+                onClearButtonClicked = { homeViewModel.clearSearchKeyword() }
             )
             Spacer(Modifier.height(dimensionResource(id = R.dimen.activity_horizontal_margin)))
 
@@ -223,103 +207,5 @@ private fun HandleRecipeLoadingSection(
 
     if (timeLoading || calorieLoading) {
         ShowLoading()
-    }
-}
-
-/**
- * Composable function to monitor network connectivity changes and trigger actions accordingly.
- *
- * @param onRetry Callback function to be invoked when network connectivity is restored.
- */
-@Composable
-fun checkNetworkConnectivity(
-    onRetry: () -> Unit
-) {
-    // State to track network availability
-    val networkAvailable = remember { mutableStateOf(true) }
-
-    // Monitor network connectivity changes
-    val localContext = LocalContext.current
-    DisposableEffect(Unit) {
-        val connectivityManager =
-            localContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        val networkCallback = object : ConnectivityManager.NetworkCallback() {
-            override fun onAvailable(network: Network) {
-                networkAvailable.value = true
-                // Trigger auto-refresh
-                onRetry()
-            }
-
-            override fun onLost(network: Network) {
-                networkAvailable.value = false
-            }
-        }
-        val networkRequest = NetworkRequest.Builder().build()
-        connectivityManager.registerNetworkCallback(networkRequest, networkCallback)
-
-        // Unregister callback when the composable is disposed
-        onDispose {
-            connectivityManager.unregisterNetworkCallback(networkCallback)
-        }
-    }
-}
-
-/**
- * Composable function for displaying an error message.
- *
- * @param errorCode The error code to determine the error message.
- * @param modifier Optional modifier for styling.
- * @param onRetry Callback function to retry the operation.
- */
-@Composable
-fun ShowError(
-    errorCode: String,
-    modifier: Modifier = Modifier,
-    onRetry: () -> Unit
-) {
-    Box(modifier = modifier.fillMaxSize()) {
-        Column(
-            modifier = Modifier.align(Alignment.Center),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Spacer(Modifier.height(dimensionResource(id = R.dimen.activity_horizontal_margin)))
-            Text(text = stringResource(id = getErrorMessageForCode(errorCode)))
-            Spacer(Modifier.height(dimensionResource(id = R.dimen.activity_horizontal_margin)))
-            Button(onClick = onRetry) {
-                Text(stringResource(id = R.string.retry))
-            }
-        }
-    }
-}
-
-/**
- * Function to retrieve localized error message for the provided error code.
- *
- * @param errorCode The error code to determine the error message.
- * @return The resource ID of the corresponding error message.
- */
-@Composable
-fun getErrorMessageForCode(errorCode: String): Int {
-    return when (errorCode) {
-        SERVER_NOT_FOUND.toString() -> R.string.home_error_404
-        INTERNAL_SERVER_ERROR.toString() -> R.string.home_error_500
-        IOEXCEPTION -> R.string.home_error_ioexception
-        else -> R.string.home_error_exception
-    }
-}
-
-/**
- * Composable function for displaying a loading indicator.
- *
- * @param modifier Optional modifier for styling.
- */
-@Composable
-fun ShowLoading(modifier: Modifier = Modifier) {
-    Box(modifier = modifier.fillMaxSize()) {
-        CircularProgressIndicator(
-            modifier = Modifier
-                .size(dimensionResource(id = R.dimen.home_circular_progress_indicator_size))
-                .align(Alignment.Center)
-        )
     }
 }

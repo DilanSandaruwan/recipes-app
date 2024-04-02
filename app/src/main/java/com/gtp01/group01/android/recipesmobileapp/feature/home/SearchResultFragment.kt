@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.gtp01.group01.android.recipesmobileapp.feature.home.compose.views.SearchResultScreen
 
@@ -16,6 +17,7 @@ import com.gtp01.group01.android.recipesmobileapp.feature.home.compose.views.Sea
  */
 class SearchResultFragment : Fragment() {
 
+    private val navController by lazy { findNavController() }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {}
@@ -31,8 +33,13 @@ class SearchResultFragment : Fragment() {
             // Dispose of the Composition when the view's LifecycleOwner is destroyed
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
             setContent {
-                // Display the SearchResultScreen Composable with search results
-                SearchResultScreen(recipeName)
+                // Display the SearchResultScreen Composable with searched results
+                SearchResultScreen(
+                    recipeName = recipeName,
+                    navigateToViewRecipe = { recipeId ->
+                        navController.navigate("com.gtp01.group01.android.recipesmobileapp.feature.view_recipe.recipe_details.ViewRecipe/$recipeId")
+                    },
+                )
             }
         }
     }

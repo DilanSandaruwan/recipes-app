@@ -5,10 +5,12 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
@@ -28,14 +30,18 @@ import com.gtp01.group01.android.recipesmobileapp.R
  *
  * @param searchKeyword String: The current search keyword entered by the user.
  * @param onSearchKeywordChange Function: Callback triggered when the search keyword changes.
+ * @param isValidKeyword Function: Check validity of entered text when the keyboard's "Search" action is pressed.
  * @param onKeyboardSearch Function: Callback triggered when the keyboard's "Search" action is pressed.
+ * @param onClearButtonClicked Function: Callback triggered when the clear button is pressed.
  * @param modifier Modifier: The modifier for styling the layout. Default is [Modifier].
  */
 @Composable
 fun SearchBarSection(
     searchKeyword: String,
     onSearchKeywordChange: (String) -> Unit,
+    isValidKeyword: (String) -> Boolean,
     onKeyboardSearch: (String) -> Unit,
+    onClearButtonClicked: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Card(
@@ -57,6 +63,11 @@ fun SearchBarSection(
                     contentDescription = null
                 )
             },
+            trailingIcon = {
+                if (searchKeyword.isNotBlank()) {
+                    ClearButton(onClearButtonClicked = onClearButtonClicked)
+                }
+            },
             colors = OutlinedTextFieldDefaults.colors(
                 focusedBorderColor = Color.Transparent,
                 unfocusedBorderColor = Color.Transparent,
@@ -65,8 +76,29 @@ fun SearchBarSection(
                 Text(stringResource(R.string.placeholder_search))
             },
             keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Search),
-            keyboardActions = KeyboardActions(onSearch = { onKeyboardSearch(searchKeyword) }),
+            keyboardActions = KeyboardActions(onSearch = {
+                if (isValidKeyword(searchKeyword)) {
+                    onKeyboardSearch(searchKeyword)
+                }
+            }),
             modifier = modifier.fillMaxWidth()
+        )
+    }
+}
+
+/**
+ * Composable function for the clear button.
+ *
+ * @param onClearButtonClicked Callback function for the clear button click.
+ */
+@Composable
+fun ClearButton(onClearButtonClicked: () -> Unit) {
+    IconButton(
+        onClick = { onClearButtonClicked() },
+    ) {
+        Icon(
+            imageVector = Icons.Default.Clear,
+            contentDescription = null
         )
     }
 }
@@ -82,7 +114,9 @@ fun PreviewSearchBarSection() {
         SearchBarSection(
             onKeyboardSearch = {},
             searchKeyword = "",
+            isValidKeyword = { false },
             onSearchKeywordChange = {},
+            onClearButtonClicked = {}
         )
     }
 }
