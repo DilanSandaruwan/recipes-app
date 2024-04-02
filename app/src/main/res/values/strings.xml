@@ -15,6 +15,8 @@
     <string name="invalid_username">Not a valid username</string>
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
+    <string name="popup_title_error">Sign-in Failed</string>
+    <string name="popup_message_guest">Unable to sign in. You are now a guest user.</string>
 
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
