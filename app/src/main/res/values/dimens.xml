@@ -71,7 +71,6 @@
     <dimen name="_120dp">120dp</dimen>
     <dimen name="_24dp">24dp</dimen>
 
-
     /* Add New Recipe Screen */
     <dimen name="margin_app_toolbar">10dp</dimen>
     <dimen name="width_app_bar_button">32dp</dimen>
@@ -120,9 +119,36 @@
     <dimen name="tick_rv_category_card">30dp</dimen>
     <dimen name="margin_tick_rv_category_card">5dp</dimen>
     <dimen name="translation_z_tick_rv_category_card">50dp</dimen>
-    <dimen name="large_suggestion_card_view_width">255dp</dimen>
-    <dimen name="large_suggestion_card_view_min_height">205dp</dimen>
-    <dimen name="large_suggestion_card_view_max_height">275dp</dimen>
-    <dimen name="large_suggestion_card_view_img_height">142.94dp</dimen>
-    <dimen name="large_suggestion_card_view_name_width">195dp</dimen>
+
+    /* Home Screen */
+    <dimen name="home_large_suggestion_card_width">255dp</dimen>
+    <dimen name="home_large_suggestion_card_height">205dp</dimen>
+    <dimen name="home_large_suggestion_card_img_height">142.94dp</dimen>
+    <dimen name="home_large_suggestion_card_name_width">195dp</dimen>
+    <dimen name="home_small_suggestion_card_height">200dp</dimen>
+    <dimen name="home_small_suggestion_card_width">165dp</dimen>
+    <dimen name="home_small_suggestion_card_img_height">108dp</dimen>
+    <dimen name="home_small_suggestion_card_img_width">142dp</dimen>
+    <dimen name="home_small_suggestion_card_text_top_padding">55dp</dimen>
+    <dimen name="home_small_suggestion_card_text_bottom_padding">10dp</dimen>
+    <dimen name="home_suggestion_card_corner_radius">10dp</dimen>
+    <dimen name="home_recipe_name_label_height">27dp</dimen>
+    <dimen name="home_likes_label_height">21dp</dimen>
+    <dimen name="home_likes_label_padding">3dp</dimen>
+    <dimen name="home_label_padding">5dp</dimen>
+    <dimen name="home_category_item_height">65dp</dimen>
+    <dimen name="home_category_item_width">80dp</dimen>
+    <dimen name="home_category_item_img_height">56dp</dimen>
+    <dimen name="home_category_item_img_width">56dp</dimen>
+    <dimen name="home_search_bar_corner_radius">50dp</dimen>
+    <dimen name="home_search_bar_corner_elevation">20dp</dimen>
+    <dimen name="home_category_card_corner_radius">10dp</dimen>
+    <dimen name="home_category_space_between">30dp</dimen>
+    <dimen name="home_category_space">10dp</dimen>
+    <dimen name="home_favorite_icon_box_size">30dp</dimen>
+    <dimen name="home_favorite_icon_size">20dp</dimen>
+    <dimen name="home_favorite_icon_box_corner_radius">5.5dp</dimen>
+    <dimen name="home_favorite_icon_box_padding">8dp</dimen>
+    <dimen name="home_like_icon_size">20dp</dimen>
+    <dimen name="home_circular_progress_indicator_size">50dp</dimen>
 </resources>
