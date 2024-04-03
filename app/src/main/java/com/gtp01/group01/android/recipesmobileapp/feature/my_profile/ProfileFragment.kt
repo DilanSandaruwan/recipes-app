@@ -15,7 +15,10 @@ import com.gtp01.group01.android.recipesmobileapp.constant.AuthProviders
 import com.gtp01.group01.android.recipesmobileapp.constant.AuthUtils
 import com.gtp01.group01.android.recipesmobileapp.constant.ConstantRequestCode.MY_REQUEST_CODE
 import com.gtp01.group01.android.recipesmobileapp.databinding.FragmentProfileBinding
+import com.gtp01.group01.android.recipesmobileapp.shared.sources.Local.LocalDataSource
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
+
 /**
  * Fragment to display and manage user profile information.
  *
@@ -26,6 +29,9 @@ import dagger.hilt.android.AndroidEntryPoint
 class ProfileFragment : Fragment() {
     private lateinit var viewModel: ProfileViewModel
     private lateinit var binding: FragmentProfileBinding
+
+    @Inject
+    lateinit var localDataSource: LocalDataSource // Inject LocalDataSource
 
     // Current authenticated user obtained from Firebase Authentication
     val currentUser: FirebaseUser? = FirebaseAuth.getInstance().currentUser
@@ -42,12 +48,12 @@ class ProfileFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         // Access the list of providers
         val providers = AuthProviders.providers
-        // Call the saveUser function to initiate the user-saving process
-        viewModel.saveUser()
 
         viewUserDetails()
         // Sign-out from Firebase Authentication
         binding.btnLogout.setOnClickListener {
+            // Remove user ID from SharedPreferences
+            localDataSource.deleteUserId()
             // Signout
             AuthUI.getInstance().signOut(requireContext()).addOnCompleteListener {
                 // Redirect to the sign-in options after successful sign-out

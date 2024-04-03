@@ -6,9 +6,11 @@ import android.net.ConnectivityManager
 import android.util.Log
 import com.gtp01.group01.android.recipesmobileapp.constant.ConstantNetworkService
 import com.gtp01.group01.android.recipesmobileapp.feature.my_profile.repository.AuthRepository
+import com.gtp01.group01.android.recipesmobileapp.feature.my_profile.repository.GetUserIdRepository
 import com.gtp01.group01.android.recipesmobileapp.feature.my_profile.repository.RecipeManagementRepository
 import com.gtp01.group01.android.recipesmobileapp.shared.sources.AuthApiService
 import com.gtp01.group01.android.recipesmobileapp.shared.sources.RecipeManagementApiService
+import com.gtp01.group01.android.recipesmobileapp.shared.sources.UserIdApiService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -153,6 +155,31 @@ object NetworkModule {
             logMessage("NetworkError while providing bRepository: ${e.message}")
             throw e  // Re-throw the exception for higher-level error handling
         }
+    }
+
+    /**
+     * Provides a UserIdApiService instance using the provided Retrofit instance.
+     *
+     * @param retrofit The Retrofit instance.
+     * @return UserIdApiService instance.
+     */
+    @Provides
+    fun provideUserIdApiService(retrofit: Retrofit): UserIdApiService {
+        return retrofit.create(UserIdApiService::class.java)
+    }
+
+    /**
+     * Provides a singleton instance of GetUserIdRepository.
+     *
+     * @param userIdApiService The UserIdApiService instance.
+     * @return GetUserIdRepository instance.
+     */
+    @Singleton
+    @Provides
+    fun provideGetUserIdRepository(userIdApiService: UserIdApiService): GetUserIdRepository {
+
+        return GetUserIdRepository(userIdApiService)
+
     }
 
     /**
