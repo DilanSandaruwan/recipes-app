@@ -1,6 +1,7 @@
 package com.gtp01.group01.android.recipesmobileapp.feature.my_profile.repository
 
 import android.util.Log
+import com.gtp01.group01.android.recipesmobileapp.constant.ConstantResponseCode
 import com.gtp01.group01.android.recipesmobileapp.shared.common.Result
 import com.gtp01.group01.android.recipesmobileapp.shared.model.FoodCategory
 import com.gtp01.group01.android.recipesmobileapp.shared.model.Recipe
@@ -21,6 +22,9 @@ import javax.inject.Inject
 class RecipeManagementRepository @Inject constructor(
     private val recipeManagementApiService: RecipeManagementApiService
 ) {
+    // Logging tag for this class
+    private val TAG = this::class.java.simpleName
+
     /**
      * Retrieves nutrition information for the provided ingredients from the remote service.
      *
@@ -83,22 +87,95 @@ class RecipeManagementRepository @Inject constructor(
             emptyList()
         }
     }
+
     /**
-     * Retrieves a list of active recipes filtered by preparation time duration.
+     * Fetches recipes filtered by duration from the remote server asynchronously.
      *
-     * @return A list of [Recipe] containing the filtered list of [Recipe].
+     * @param loggedUserId The ID of the logged-in user.
+     * @param maxDuration The cooking time of the recipes to filter.
+     * @return A flow emitting [Result] objects containing either a list of filtered recipes or an error.
      */
-    suspend fun filterRecipesByDuration(idLoggedUser: Int, maxduration: Int): List<Recipe> {
+    suspend fun filterRecipesByDuration(
+        loggedUserId: Int,
+        maxDuration: Int
+    ): Flow<Result<List<Recipe>>> {
         return withContext(Dispatchers.IO) {
-            return@withContext try {
-                val response = recipeManagementApiService.filterRecipesByDuration(idLoggedUser, maxduration)
-                if (response.isSuccessful) {
-                    response.body() ?: emptyList()
-                } else {
-                    emptyList<Recipe>()
+            return@withContext flow {
+                emit(Result.Loading) // Indicate loading state
+                try {
+                    val response = recipeManagementApiService.filterRecipesByDuration(
+                        loggedUserId,
+                        maxDuration
+                    )
+                    if (response.isSuccessful) {
+                        // Emit a successful result with the response body
+                        emit(Result.Success(response.body() ?: emptyList()))
+                    } else {
+                        // Emit a failure result with the HTTP error code
+                        emit(Result.Failure(response.code().toString()))
+                        val errorMessage =
+                            "Failed to filter recipes for user $loggedUserId, duration $maxDuration: ${
+                                response.errorBody().toString()
+                            }"
+                        Log.e(TAG, errorMessage)
+                    }
+                } catch (ex: IOException) {
+                    // Emit a failure result for network errors
+                    emit(Result.Failure(ConstantResponseCode.IOEXCEPTION))
+                    val errorMessage = "Network error occurred: ${ex.message}"
+                    Log.e(TAG, errorMessage, ex)
+                } catch (ex: Exception) {
+                    // Emit a failure result for unexpected errors
+                    emit(Result.Failure(ConstantResponseCode.EXCEPTION))
+                    val errorMessage = "An unexpected error occurred: ${ex.message}"
+                    Log.e(TAG, errorMessage, ex)
                 }
-            } catch (e: Exception) {
-                emptyList<Recipe>()
+            }
+        }
+    }
+
+    /**
+     * Fetches recipes filtered by calorie from the remote server asynchronously.
+     *
+     * @param loggedUserId The ID of the logged-in user.
+     * @param maxCalorie The calorie count of the recipes to filter.
+     * @return A flow emitting [Result] objects containing either a list of filtered recipes or an error.
+     */
+    suspend fun filterRecipesByCalorie(
+        loggedUserId: Int,
+        maxCalorie: Int
+    ): Flow<Result<List<Recipe>>> {
+        return withContext(Dispatchers.IO) {
+            return@withContext flow {
+                emit(Result.Loading) // Indicate loading state
+                try {
+                    val response = recipeManagementApiService.filterRecipesByCalorie(
+                        loggedUserId,
+                        maxCalorie
+                    )
+                    if (response.isSuccessful) {
+                        // Emit a successful result with the response body
+                        emit(Result.Success(response.body() ?: emptyList()))
+                    } else {
+                        // Emit a failure result with the HTTP error code
+                        emit(Result.Failure(response.code().toString()))
+                        val errorMessage =
+                            "Failed to filter recipes for user $loggedUserId, calorie $maxCalorie: ${
+                                response.errorBody().toString()
+                            }"
+                        Log.e(TAG, errorMessage)
+                    }
+                } catch (ex: IOException) {
+                    // Emit a failure result for network errors
+                    emit(Result.Failure(ConstantResponseCode.IOEXCEPTION))
+                    val errorMessage = "Network error occurred: ${ex.message}"
+                    Log.e(TAG, errorMessage, ex)
+                } catch (ex: Exception) {
+                    // Emit a failure result for unexpected errors
+                    emit(Result.Failure(ConstantResponseCode.EXCEPTION))
+                    val errorMessage = "An unexpected error occurred: ${ex.message}"
+                    Log.e(TAG, errorMessage, ex)
+                }
             }
         }
     }
