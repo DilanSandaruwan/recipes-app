@@ -54,4 +54,8 @@
         android:name="com.gtp01.group01.android.recipesmobileapp.feature.view_recipe.recipe_details.InstructionFragment"
         android:label="Instruction"
         tools:layout="@layout/fragment_instruction" />
+    <fragment
+        android:id="@+id/myRecipesFragment"
+        android:name="com.gtp01.group01.android.recipesmobileapp.feature.my_recipes.MyRecipesFragment"
+        android:label="MyRecipesFragment" />
 </navigation>

@@ -55,4 +55,9 @@ interface RecipeManagementApiService {
         @Path(value = "idLoggedUser") idLoggedUser: Int,
         @Path(value = "maxduration") maxduration: Int
     ): Response<List<Recipe>>
+
+    @GET(ConstantNetworkService.RECIPE_GET_MY_RECIPES_END_POINT)
+    suspend fun getMyRecipes(
+        @Path(value = "idLoggedUser") idLoggedUser: Int,
+    ): Response<List<Recipe>>
 }

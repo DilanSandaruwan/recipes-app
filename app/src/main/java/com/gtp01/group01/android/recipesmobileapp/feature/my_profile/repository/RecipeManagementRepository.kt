@@ -1,11 +1,16 @@
 package com.gtp01.group01.android.recipesmobileapp.feature.my_profile.repository
 
+import android.util.Log
+import com.gtp01.group01.android.recipesmobileapp.shared.common.Result
 import com.gtp01.group01.android.recipesmobileapp.shared.model.FoodCategory
 import com.gtp01.group01.android.recipesmobileapp.shared.model.Recipe
 import com.gtp01.group01.android.recipesmobileapp.shared.models.NutritionModel
 import com.gtp01.group01.android.recipesmobileapp.shared.sources.RecipeManagementApiService
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.withContext
+import java.io.IOException
 import javax.inject.Inject
 
 /**
@@ -94,6 +99,37 @@ class RecipeManagementRepository @Inject constructor(
                 }
             } catch (e: Exception) {
                 emptyList<Recipe>()
+            }
+        }
+    }
+
+    suspend fun getMyRecipes(idLoggedUser: Int): Flow<Result<List<Recipe>>> {
+        return withContext(Dispatchers.IO) {
+            return@withContext flow {
+                emit(Result.Loading)
+                try {
+                    val response = recipeManagementApiService.getMyRecipes(idLoggedUser)
+                    if (response.isSuccessful) {
+                        emit(Result.Success(response.body() ?: emptyList()))
+                    } else {
+                        emit(Result.Failure(response.code().toString()))
+                        val errorMessage =
+                            "Failed to get recipes for user $idLoggedUser due to: ${
+                                response.errorBody().toString()
+                            }"
+                        Log.e("MyRecipes", errorMessage)
+                    }
+                } catch (ex: IOException) {
+                    // Emit a failure result for network errors
+                    emit(Result.Failure("IOException"))
+                    val errorMessage = "Network error occurred: ${ex.message}"
+                    Log.e("MyRecipes", errorMessage, ex)
+                } catch (ex: Exception) {
+                    // Emit a failure result for unexpected errors
+                    emit(Result.Failure("Exception"))
+                    val errorMessage = "An unexpected error occurred: ${ex.message}"
+                    Log.e("MyRecipes", errorMessage, ex)
+                }
             }
         }
     }
