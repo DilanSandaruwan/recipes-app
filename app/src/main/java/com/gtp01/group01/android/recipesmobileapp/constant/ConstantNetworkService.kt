@@ -47,4 +47,8 @@ object ConstantNetworkService {
      */
     const val FILTER_RECIPE_BY_CALORIE_ENDPOINT =
         "/api/v1/reader/{idLoggedUser}/recipe/filterby/calory/{maxcalory}"
+    /**
+     * Endpoint for searching a user by email.
+     */
+    const val SEARCH_USER_BY_EMAIL_ENDPOINT= "api/v1/user/email/{useremail}"
 }
