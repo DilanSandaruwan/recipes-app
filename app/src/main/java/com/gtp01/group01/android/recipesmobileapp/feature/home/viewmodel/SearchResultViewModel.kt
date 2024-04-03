@@ -24,14 +24,17 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 /**
- * ViewModel for the Search result screen.
- * Retrieves data related to searched recipes.
+ * ViewModel responsible for managing search results and network connectivity in the search feature.
  *
- * @property recipeManagementRepository The repository for managing recipe data.
+ * This ViewModel facilitates searching for recipes based on the recipe name entered by the user.
+ * It also monitors network connectivity to ensure proper handling of network-related operations.
+ *
+ * @param connectivityManager The system service for managing network connectivity.
+ * @param recipeManagementRepository The repository for fetching recipe data.
  */
 @HiltViewModel
 class SearchResultViewModel @Inject constructor(
-    private val connectivityManager: ConnectivityManager,
+    connectivityManager: ConnectivityManager,
     private val recipeManagementRepository: RecipeManagementRepository
 ) : ViewModel() {
     // Logging tag for this class

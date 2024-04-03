@@ -27,14 +27,17 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 /**
- * ViewModel for the Home screen.
- * Retrieves and manages data related to recipes.
+ * ViewModel responsible for managing data related to recipes on the Home screen.
+ *
+ * This ViewModel provides functionality to fetch and manage recipes based on various criteria,
+ * such as cooking time and calorie count. It also handles network connectivity and user input for searching.
  *
  * @property recipeManagementRepository The repository for managing recipe data.
+ * @param recipeManagementRepository The repository for fetching recipe data.
  */
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val connectivityManager: ConnectivityManager,
+    connectivityManager: ConnectivityManager,
     private val recipeManagementRepository: RecipeManagementRepository
 ) : ViewModel() {
     // Logging tag for this class
