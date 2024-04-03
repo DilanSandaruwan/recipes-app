@@ -6,12 +6,15 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.material3.Button
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import com.gtp01.group01.android.recipesmobileapp.R
 import com.gtp01.group01.android.recipesmobileapp.constant.ConstantResponseCode
 
@@ -28,14 +31,20 @@ fun ShowError(
     modifier: Modifier = Modifier,
     onRetry: () -> Unit
 ) {
-    Box(modifier = modifier.fillMaxSize()) {
+    Box(
+        contentAlignment = Alignment.Center,
+        modifier = modifier.fillMaxSize()
+    ) {
         Column(
             modifier = Modifier.align(Alignment.Center),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Spacer(Modifier.height(dimensionResource(id = R.dimen.activity_horizontal_margin)))
-            Text(text = stringResource(id = getErrorMessageForCode(errorCode)))
-            Spacer(Modifier.height(dimensionResource(id = R.dimen.activity_horizontal_margin)))
+            Text(
+                text = stringResource(id = getErrorMessageForCode(errorCode)),
+                textAlign = TextAlign.Center
+            )
+            Spacer(Modifier.height(dimensionResource(id = R.dimen.margin_top)))
             Button(onClick = onRetry) {
                 Text(stringResource(id = R.string.retry))
             }
@@ -52,9 +61,30 @@ fun ShowError(
 @Composable
 fun getErrorMessageForCode(errorCode: String): Int {
     return when (errorCode) {
-        ConstantResponseCode.SERVER_NOT_FOUND.toString() -> R.string.home_error_404
-        ConstantResponseCode.INTERNAL_SERVER_ERROR.toString() -> R.string.home_error_500
-        ConstantResponseCode.IOEXCEPTION -> R.string.home_error_ioexception
-        else -> R.string.home_error_exception
+        ConstantResponseCode.BAD_REQUEST.toString() -> R.string.error_400
+        ConstantResponseCode.SERVER_NOT_FOUND.toString() -> R.string.error_404
+        ConstantResponseCode.REQUEST_TIMEOUT.toString() -> R.string.error_408
+        ConstantResponseCode.INTERNAL_SERVER_ERROR.toString() -> R.string.error_500
+        ConstantResponseCode.BAD_GATEWAY.toString() -> R.string.error_502
+        ConstantResponseCode.SERVICE_UNAVAILABLE.toString() -> R.string.error_503
+        ConstantResponseCode.GATEWAY_TIMEOUT.toString() -> R.string.error_504
+        ConstantResponseCode.IOEXCEPTION -> R.string.error_ioexception
+        ConstantResponseCode.TIMEOUT_EXCEPTION -> R.string.error_connection_timeout
+        else -> R.string.generic_error_exception
+    }
+}
+
+/**
+ * Below are preview composable functions.
+ * These functions are intended for use in a preview environment during development.
+ */
+@Composable
+@Preview(showBackground = true, showSystemUi = true)
+fun PreviewShowError() {
+    MaterialTheme {
+        ShowError(
+            errorCode = "Exception",
+            onRetry = {}
+        )
     }
 }

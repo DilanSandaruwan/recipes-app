@@ -27,12 +27,12 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -49,6 +49,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.gtp01.group01.android.recipesmobileapp.R
+import com.gtp01.group01.android.recipesmobileapp.constant.ConstantResponseCode
 import com.gtp01.group01.android.recipesmobileapp.feature.home.viewmodel.SearchResultViewModel
 import com.gtp01.group01.android.recipesmobileapp.shared.common.Result
 import com.gtp01.group01.android.recipesmobileapp.shared.model.Recipe
@@ -68,27 +69,35 @@ fun SearchResultScreen(
     navigateToViewRecipe: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
+    // Observing network availability state to recomposition whenever the network state changes (available/unavailable)
+    val networkAvailable by searchResultViewModel.networkAvailable.observeAsState(true)
+
     // Observing user LiveData to get logged-in user information
     val user by searchResultViewModel.user.observeAsState(null)
-
-    // Mutable state variables for user's unique id
-    var userId by remember { mutableIntStateOf(0) }
 
     // Collecting searched recipe list state
     val searchResultRecipeListState =
         searchResultViewModel.searchResultRecipeListState.collectAsState()
 
-    // Fetch recipes based on search criteria
-    LaunchedEffect(user) {
-        userId = user?.idUser ?: 0
-        searchResultViewModel.filterRecipesByName(loggedUserId = userId, recipeName = recipeName)
+    // Mutable state variables with default values
+    var userId by remember { mutableIntStateOf(0) }
+    var isNetworkAvailable by remember { mutableStateOf(true) }
+
+    // Assigning user's preferences when user data changes
+    user?.let {
+        userId = it.idUser
     }
 
-    // Monitor network availability
-    CheckNetworkConnectivity(onRetry = {
-        searchResultViewModel.filterRecipesByName(loggedUserId = userId, recipeName = recipeName)
-    })
+    // Data fetching logic triggered when the network is available.
+    isNetworkAvailable = networkAvailable
+    if (isNetworkAvailable) {
+        searchResultViewModel.filterRecipesByName(
+            loggedUserId = userId,
+            recipeName = recipeName
+        )
+    }
 
+    // Content for search result screen
     Surface(
         color = colorResource(id = R.color.md_theme_surfaceContainer),
         shape = RoundedCornerShape(
@@ -102,30 +111,59 @@ fun SearchResultScreen(
             )
             .fillMaxSize()
     ) {
-        // Section for displaying the searched recipes based on recipe name
-        if (searchResultRecipeListState.value is Result.Success) {
-            val recipeResult = searchResultRecipeListState.value as Result.Success<List<Recipe>>
-            SearchRecipeGrid(
-                searchResultList = recipeResult.result,
-                decodeImageToBitmap = { searchResultViewModel.decodeImageToBitmap(it) },
-                navigateToViewRecipe = navigateToViewRecipe
+        // Display error message or Home screen content based on network availability.
+        if (!isNetworkAvailable) {
+            UnavailableNetworkErrorSection(errorCode = ConstantResponseCode.IOEXCEPTION,
+                onRetry = {
+                    searchResultViewModel.filterRecipesByName(
+                        loggedUserId = userId,
+                        recipeName = recipeName
+                    )
+                }
             )
-        }
-
-        // Section for displaying errors when loading recipes
-        HandleRecipeResponseErrorSection(
-            searchResultRecipeListState = searchResultRecipeListState,
-            onRetrySearchRecipes = {
-                searchResultViewModel.filterRecipesByName(
-                    loggedUserId = userId,
-                    recipeName = recipeName
+        } else {
+            // Section for displaying the searched recipes based on recipe name
+            if (searchResultRecipeListState.value is Result.Success) {
+                val recipeResult = searchResultRecipeListState.value as Result.Success<List<Recipe>>
+                SearchRecipeGrid(
+                    searchResultList = recipeResult.result,
+                    decodeImageToBitmap = { searchResultViewModel.decodeImageToBitmap(it) },
+                    navigateToViewRecipe = navigateToViewRecipe
                 )
             }
-        )
 
-        // Section for displaying loading progress
-        HandleRecipeLoadingSection(searchResultRecipeListState = searchResultRecipeListState)
+            // Section for displaying errors when loading recipes
+            HandleRecipeResponseErrorSection(
+                searchResultRecipeListState = searchResultRecipeListState,
+                onRetrySearchRecipes = {
+                    searchResultViewModel.filterRecipesByName(
+                        loggedUserId = userId,
+                        recipeName = recipeName
+                    )
+                }
+            )
+
+            // Section for displaying loading progress
+            HandleRecipeLoadingSection(searchResultRecipeListState = searchResultRecipeListState)
+        }
     }
+}
+
+/**
+ * Handles displaying error message related to unavailable network connection.
+ *
+ * @param errorCode The error code to determine the error message.
+ * @param onRetry Callback function to retry the operation.
+ */
+@Composable
+private fun UnavailableNetworkErrorSection(
+    errorCode: String,
+    onRetry: () -> Unit
+) {
+    ShowError(
+        errorCode = errorCode,
+        onRetry = onRetry
+    )
 }
 
 /**

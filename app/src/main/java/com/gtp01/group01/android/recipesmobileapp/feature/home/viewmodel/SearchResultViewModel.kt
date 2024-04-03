@@ -2,6 +2,9 @@ package com.gtp01.group01.android.recipesmobileapp.feature.home.viewmodel
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.net.ConnectivityManager
+import android.net.Network
+import android.net.NetworkRequest
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -27,10 +30,16 @@ import javax.inject.Inject
  * @property recipeManagementRepository The repository for managing recipe data.
  */
 @HiltViewModel
-class SearchResultViewModel @Inject constructor(private val recipeManagementRepository: RecipeManagementRepository) :
-    ViewModel() {
+class SearchResultViewModel @Inject constructor(
+    private val connectivityManager: ConnectivityManager,
+    private val recipeManagementRepository: RecipeManagementRepository
+) : ViewModel() {
     // Logging tag for this class
     private val TAG = this::class.java.simpleName
+
+    // LiveData for holding network availability
+    private val _networkAvailable = MutableLiveData(true)
+    val networkAvailable: LiveData<Boolean> = _networkAvailable
 
     // LiveData for holding logged-in user
     private val _user = MutableLiveData<User?>(null)
@@ -40,6 +49,26 @@ class SearchResultViewModel @Inject constructor(private val recipeManagementRepo
     private val _searchResultRecipeListState =
         MutableStateFlow<Result<List<Recipe>>>(Result.Loading)
     val searchResultRecipeListState: StateFlow<Result<List<Recipe>>> = _searchResultRecipeListState
+
+    /**
+     * Initializes the network monitoring functionality for this ViewModel.
+     *
+     * This block creates a network callback to track network availability changes and
+     * registers the network callback with the ConnectivityManager.
+     */
+    init {
+        val networkCallback = object : ConnectivityManager.NetworkCallback() {
+            override fun onAvailable(network: Network) {
+                _networkAvailable.postValue(true)
+            }
+
+            override fun onLost(network: Network) {
+                _networkAvailable.postValue(false)
+            }
+        }
+        val networkRequest = NetworkRequest.Builder().build()
+        connectivityManager.registerNetworkCallback(networkRequest, networkCallback)
+    }
 
     /**
      * Fetches recipes filtered by recipe name asynchronously.

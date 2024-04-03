@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.withContext
 import java.io.IOException
+import java.net.SocketTimeoutException
 import javax.inject.Inject
 
 /**
@@ -124,6 +125,11 @@ class RecipeManagementRepository @Inject constructor(
                     emit(Result.Failure(ConstantResponseCode.IOEXCEPTION))
                     val errorMessage = "Network error occurred: ${ex.message}"
                     Log.e(TAG, errorMessage, ex)
+                } catch (ex: SocketTimeoutException) {
+                    // Emit a failure result for connection timeout errors
+                    emit(Result.Failure(ConstantResponseCode.TIMEOUT_EXCEPTION))
+                    val errorMessage = "Connection timed out: ${ex.message}"
+                    Log.e(TAG, errorMessage, ex)
                 } catch (ex: Exception) {
                     // Emit a failure result for unexpected errors
                     emit(Result.Failure(ConstantResponseCode.EXCEPTION))
@@ -170,6 +176,11 @@ class RecipeManagementRepository @Inject constructor(
                     emit(Result.Failure(ConstantResponseCode.IOEXCEPTION))
                     val errorMessage = "Network error occurred: ${ex.message}"
                     Log.e(TAG, errorMessage, ex)
+                } catch (ex: SocketTimeoutException) {
+                    // Emit a failure result for connection timeout errors
+                    emit(Result.Failure(ConstantResponseCode.TIMEOUT_EXCEPTION))
+                    val errorMessage = "Connection timed out: ${ex.message}"
+                    Log.e(TAG, errorMessage, ex)
                 } catch (ex: Exception) {
                     // Emit a failure result for unexpected errors
                     emit(Result.Failure(ConstantResponseCode.EXCEPTION))
@@ -179,6 +190,7 @@ class RecipeManagementRepository @Inject constructor(
             }
         }
     }
+
     /**
      * Fetches recipes filtered by name from the remote server asynchronously.
      *
@@ -214,6 +226,11 @@ class RecipeManagementRepository @Inject constructor(
                     // Emit a failure result for network errors
                     emit(Result.Failure(ConstantResponseCode.IOEXCEPTION))
                     val errorMessage = "Network error occurred: ${ex.message}"
+                    Log.e(TAG, errorMessage, ex)
+                } catch (ex: SocketTimeoutException) {
+                    // Emit a failure result for connection timeout errors
+                    emit(Result.Failure(ConstantResponseCode.TIMEOUT_EXCEPTION))
+                    val errorMessage = "Connection timed out: ${ex.message}"
                     Log.e(TAG, errorMessage, ex)
                 } catch (ex: Exception) {
                     // Emit a failure result for unexpected errors
