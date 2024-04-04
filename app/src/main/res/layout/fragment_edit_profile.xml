@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+
+    <!-- Root layout container -->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".feature.my_profile.EditProfileFragment">
+
+        <!-- Main layout content -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fitsSystemWindows="true">
+
+            <!-- App toolbar -->
+            <LinearLayout
+                android:id="@+id/app_tool_bar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_app_toolbar"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <!-- Back button -->
+                <ImageButton
+                    android:layout_width="@dimen/width_app_bar_button"
+                    android:layout_height="@dimen/height_app_bar_button"
+                    android:background="@drawable/bg_app_tool_bar_btn_back"
+                    android:contentDescription="@string/desc_back_button"
+                    android:src="@drawable/ic_img_btn_back" />
+
+                <!-- Title -->
+                <TextView
+                    android:layout_width="@dimen/_0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="@string/edit_profile"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/dimen_text_size_title"
+                    android:textStyle="bold" />
+
+                <!-- Placeholder button -->
+                <ImageButton
+                    android:layout_width="@dimen/width_app_bar_button"
+                    android:layout_height="@dimen/height_app_bar_button"
+                    android:background="@color/bg_img_btn_back"
+                    android:contentDescription="@string/desc_back_button"
+                    android:src="@drawable/ic_img_btn_back"
+                    android:visibility="invisible" />
+            </LinearLayout>
+
+            <!-- Main content area -->
+            <RelativeLayout
+                style="@style/TopHalfRoundedWhiteBackground"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_0dp"
+                android:layout_marginTop="@dimen/margin_top_bg_half_rounded"
+                android:paddingBottom="@dimen/bottom_navigation_height"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/app_tool_bar">
+
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="@dimen/width_constraint_layout"
+                    android:layout_height="@dimen/height_constraint_layout"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginStart="@dimen/margin_start_constraint_layout"
+                    android:layout_marginTop="@dimen/margin_top_constraint_layout"
+                    android:layout_marginEnd="@dimen/margin_end_constraint_layout"
+                    android:layout_marginBottom="@dimen/margin_bottom_constraint_layout">
+
+                    <ImageView
+                        android:id="@+id/imageView4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/full_name"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.03"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="0.58" />
+
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/textInputLayout"
+                        style="@style/ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_top_textInputLayout"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/textInputEditText2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/full_name"
+                            app:layout_constraintTop_toTopOf="parent" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <ImageView
+                        android:id="@+id/ivNotifyMe"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textInputLayout"
+                        app:srcCompat="@drawable/notify_me" />
+
+                    <ImageView
+                        android:id="@+id/ivCategoryV"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintEnd_toEndOf="@+id/ivNotifyMe"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="@+id/ivNotifyMe"
+                        app:layout_constraintTop_toBottomOf="@+id/ivNotifyMe"
+                        app:srcCompat="@drawable/catagory" />
+
+                    <ImageView
+                        android:id="@+id/ivCookingDuration"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_top_ivCookingDuration"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/ivCategoryV"
+                        app:srcCompat="@drawable/cooking_duration__in_minutes_" />
+
+                    <ImageView
+                        android:id="@+id/ivCalory"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_top_ivCalory"
+                        app:layout_constraintEnd_toEndOf="@+id/ivCookingDuration"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/ivCookingDuration"
+                        app:srcCompat="@drawable/calory" />
+
+                    <ImageView
+                        android:id="@+id/iv10"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintBottom_toTopOf="@+id/ivCalory"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/ivCookingDuration"
+                        app:layout_constraintVertical_bias="0.0"
+                        app:srcCompat="@drawable/_10" />
+
+                    <ImageView
+                        android:id="@+id/iv30"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/margin_start_iv30"
+                        app:layout_constraintBottom_toBottomOf="@+id/iv10"
+                        app:layout_constraintStart_toEndOf="@+id/iv10"
+                        app:layout_constraintTop_toTopOf="@+id/iv10"
+                        app:layout_constraintVertical_bias="0.0"
+                        app:srcCompat="@drawable/_0" />
+
+                    <ImageView
+                        android:id="@+id/iv60"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintBottom_toBottomOf="@+id/iv30"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="1.0"
+                        app:layout_constraintStart_toEndOf="@+id/iv30"
+                        app:layout_constraintTop_toTopOf="@+id/iv30"
+                        app:layout_constraintVertical_bias="0.0"
+                        app:srcCompat="@drawable/_60" />
+
+                    <ImageView
+                        android:id="@+id/ivCalory10"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintBottom_toBottomOf="@+id/vCalory30"
+                        app:layout_constraintEnd_toStartOf="@+id/vCalory30"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/vCalory30"
+                        app:layout_constraintVertical_bias="0.0"
+                        app:srcCompat="@drawable/_10" />
+
+                    <ImageView
+                        android:id="@+id/vCalory30"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/image_view_margin_start"
+                        android:layout_marginTop="@dimen/calory_image_view_margin_top"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/ivCalory"
+                        app:layout_constraintVertical_bias="0.0"
+                        app:srcCompat="@drawable/_0" />
+
+                    <ImageView
+                        android:id="@+id/ivCalory60"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintBottom_toBottomOf="@+id/vCalory30"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="1.0"
+                        app:layout_constraintStart_toEndOf="@+id/vCalory30"
+                        app:layout_constraintTop_toTopOf="@+id/vCalory30"
+                        app:layout_constraintVertical_bias="0.0"
+                        app:srcCompat="@drawable/_60" />
+                    <!-- SeekBar for Cooking Duration -->
+                    <SeekBar
+                        android:id="@+id/sbCookingDuration"
+                        android:layout_width="@dimen/width_seekbar"
+                        android:layout_height="@dimen/height_seekbar"
+                        android:progressTint="@color/colorAccent"
+                        android:thumbTint="@color/colorAccent"
+                        app:layout_constraintBottom_toTopOf="@+id/ivCalory"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/iv30"
+                        app:layout_constraintVertical_bias="0.433" />/>
+                    <!-- SeekBar for Calory -->
+                    <SeekBar
+                        android:id="@+id/sbCalory"
+                        android:layout_width="@dimen/width_seekbar"
+                        android:layout_height="@dimen/height_seekbar"
+                        android:progressTint="@color/colorAccent"
+                        android:thumbTint="@color/colorAccent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/vCalory30"
+                        app:layout_constraintVertical_bias="0.056" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rvFoodCategory"
+                        android:layout_width="@dimen/width_recyclerview"
+                        android:layout_height="@dimen/height_recyclerview"
+                        android:orientation="horizontal"
+                        app:layout_constraintBottom_toTopOf="@+id/ivCookingDuration"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.687"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/ivCategoryV"
+                        app:layout_constraintVertical_bias="0.247"
+                        tools:listitem="@layout/layout_category_item" />
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            </RelativeLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </FrameLayout>
+</layout>
