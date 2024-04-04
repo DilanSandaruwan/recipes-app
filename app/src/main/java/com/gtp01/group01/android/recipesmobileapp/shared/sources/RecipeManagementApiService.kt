@@ -70,4 +70,16 @@ interface RecipeManagementApiService {
         @Path(value = "idLoggedUser") idLoggedUser: Int,
         @Path(value = "maxduration") maxduration: Int
     ): Response<List<Recipe>>
+
+    /**
+     * Filters a list of active recipes by calorie count.
+     * @param idLoggedUser The USER ID of the logged in user.
+     * @param maxCalorie The MAXIMUM CALORIE COUNT of food.
+     * @return A list of [Recipe] containing the filtered list of [Recipe].
+     */
+    @GET(ConstantNetworkService.FILTER_RECIPE_BY_CALORIE_ENDPOINT)
+    suspend fun filterRecipesByCalorie(
+        @Path(value = "idLoggedUser") idLoggedUser: Int,
+        @Path(value = "maxcalory") maxCalorie: Int
+    ): Response<List<Recipe>>
 }

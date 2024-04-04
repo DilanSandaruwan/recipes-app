@@ -110,6 +110,7 @@ dependencies {
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.hilt.navigation.compose)
     implementation(libs.androidx.navigation.compose)
+    implementation(libs.coil.kt.compose)
 
     // ——— ActivityTestRule ——— //
     androidTestImplementation(libs.androidx.test.rules)
@@ -142,5 +143,4 @@ dependencies {
     implementation(libs.firebase.ui.auth)
     implementation(libs.firebase.auth)
     implementation(libs.firebase.core)
-
 }
