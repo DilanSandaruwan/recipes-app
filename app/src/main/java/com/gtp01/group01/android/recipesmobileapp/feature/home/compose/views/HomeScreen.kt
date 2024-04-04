@@ -30,16 +30,20 @@ import com.gtp01.group01.android.recipesmobileapp.shared.common.Result
 import com.gtp01.group01.android.recipesmobileapp.shared.model.Recipe
 
 /**
- * Composable function for displaying the Home screen UI.
+ * Composable function that constructs the Home screen UI, displaying filtered recipes,
+ * search functionality, and handling network errors.
  *
- * @param homeViewModel The [HomeViewModel] instance to retrieve data and manage UI state.
- * @param navigateToViewRecipe Function to navigate to the View Recipe screen.
+ * @param homeViewModel: Instance of [HomeViewModel] to manage data and state.
+ * @param navigateToViewRecipe: Function to navigate to the View Recipe screen for a selected recipe.
+ * @param onKeyboardSearch: Function to handle keyboard search events.
+ * @param onFilterByCategory: Function to handle category filter selections.
  */
 @Composable
 fun HomeScreen(
     homeViewModel: HomeViewModel = hiltViewModel(),
     navigateToViewRecipe: (Int) -> Unit,
-    onKeyboardSearch: (String) -> Unit
+    onKeyboardSearch: (String) -> Unit,
+    onFilterByCategory: (Int) -> Unit
 ) {
     // Observing network availability state to recomposition whenever the network state changes (available/unavailable)
     val networkAvailable by homeViewModel.networkAvailable.observeAsState(true)
@@ -103,7 +107,7 @@ fun HomeScreen(
             Spacer(Modifier.height(dimensionResource(id = R.dimen.activity_horizontal_margin)))
 
             // Section for displaying the categories to select
-            CategorySection()
+            CategorySection(onFilterByCategory = onFilterByCategory)
             Spacer(Modifier.height(dimensionResource(id = R.dimen.activity_horizontal_margin)))
 
             // Display error message or Home screen content based on network availability.
