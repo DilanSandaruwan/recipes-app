@@ -79,4 +79,16 @@ interface RecipeManagementApiService {
         @Path(value = "idLoggedUser") idLoggedUser: Int,
         @Path(value = "recipename") recipeName: String
     ): Response<List<Recipe>>
+
+    /**
+     * Filters a list of active recipes by category.
+     * @param idLoggedUser The USER ID of the logged in user.
+     * @param categoryId The CATEGORY of food.
+     * @return A list of [Recipe] containing the filtered list of [Recipe].
+     */
+    @GET(ConstantNetworkService.FILTER_RECIPE_BY_CATEGORY_ENDPOINT)
+    suspend fun filterRecipesByCategory(
+        @Path(value = "idLoggedUser") idLoggedUser: Int,
+        @Path(value = "categoryids") categoryId: Int
+    ): Response<List<Recipe>>
 }

@@ -96,6 +96,28 @@ class SearchResultViewModel @Inject constructor(
     }
 
     /**
+     * Fetches recipes filtered by recipe category asynchronously.
+     *
+     * @param loggedUserId The ID of the logged-in user.
+     * @param categoryId The category of the recipes to filter.
+     */
+    fun filterRecipesByCategory(loggedUserId: Int, categoryId: Int) {
+        viewModelScope.launch {
+            try {
+                _searchResultRecipeListState.value = Result.Loading
+                recipeManagementRepository.filterRecipesByCategory(loggedUserId, categoryId)
+                    .flowOn(Dispatchers.IO)
+                    .collect { recipeList ->
+                        _searchResultRecipeListState.value = recipeList
+                    }
+            } catch (ex: Exception) {
+                _searchResultRecipeListState.value = Result.Failure(ConstantResponseCode.EXCEPTION)
+                Log.e(TAG, ex.message ?: "An error occurred", ex)
+            }
+        }
+    }
+
+    /**
      * Decodes Base64 encoded image data to Bitmap.
      *
      * @param imageValue The Base64 encoded string representing the image.
