@@ -1,4 +1,25 @@
 <resources>
+    <!-- Dimensions Edit Profile-->
+    <dimen name="width_seekbar">369dp</dimen>
+    <dimen name="height_seekbar">15dp</dimen>
+    <dimen name="width_recyclerview">352dp</dimen>
+    <dimen name="height_recyclerview">150dp</dimen>
+    <dimen name="margin_start_iv30">152dp</dimen>
+    <dimen name="margin_top_ivCalory">64dp</dimen>
+    <dimen name="margin_top_ivCookingDuration">164dp</dimen>
+    <dimen name="margin_top_textInputLayout">16dp</dimen>
+    <dimen name="width_constraint_layout">395dp</dimen>
+    <dimen name="height_constraint_layout">632dp</dimen>
+    <dimen name="margin_start_constraint_layout">0dp</dimen>
+    <dimen name="margin_top_constraint_layout">0dp</dimen>
+    <dimen name="margin_end_constraint_layout">0dp</dimen>
+    <dimen name="margin_bottom_constraint_layout">32dp</dimen>
+    <dimen name="image_view_margin_start">188dp</dimen>
+    <dimen name="calory_image_view_margin_top">8dp</dimen>
+    <!-- Dimensions Profile-->
+    <dimen name="image_view_width">25dp</dimen>
+    <dimen name="image_view_height">25dp</dimen>
+    <dimen name="image_view_margin_top">24dp</dimen>
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
@@ -14,6 +35,17 @@
     <dimen name="round_icon_stroke_width">0.5dp</dimen>
     <dimen name="content_horizontal_margin">16dp</dimen>
     <dimen name="forward_arrow_size">15dp</dimen>
+    <dimen name="my_recipes_width">45dp</dimen>
+    <dimen name="my_recipes_height">45dp</dimen>
+    <dimen name="my_recipes_start_margin">4dp</dimen>
+    <dimen name="my_recipes_top_margin">16dp</dimen>
+    <!-- Content container -->
+    <dimen name="constraint_layout_width">395dp</dimen>
+    <dimen name="constraint_layout_height">632dp</dimen>
+    <dimen name="constraint_layout_start_margin">0dp</dimen>
+    <dimen name="constraint_layout_top_margin">0dp</dimen>
+    <dimen name="constraint_layout_end_margin">0dp</dimen>
+    <dimen name="constraint_layout_bottom_margin">32dp</dimen>
 
     /* Font size */
     <dimen name="text_small">14sp</dimen>
@@ -151,6 +183,15 @@
     <dimen name="home_favorite_icon_box_padding">8dp</dimen>
     <dimen name="home_like_icon_size">20dp</dimen>
     <dimen name="home_circular_progress_indicator_size">50dp</dimen>
+    <dimen name="large_suggestion_card_view_width">255dp</dimen>
+    <dimen name="large_suggestion_card_view_min_height">205dp</dimen>
+    <dimen name="large_suggestion_card_view_max_height">275dp</dimen>
+    <dimen name="large_suggestion_card_view_img_height">142.94dp</dimen>
+    <dimen name="large_suggestion_card_view_name_width">195dp</dimen>
+    <dimen name="_12dp">12dp</dimen>
+    <dimen name="_44dp">44dp</dimen>
+    <dimen name="_36dp">36dp</dimen>
+    <dimen name="_20dp">20dp</dimen>
 
     /* Search Recipe Result Screen */
     <dimen name="search_screen_top_padding">80dp</dimen>

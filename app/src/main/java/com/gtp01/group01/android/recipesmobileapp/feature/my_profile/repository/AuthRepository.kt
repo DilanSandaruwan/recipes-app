@@ -2,13 +2,14 @@ package com.gtp01.group01.android.recipesmobileapp.feature.my_profile.repository
 
 import android.util.Log
 
-import com.gtp01.group01.android.recipesmobileapp.shared.model.AuthUser
+import com.gtp01.group01.android.recipesmobileapp.shared.model.User
 import com.gtp01.group01.android.recipesmobileapp.shared.sources.AuthApiService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.Response
 
 import javax.inject.Inject
+
 /**
  * Repository for handling authentication-related data operations.
  *
@@ -21,7 +22,7 @@ class AuthRepository @Inject constructor(private val authApiService: AuthApiServ
      * @param authUser The [AuthUser] object containing user details.
      * @return A [Response] indicating the success or failure of the save operation.
      */
-    suspend fun saveUser(authUser: AuthUser): Response<AuthUser> {
+    suspend fun saveUser(authUser: User): Response<User> {
         return withContext(Dispatchers.IO) {
             try {
                 Log.d("AuthRepository", "Attempting to save user: $authUser")
@@ -42,7 +43,10 @@ class AuthRepository @Inject constructor(private val authApiService: AuthApiServ
                     }
                 } else {
                     // Log the error message from the response body or other relevant details
-                    Log.e("AuthRepository", "Failed to save user. Response: ${response.errorBody()?.string()}")
+                    Log.e(
+                        "AuthRepository",
+                        "Failed to save user. Response: ${response.errorBody()?.string()}"
+                    )
                 }
 
                 // Return the response to match the declared return type
