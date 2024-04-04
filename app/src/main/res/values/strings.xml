@@ -128,4 +128,12 @@
     <string name="home_error_500">Oops! Something went wrong on our server. Please try again later.</string>
     <string name="home_error_exception">Oops! Something unexpected occurred. Please try again.</string>
     <string name="home_error_ioexception">Oops! Network error. Please check your internet connection and try again.</string>
+    <string name="likes">Likes</string>
+    <string name="min">min</string>
+
+    <!--  Update Recipe  -->
+    <string name="nothing_to_update">Nothing to update.</string>
+    <string name="info_nothing">Nothing?</string>
+    <string name="error_occured_while_getting_the_recipe">Error occured when retrieving the recipe</string>
+    <string name="got_recipe">Received recipe</string>
 </resources>
