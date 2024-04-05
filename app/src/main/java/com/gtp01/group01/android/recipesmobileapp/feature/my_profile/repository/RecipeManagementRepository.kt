@@ -102,7 +102,6 @@ class RecipeManagementRepository @Inject constructor(
     ): Flow<Result<List<Recipe>>> {
         return withContext(Dispatchers.IO) {
             return@withContext flow {
-                emit(Result.Loading) // Indicate loading state
                 try {
                     val response = recipeManagementApiService.filterRecipesByDuration(
                         loggedUserId,
@@ -153,7 +152,6 @@ class RecipeManagementRepository @Inject constructor(
     ): Flow<Result<List<Recipe>>> {
         return withContext(Dispatchers.IO) {
             return@withContext flow {
-                emit(Result.Loading) // Indicate loading state
                 try {
                     val response = recipeManagementApiService.filterRecipesByCalorie(
                         loggedUserId,

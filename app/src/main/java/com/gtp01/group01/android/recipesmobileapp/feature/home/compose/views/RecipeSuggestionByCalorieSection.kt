@@ -13,9 +13,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
-import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.FavoriteBorder
@@ -104,8 +103,7 @@ fun RecipeSuggestionByCalorieGrid(
     navigateToViewRecipe: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    LazyHorizontalGrid(
-        rows = GridCells.Fixed(1),
+    LazyRow(
         horizontalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.content_horizontal_margin)),
         modifier = modifier
             .height(dimensionResource(id = R.dimen.home_small_suggestion_card_height))

@@ -19,6 +19,15 @@ class LocalDataSource @Inject constructor(private val sharePreferences: SharedPr
     }
 
     /**
+     * Retrieves the user ID from SharedPreferences. Return 0 by default.
+     *
+     * @return USERID The user ID of looged in user.
+     */
+    fun getUserId(): Int {
+        return sharePreferences.getInt("USERID", 0)
+    }
+
+    /**
      * Deletes the user ID from SharedPreferences.
      */
     fun deleteUserId() {

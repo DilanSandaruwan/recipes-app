@@ -18,6 +18,7 @@ import com.gtp01.group01.android.recipesmobileapp.feature.my_profile.repository.
 import com.gtp01.group01.android.recipesmobileapp.shared.common.Result
 import com.gtp01.group01.android.recipesmobileapp.shared.model.Recipe
 import com.gtp01.group01.android.recipesmobileapp.shared.model.User
+import com.gtp01.group01.android.recipesmobileapp.shared.sources.Local.LocalDataSource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -38,7 +39,8 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     connectivityManager: ConnectivityManager,
-    private val recipeManagementRepository: RecipeManagementRepository
+    private val recipeManagementRepository: RecipeManagementRepository,
+    private val localDataSource: LocalDataSource
 ) : ViewModel() {
     // Logging tag for this class
     private val TAG = this::class.java.simpleName
@@ -63,13 +65,13 @@ class HomeViewModel @Inject constructor(
     // MutableState for holding search keyword
     var searchKeyword by mutableStateOf("")
 
-    /**
-     * Initializes the network monitoring functionality for this ViewModel.
-     *
-     * This block creates a network callback to track network availability changes and
-     * registers the network callback with the ConnectivityManager.
-     */
     init {
+        /**
+         * Initializes the network monitoring functionality for this ViewModel.
+         *
+         * This block creates a network callback to track network availability changes and
+         * registers the network callback with the ConnectivityManager.
+         */
         val networkCallback = object : ConnectivityManager.NetworkCallback() {
             override fun onAvailable(network: Network) {
                 _networkAvailable.postValue(true)
@@ -92,11 +94,10 @@ class HomeViewModel @Inject constructor(
     fun filterRecipesByDuration(loggedUserId: Int, maxDuration: Int) {
         viewModelScope.launch {
             try {
-                _timeBasedRecipeListState.value = Result.Loading
                 recipeManagementRepository.filterRecipesByDuration(loggedUserId, maxDuration)
                     .flowOn(Dispatchers.IO)
-                    .collect { recipeList ->
-                        _timeBasedRecipeListState.value = recipeList
+                    .collect { recipeListResult ->
+                        _timeBasedRecipeListState.value = recipeListResult
                     }
             } catch (ex: Exception) {
                 _timeBasedRecipeListState.value = Result.Failure(EXCEPTION)
@@ -114,17 +115,29 @@ class HomeViewModel @Inject constructor(
     fun filterRecipesByCalorie(loggedUserId: Int, maxCalorie: Int) {
         viewModelScope.launch {
             try {
-                _calorieBasedRecipeListState.value = Result.Loading
                 recipeManagementRepository.filterRecipesByCalorie(loggedUserId, maxCalorie)
                     .flowOn(Dispatchers.IO)
-                    .collect { recipeList ->
-                        _calorieBasedRecipeListState.value = recipeList
+                    .collect { recipeListResult ->
+                        _calorieBasedRecipeListState.value = recipeListResult
                     }
             } catch (ex: Exception) {
                 _calorieBasedRecipeListState.value = Result.Failure(EXCEPTION)
                 Log.e(TAG, ex.message ?: "An error occurred", ex)
             }
         }
+    }
+
+    /**
+     * Fetches and sets the currently logged-in user's information.
+     *
+     * This function retrieves the user ID from the local data source using `localDataSource.getUserId()`.
+     * It then creates a new `User` object with the retrieved ID and sets the value of the private member variable `_user`
+     * to this newly created user object.
+     */
+    fun getUser() {
+        _user.value = User(
+            idUser = localDataSource.getUserId()
+        )
     }
 
     /**

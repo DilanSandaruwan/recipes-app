@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
@@ -53,6 +54,7 @@ fun HomeScreen(
 
     // Collecting calorie-based recipe list state
     val calorieBasedRecipeListState = homeViewModel.calorieBasedRecipeListState.collectAsState()
+    homeViewModel.getUser()
 
     // Observing user LiveData to get logged-in user information
     val user by homeViewModel.user.observeAsState(null)
@@ -65,9 +67,15 @@ fun HomeScreen(
 
     // Assigning user's preferences when user data changes
     user?.let {
-        userId = it.idUser
-        preferDuration = it.preferDuration
-        preferCalorie = it.preferCalorie
+        if (it.idUser != 0) {
+            userId = it.idUser
+            preferDuration = it.preferDuration
+            preferCalorie = it.preferCalorie
+        } else {
+            userId = 0
+            preferDuration = 30
+            preferCalorie = 300
+        }
     }
 
     // Data fetching logic triggered when the network is available.
@@ -104,6 +112,7 @@ fun HomeScreen(
                 onKeyboardSearch = onKeyboardSearch,
                 onClearButtonClicked = { homeViewModel.clearSearchKeyword() }
             )
+            Text(text = "USER ID IS $userId")
             Spacer(Modifier.height(dimensionResource(id = R.dimen.activity_horizontal_margin)))
 
             // Section for displaying the categories to select
