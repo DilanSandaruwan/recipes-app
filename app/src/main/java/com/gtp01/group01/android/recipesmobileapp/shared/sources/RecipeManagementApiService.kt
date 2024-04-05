@@ -67,4 +67,12 @@ interface RecipeManagementApiService {
         @Path(value = "idLoggedUser") idLoggedUser: Int,
         @Path(value = "maxcalory") maxCalorie: Int
     ): Response<List<Recipe>>
+
+
+
+    GET(ConstantNetworkService.FAVORITES_ENDPOINT)
+    suspend fun getFavorites(
+        @Path(value = "idLoggedUser") idLoggedUser: Int,
+
+    ): Response<List<Recipe>>
 }

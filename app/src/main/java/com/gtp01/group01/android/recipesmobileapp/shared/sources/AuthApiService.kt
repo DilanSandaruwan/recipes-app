@@ -1,8 +1,8 @@
 package com.gtp01.group01.android.recipesmobileapp.shared.sources
 
 import com.gtp01.group01.android.recipesmobileapp.constant.ConstantNetworkService
-import com.gtp01.group01.android.recipesmobileapp.shared.model.AuthUser
 import com.gtp01.group01.android.recipesmobileapp.shared.model.Recipe
+import com.gtp01.group01.android.recipesmobileapp.shared.model.User
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -22,8 +22,9 @@ interface AuthApiService {
      */
     @Headers(ConstantNetworkService.ACCEPT_JSON_UTF8)
     @POST(ConstantNetworkService.AUTH_DETAIL_USER_ENDPOINT)
-    suspend fun saveUser(@Body authUser: AuthUser)
-            : Response<AuthUser>
+    suspend fun saveUser(@Body authUser: User)
+            : Response<User>
+
     /**
      * Fetches recipe details for the specified user and recipe ID.
      *

@@ -18,7 +18,11 @@
         android:id="@+id/profileFragment"
         android:name="com.gtp01.group01.android.recipesmobileapp.feature.my_profile.ProfileFragment"
         android:label="fragment_profile"
-        tools:layout="@layout/fragment_profile" />
+        tools:layout="@layout/fragment_profile" >
+        <action
+            android:id="@+id/action_profileFragment_to_editProfileFragment"
+            app:destination="@id/editProfileFragment" />
+    </fragment>
     <fragment
         android:id="@+id/favouriteFragment"
         android:name="com.gtp01.group01.android.recipesmobileapp.feature.my_favourites.FavouriteFragment"
@@ -54,4 +58,8 @@
         android:name="com.gtp01.group01.android.recipesmobileapp.feature.view_recipe.recipe_details.InstructionFragment"
         android:label="Instruction"
         tools:layout="@layout/fragment_instruction" />
+    <fragment
+        android:id="@+id/editProfileFragment"
+        android:name="com.gtp01.group01.android.recipesmobileapp.feature.my_profile.EditProfileFragment"
+        android:label="EditProfileFragment" />
 </navigation>
