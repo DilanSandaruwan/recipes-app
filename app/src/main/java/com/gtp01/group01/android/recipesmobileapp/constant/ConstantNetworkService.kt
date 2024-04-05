@@ -51,4 +51,9 @@ object ConstantNetworkService {
      * Endpoint for searching a user by email.
      */
     const val SEARCH_USER_BY_EMAIL_ENDPOINT= "api/v1/user/email/{useremail}"
+
+    /**
+     * Endpoint for favorites
+     */
+    const val FAVORITES_RECIPES_ENDPOINT="/api/v1/reader/{idLoggedUser}/favorite/all"
 }
