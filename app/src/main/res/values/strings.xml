@@ -106,6 +106,9 @@
     <string name="home_suggestion_bytime_title">Make It In %d Min</string>
     <string name="home_suggestion_bycalorie_title">Make It below %dKcal</string>
     <string name="placeholder_search">Enter Recipe Name</string>
+    <string name="likes">Likes</string>
+    <string name="min">min</string>
+    <string name="Profile">Profile</string>
     <string name="like_count">" %d"</string>
     <string name="calories">Calories</string>
     <string name="calorie_kcal">%dKcal</string>
@@ -128,8 +131,20 @@
     <string name="home_error_500">Oops! Something went wrong on our server. Please try again later.</string>
     <string name="home_error_exception">Oops! Something unexpected occurred. Please try again.</string>
     <string name="home_error_ioexception">Oops! Network error. Please check your internet connection and try again.</string>
-    <string name="likes">Likes</string>
-    <string name="min">min</string>
+    <string name="edit_profile">Edit Profile</string>
+    <string name="full_name">FULL NAME</string>
+    <string name="sample_gmail_com">sample@gmail.com</string>
+    <string name="my_recipes">My Recipes</string>
+    <string name="total_0">Total 0</string>
+    <string name="populer_0">Populer 0</string>
+    <string name="edit_profile_information">Edit profile information</string>
+    <string name="notification">Notification</string>
+    <string name="language">Language</string>
+    <string name="theme">Theme</string>
+    <string name="off">Off</string>
+    <string name="english">English</string>
+    <string name="light_mode">Light Mode</string>
+    <string name="guest_user">Guest User</string>
 
     <!--  Update Recipe  -->
     <string name="nothing_to_update">Nothing to update.</string>

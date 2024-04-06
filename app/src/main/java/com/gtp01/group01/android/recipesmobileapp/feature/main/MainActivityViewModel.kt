@@ -8,7 +8,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.gtp01.group01.android.recipesmobileapp.feature.my_profile.repository.AuthRepository
 import com.gtp01.group01.android.recipesmobileapp.feature.my_profile.repository.GetUserIdRepository
 import com.gtp01.group01.android.recipesmobileapp.shared.common.ResultState
-import com.gtp01.group01.android.recipesmobileapp.shared.model.AuthUser
+import com.gtp01.group01.android.recipesmobileapp.shared.model.User
 import com.gtp01.group01.android.recipesmobileapp.shared.sources.Local.LocalDataSource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -33,13 +33,12 @@ class MainActivityViewModel @Inject constructor(
         viewModelScope.launch {
             val currentUser = FirebaseAuth.getInstance().currentUser
             if (currentUser != null) {
-                // Create an AuthUser object with the retrieved details
-                val authUser = AuthUser(
+                val authUser = User(
                     idUser = 1, // You might get this ID from Firebase or another source
                     email = currentUser.email.orEmpty(),
                     fullName = currentUser.displayName.orEmpty()
-                )
 
+                )
                 // Save the user details using the AuthRepository
                 val response = authRepository.saveUser(authUser)
                 _saveUserResult.value = response.isSuccessful
@@ -62,7 +61,7 @@ class MainActivityViewModel @Inject constructor(
                 val email = currentUser?.email.orEmpty()
                 val result = getUserIdRepository.getUserId(email)
                 _userId.value = ResultState.Success(result)
-                localDataSource.saveUserId(result.iduser)
+                localDataSource.saveUserId(result.idUser)
             } catch (e: Exception) {
                 _userId.value = ResultState.Failure("Failed to fetch user ID")
             }
