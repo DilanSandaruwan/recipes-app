@@ -386,7 +386,7 @@
                         android:textColor="@color/white"
                         android:textSize="16sp" />
 
-                    <com.gtp01.group01.android.recipesmobileapp.shared.utils.ui.RoundedImageView
+                    <com.gtp01.group01.android.recipesmobileapp.shared.utils.RoundedImageView
                         android:id="@+id/ivChooseItemImg"
                         android:layout_width="@dimen/size_image_view_recipe"
                         android:layout_height="@dimen/size_image_view_recipe"

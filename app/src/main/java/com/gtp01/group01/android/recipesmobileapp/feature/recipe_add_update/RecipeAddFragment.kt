@@ -32,7 +32,7 @@ import com.gtp01.group01.android.recipesmobileapp.shared.model.FoodCategory
 import com.gtp01.group01.android.recipesmobileapp.shared.model.FoodCategoryApp
 import com.gtp01.group01.android.recipesmobileapp.shared.model.Recipe
 import com.gtp01.group01.android.recipesmobileapp.shared.model.User
-import com.gtp01.group01.android.recipesmobileapp.shared.utils.ui.RecipeMappers
+import com.gtp01.group01.android.recipesmobileapp.shared.utils.RecipeMappers
 import dagger.hilt.android.AndroidEntryPoint
 import java.io.ByteArrayOutputStream
 

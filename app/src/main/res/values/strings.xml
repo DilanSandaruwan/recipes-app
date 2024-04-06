@@ -148,6 +148,7 @@
 
     <!--  Update Recipe  -->
     <string name="nothing_to_update">Nothing to update.</string>
+    <string name="nothing_to_show_recipes">No recipes to show.</string>
     <string name="info_nothing">Nothing?</string>
     <string name="error_occured_while_getting_the_recipe">Error occured when retrieving the recipe</string>
     <string name="got_recipe">Received recipe</string>

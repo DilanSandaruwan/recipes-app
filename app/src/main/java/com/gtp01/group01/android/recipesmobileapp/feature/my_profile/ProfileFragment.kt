@@ -76,6 +76,10 @@ class ProfileFragment : Fragment() {
         // Sign-out from Firebase Authentication
 
 
+        binding.ivMyrecipes.setOnClickListener {
+            navigateToMyRecipes()
+        }
+
         binding.ivLogout.setOnClickListener {
             logout()
         }
@@ -84,6 +88,14 @@ class ProfileFragment : Fragment() {
             logout()
         }
 
+    }
+
+    /**
+     * Navigates to the MyRecipes screen.
+     */
+    private fun navigateToMyRecipes() {
+        // Navigate to MyRecipes Screen Fragment
+        findNavController().navigate(R.id.action_profileFragment_to_myRecipesFragment)
     }
 
     private fun logout() {

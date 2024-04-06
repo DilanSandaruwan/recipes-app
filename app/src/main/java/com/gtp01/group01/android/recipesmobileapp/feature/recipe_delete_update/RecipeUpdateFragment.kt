@@ -33,7 +33,7 @@ import com.gtp01.group01.android.recipesmobileapp.feature.main.MainActivity
 import com.gtp01.group01.android.recipesmobileapp.feature.recipe_add_update.FoodCategoriesAdapter
 import com.gtp01.group01.android.recipesmobileapp.shared.model.FoodCategory
 import com.gtp01.group01.android.recipesmobileapp.shared.model.FoodCategoryApp
-import com.gtp01.group01.android.recipesmobileapp.shared.utils.ui.RecipeMappers
+import com.gtp01.group01.android.recipesmobileapp.shared.utils.RecipeMappers
 import dagger.hilt.android.AndroidEntryPoint
 import java.io.ByteArrayOutputStream
 

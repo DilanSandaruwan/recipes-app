@@ -28,11 +28,7 @@ class MyRecipesViewModel @Inject constructor(
     private val recipeManagementRepository: RecipeManagementRepository
 ) : ViewModel() {
 
-    /**
-     * LiveData for holding the ID of the currently logged-in user.
-     */
-    private val _user = MutableLiveData<Int>(0)
-    val user: LiveData<Int> = _user
+    var userId: Int = 0
 
     /**
      * StateFlow holding the current result of fetching the user's recipes,

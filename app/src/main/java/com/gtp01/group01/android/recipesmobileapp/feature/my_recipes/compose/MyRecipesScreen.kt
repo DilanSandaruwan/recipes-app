@@ -1,6 +1,7 @@
 package com.gtp01.group01.android.recipesmobileapp.feature.my_recipes.compose
 
 import android.graphics.Bitmap
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -19,8 +20,10 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.ThumbUp
@@ -30,8 +33,6 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -41,56 +42,119 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.gtp01.group01.android.recipesmobileapp.R
 import com.gtp01.group01.android.recipesmobileapp.feature.my_recipes.MyRecipesViewModel
+import com.gtp01.group01.android.recipesmobileapp.shared.views.compose.NoDataToShowScreen
 import com.gtp01.group01.android.recipesmobileapp.shared.common.Result
 import com.gtp01.group01.android.recipesmobileapp.shared.model.Recipe
 
 /**
  * Composable screen displaying a list of recipes created by the current user.
  *
+ * @param navController NavController?: Navigation controller used for navigating between screens.
  * @param myRecipesViewModel MyRecipesViewModel: ViewModel providing access to recipe data and actions.
  * @param navigateToUpdateRecipe Function: Callback to navigate to the recipe update screen.
  * @param navigateToViewRecipe Function: Callback to navigate to the recipe details screen.
+ * @param userId Int: The ID of the current user.
  */
 @Composable
 fun MyRecipesScreen(
+    navController: NavController?,
     myRecipesViewModel: MyRecipesViewModel = hiltViewModel(),
     navigateToUpdateRecipe: (Int) -> Unit,
-    navigateToViewRecipe: (Int) -> Unit
+    navigateToViewRecipe: (Int) -> Unit,
+    userId: Int
 ) {
     // Initiate retrieval of recipes from the ViewModel
-    myRecipesViewModel.getMyRecipes(10)
+    myRecipesViewModel.getMyRecipes(userId)
+
     // Observe the recipe list state and current user information
     val myRecipesListState = myRecipesViewModel.myRecipesList.collectAsState()
-    val user by myRecipesViewModel.user.observeAsState(0)
-    // Surface container for the screen content
-    Surface(
-        color = colorResource(id = R.color.md_theme_surfaceContainer),
-        shape = RoundedCornerShape(
-            topStart = dimensionResource(id = R.dimen.search_screen_corner_radius),
-            topEnd = dimensionResource(id = R.dimen.search_screen_corner_radius),
-        ),
+
+    Column(
         modifier = Modifier
-            .padding(
-                top = dimensionResource(id = R.dimen.search_screen_top_padding),
-                bottom = dimensionResource(id = R.dimen.search_screen_bottom_padding)
-            )
             .fillMaxSize()
+            .padding(top = 48.dp)
     ) {
-        // Display the grid of recipes if successful retrieval
-        if (myRecipesListState.value is Result.Success) {
-            val recipeResult = myRecipesListState.value as Result.Success<List<Recipe>>
-            MyRecipesGrid(
-                searchResultList = recipeResult.result,
-                decodeImageToBitmap = { myRecipesViewModel.decodeImageToBitmap(it) },
-                navigateToViewRecipe = navigateToViewRecipe,
-                navigateToUpdateRecipe = navigateToUpdateRecipe
-            )
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Box(modifier = Modifier.padding(10.dp)) {
+                Box(
+                    modifier = Modifier
+                        .size(35.dp)
+                        .clip(CircleShape)
+                        .background(
+                            color = colorResource(id = R.color.transparent),
+                            shape = CircleShape
+                        ) // Circle background color
+                        .align(Alignment.TopStart)
+                        .zIndex(10f)
+                ) {
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                        contentDescription = null,
+                        tint = colorResource(id = R.color.md_theme_onPrimary),
+                        modifier = Modifier
+                            .clickable {
+                                navController?.navigateUp()
+                            }
+                            .align(Alignment.Center)
+                    )
+                }
+                Row(
+                    modifier = Modifier.height(35.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = stringResource(R.string.my_recipes),
+                        style = MaterialTheme.typography.titleMedium,
+                        color = colorResource(id = R.color.md_theme_onPrimary),
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        textAlign = TextAlign.Center
+                    )
+                }
+            }
         }
+
+        // Surface container for the screen content
+        Surface(
+            color = colorResource(id = R.color.md_theme_surfaceContainer),
+            shape = RoundedCornerShape(
+                topStart = dimensionResource(id = R.dimen.search_screen_corner_radius),
+                topEnd = dimensionResource(id = R.dimen.search_screen_corner_radius),
+            ),
+            modifier = Modifier
+                .padding(
+                    top = dimensionResource(id = R.dimen.my_recipes_screen_top_padding),
+                )
+                .fillMaxWidth()
+        ) {
+            if (userId > 0) {
+                // Display the grid of recipes if successful retrieval
+                if (myRecipesListState.value is Result.Success) {
+                    val recipeResult = myRecipesListState.value as Result.Success<List<Recipe>>
+                    MyRecipesGrid(
+                        searchResultList = recipeResult.result,
+                        decodeImageToBitmap = { myRecipesViewModel.decodeImageToBitmap(it) },
+                        navigateToViewRecipe = navigateToViewRecipe,
+                        navigateToUpdateRecipe = navigateToUpdateRecipe
+                    )
+                }
+            } else {
+                NoDataToShowScreen(R.drawable.ico_no_data_to_show, R.string.nothing_to_show_recipes)
+            }
+
+        }
+
     }
 }
 

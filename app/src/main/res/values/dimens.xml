@@ -209,4 +209,11 @@
     <dimen name="search_recipe_card_img_height">108dp</dimen>
     <dimen name="search_like_icon_size">20dp</dimen>
 
+    /* My Recipes Screen */
+    <dimen name="search_back_arrow_icon_size">30dp</dimen>
+    <dimen name="my_recipes_screen_top_padding">10dp</dimen>
+    <dimen name="no_data_img_height">500dp</dimen>
+    <dimen name="no_data_img_width">500dp</dimen>
+    <dimen name="no_data_text_padding_top">40dp</dimen>
+
 </resources>
