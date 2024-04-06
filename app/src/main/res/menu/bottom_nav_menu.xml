@@ -16,12 +16,12 @@
         android:title="@string/bottom_menu_favourites" />
 
     <item
-        android:id="@+id/recipeUpdateFragment"
-        android:icon="@drawable/ic_round_favourite_24dp"
-        android:title="@string/bottom_menu_favourites" />
+        android:id="@+id/profileFragment"
+        android:icon="@drawable/ic_profile_circle_24dp"
+        android:title="@string/bottom_menu_profile" />
 
     <item
-        android:id="@+id/profileFragment"
+        android:id="@+id/myRecipesFragment"
         android:icon="@drawable/ic_profile_circle_24dp"
         android:title="@string/bottom_menu_profile" />
 

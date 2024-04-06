@@ -26,6 +26,7 @@
 
             <!-- Back button -->
             <ImageButton
+                android:id="@+id/btnNavigateBack"
                 android:layout_width="@dimen/width_app_bar_button"
                 android:layout_height="@dimen/height_app_bar_button"
                 android:background="@drawable/bg_app_tool_bar_btn_back"
@@ -34,6 +35,7 @@
 
             <!-- Title -->
             <TextView
+                android:id="@+id/appBarTitle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"

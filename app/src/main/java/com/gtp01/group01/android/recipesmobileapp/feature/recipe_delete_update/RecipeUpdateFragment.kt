@@ -21,6 +21,7 @@ import androidx.core.view.children
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
@@ -37,11 +38,9 @@ import dagger.hilt.android.AndroidEntryPoint
 import java.io.ByteArrayOutputStream
 
 /**
- * A simple [Fragment] subclass.
- * Use the [RecipeUpdateFragment.newInstance] factory method to
- * create an instance of this fragment.
+ * Fragment for updating a recipe.
+ * Handles UI interactions for updating recipe details.
  */
-
 @AndroidEntryPoint
 class RecipeUpdateFragment : Fragment() {
 
@@ -89,6 +88,8 @@ class RecipeUpdateFragment : Fragment() {
 
     /**
      * Converts the selected image URI to a byte array.
+     * @param imageUri The URI of the selected image.
+     * @return The byte array representing the image.
      */
     private fun convertImageUriToByteArray(imageUri: Uri): ByteArray? {
         return try {
@@ -135,11 +136,13 @@ class RecipeUpdateFragment : Fragment() {
 
     /**
      * Sets up UI components and event listeners.
+     * @return The root view of the fragment.
      */
     private fun setupUI(): View {
         binding.apply {
             lifecycleOwner = viewLifecycleOwner
             updateRecipeVM = viewModel
+            lytImportedRecipeUpdate.appBarTitle.text = getString(R.string.update_my_recipe_title)
             lytImportedRecipeUpdate.rvFoodCategory.also {
                 it.layoutManager =
                     LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
@@ -217,18 +220,23 @@ class RecipeUpdateFragment : Fragment() {
                     mtvInfoInstruction.visibility = View.VISIBLE
                 }
             }
+
+            btnNavigateBack.setOnClickListener {
+                navigateBackToMyRecipe()
+            }
         }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         activity = requireActivity() as MainActivity
-        // val args: RecipeUpdateFragmentArgs by navArgs() // TODO: un-comment after MyRecipe Screen development
-        // viewModel.recipeFromArgs = args.recipe // TODO: un-comment after MyRecipe Screen development
+        activity.setBottomNavVisibility(false)
+        val args: RecipeUpdateFragmentArgs by navArgs()
         initObservers()
-        viewModel.getOneRecipe(10, 16) // TODO: Remove after MyRecipe Screen development
-        // viewModel.getCategoryList() // TODO: un-comment after MyRecipe Screen development
-        // fillDetailsWithReceivedRecipe() // TODO: un-comment after MyRecipe Screen development
+        viewModel.getOneRecipe(
+            10,
+            args.recipeId
+        )
     }
 
     /**
@@ -289,6 +297,7 @@ class RecipeUpdateFragment : Fragment() {
                     binding.lytImportedRecipeUpdate.btnSave.visibility = INVISIBLE
                     binding.lytImportedRecipeUpdate.btnDelete.visibility = INVISIBLE
                     binding.lytImportedRecipeUpdate.btnUpdate.visibility = INVISIBLE
+                    navigateBackToMyRecipe()
                 } else {
                     activity.showPopup(
                         1,
@@ -297,7 +306,6 @@ class RecipeUpdateFragment : Fragment() {
                     )
                 }
             }
-            // TODO: Remove after MyRecipe Screen development
             gotRequestedRecipe.observe(viewLifecycleOwner) {
                 if (it != null) {
                     activity.showPopup(
@@ -334,6 +342,10 @@ class RecipeUpdateFragment : Fragment() {
                     Editable.Factory.getInstance().newEditable(it.toString())
             }
         }
+    }
+
+    private fun navigateBackToMyRecipe() {
+        requireActivity().onBackPressed()
     }
 
     /**
@@ -388,26 +400,6 @@ class RecipeUpdateFragment : Fragment() {
         }
     }
 
-    private fun populateCategories() {
-        // Populate categories
-        if (viewModel.recipeFromArgs!!.categories.isNotEmpty()) {
-            viewModel.editableCategoriesList.clear()
-            for (i in viewModel.recipeFromArgs!!.categories) {
-                val foodCategoryApp = FoodCategoryApp(
-                    i.idFoodCategory,
-                    i.categoryName,
-                    RecipeMappers.categoryImageMap[i.idFoodCategory]!!
-                )
-                viewModel.editableCategoriesList.add(foodCategoryApp)
-            }
-            adapter.submitList(viewModel.editableCategoriesList)
-        } else {
-            // If no categories available, clear the list
-            viewModel.editableCategoriesList = emptyList<FoodCategoryApp>().toMutableList()
-        }
-    }
-
-
     /**
      * Initiates the process of saving the recipe.
      */
@@ -461,9 +453,6 @@ class RecipeUpdateFragment : Fragment() {
         view.findViewById<TextInputEditText>(R.id.metDynamicInserter).text =
             Editable.Factory.getInstance().newEditable(ingredientString)
         binding.lytImportedRecipeUpdate.lytDynamicIngredients.addView(view)
-//        val metInsertIngredient =
-//            binding.lytImportedRecipeUpdate.lytDynamicIngredients.findViewById<TextInputEditText>(R.id.metDynamicInserter)
-//        metInsertIngredient.text = Editable.Factory.getInstance().newEditable(ingredientString)
     }
 
     /**
@@ -479,9 +468,6 @@ class RecipeUpdateFragment : Fragment() {
         view.findViewById<TextInputEditText>(R.id.metDynamicInserter).text =
             Editable.Factory.getInstance().newEditable(instructionString)
         binding.lytImportedRecipeUpdate.lytDynamicInstructions.addView(view)
-//        val metInsertIngredient =
-//            binding.lytImportedRecipeUpdate.lytDynamicIngredients.findViewById<TextInputEditText>(R.id.metDynamicInserter)
-//        metInsertIngredient.text = Editable.Factory.getInstance().newEditable(instructionString)
     }
 
     /**
@@ -640,5 +626,10 @@ class RecipeUpdateFragment : Fragment() {
         }
         val ingredients = viewModel.ingredientsList.joinToString(" and ")
         viewModel.getNutritionsVm(ingredients)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 }
