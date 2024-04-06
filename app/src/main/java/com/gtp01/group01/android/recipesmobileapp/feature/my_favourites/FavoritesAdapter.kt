@@ -7,7 +7,7 @@ import com.gtp01.group01.android.recipesmobileapp.databinding.ItemRecipeBinding
 import com.gtp01.group01.android.recipesmobileapp.shared.model.Recipe
 
 class FavoritesAdapter(
-    private val favoriteRecipes: List<Recipe>,
+    var favoriteRecipes: List<Recipe>,
     private val listener: OnItemClickListener
 ) : RecyclerView.Adapter<FavoritesAdapter.ViewHolder>() {
 
@@ -17,7 +17,7 @@ class FavoritesAdapter(
 
     inner class ViewHolder(private val binding: ItemRecipeBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(recipe: Recipe) {
-           // binding.recipe = recipe
+            // binding.recipe = recipe
             binding.executePendingBindings()
             binding.root.setOnClickListener { listener.onItemClick(recipe) }
         }
