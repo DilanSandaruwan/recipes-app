@@ -1,37 +1,82 @@
 package com.gtp01.group01.android.recipesmobileapp.feature.my_favourites
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.gtp01.group01.android.recipesmobileapp.databinding.ItemRecipeBinding
+import coil.load
+import com.gtp01.group01.android.recipesmobileapp.R
 import com.gtp01.group01.android.recipesmobileapp.shared.model.Recipe
 
+/**
+ * Adapter for displaying favorite recipes in a RecyclerView.
+ *
+ * @property favoriteRecipes List of favorite recipes to display.
+ * @property listener Listener for item click events.
+ */
 class FavoritesAdapter(
+   
     var favoriteRecipes: List<Recipe>,
     private val listener: OnItemClickListener
 ) : RecyclerView.Adapter<FavoritesAdapter.ViewHolder>() {
 
+    /**
+     * Interface definition for a callback to be invoked when a favorite recipe item is clicked.
+     */
     interface OnItemClickListener {
+        /**
+         * Called when a favorite recipe item is clicked.
+         * @param recipe The clicked recipe.
+         */
         fun onItemClick(recipe: Recipe)
     }
 
-    inner class ViewHolder(private val binding: ItemRecipeBinding) : RecyclerView.ViewHolder(binding.root) {
+    /**
+     * ViewHolder for displaying each favorite recipe item.
+     * @param itemView The layout view for the item.
+     */
+    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val recipeImage: ImageView = itemView.findViewById(R.id.recipeImage)
+        val recipeTitle: TextView = itemView.findViewById(R.id.recipeTitle)
+        val recipeDescription: TextView = itemView.findViewById(R.id.recipeDescription)
+        val articleDateTime: TextView = itemView.findViewById(R.id.articleDateTime)
+
+        /**
+         * Binds the recipe data to the view elements.
+         * @param recipe The recipe to bind.
+         */
         fun bind(recipe: Recipe) {
-            // binding.recipe = recipe
-            binding.executePendingBindings()
-            binding.root.setOnClickListener { listener.onItemClick(recipe) }
+
+
+            recipeTitle.text = recipe.recipeName
+            recipeDescription.text = recipe.instruction
+            articleDateTime.text = "Preparation time: ${recipe.preparationTime} mins"
+
+
+            recipe.photo?.let { imageUrl ->
+                recipeImage.load(imageUrl) {
+                    placeholder(R.drawable.placeholder_image) // Placeholder image while loading
+                    error(R.drawable.error_image) // Error image if the load fails
+                }
+
+                itemView.setOnClickListener { listener.onItemClick(recipe) }
+                // Load the bitmap into ImageView if it's not null
+
+            }
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val inflater = LayoutInflater.from(parent.context)
-        val binding = ItemRecipeBinding.inflate(inflater, parent, false)
-        return ViewHolder(binding)
-    }
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+            val inflater = LayoutInflater.from(parent.context)
+            val itemView = inflater.inflate(R.layout.item_recipes_favourite, parent, false)
+            return ViewHolder(itemView)
+        }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(favoriteRecipes[position])
-    }
+        override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+            holder.bind(favoriteRecipes[position])
+        }
 
-    override fun getItemCount(): Int = favoriteRecipes.size
-}
+        override fun getItemCount(): Int = favoriteRecipes.size
+    }
