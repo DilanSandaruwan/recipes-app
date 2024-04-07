@@ -62,12 +62,17 @@ fun HomeScreen(
 
     // Mutable state variables with default values
     var isNetworkAvailable by remember { mutableStateOf(true) }
+    isNetworkAvailable = networkAvailable
 
     // Data fetching logic triggered when the network is available.
-    isNetworkAvailable = networkAvailable
     if (isNetworkAvailable) {
-        homeViewModel.updateFilters()
+        homeViewModel.updateFilters(
+            loggedUserId = savedUser.idUser,
+            maxCalorie = savedUser.preferCalorie,
+            maxDuration = savedUser.preferDuration
+        )
     }
+
     MaterialTheme {
         Column(
             Modifier
@@ -104,15 +109,15 @@ fun HomeScreen(
             if (!isNetworkAvailable) {
                 UnavailableNetworkErrorSection(errorCode = ConstantResponseCode.IOEXCEPTION,
                     onRetry = {
-                        homeViewModel.updateFilters()
+                        homeViewModel.updateFilters(
+                            loggedUserId = savedUser.idUser,
+                            maxCalorie = savedUser.preferCalorie,
+                            maxDuration = savedUser.preferDuration
+                        )
                     }
                 )
             } else {
                 // Section for displaying the filtered recipes based on preferred preparation time
-                homeViewModel.filterRecipesByDuration(
-                    loggedUserId = savedUser.idUser,
-                    maxDuration = savedUser.preferDuration
-                )
                 RecipeSuggestionByTimeSection(
                     timeBasedRecipeListState = timeBasedRecipeListState,
                     timeFilterValue = savedUser.preferDuration,
@@ -121,17 +126,13 @@ fun HomeScreen(
                 )
 
                 // Section for displaying the filtered recipes based on preferred calorie count
-                homeViewModel.filterRecipesByCalorie(
-                    loggedUserId = savedUser.idUser,
-                    maxCalorie = savedUser.preferCalorie
-                )
                 RecipeSuggestionByCalorieSection(
                     calorieBasedRecipeListState = calorieBasedRecipeListState,
                     calorieFilterValue = savedUser.preferCalorie,
                     decodeImageToBitmap = { homeViewModel.decodeImageToBitmap(it) },
                     navigateToViewRecipe = navigateToViewRecipe
                 )
-                Spacer(Modifier.height(dimensionResource(id = R.dimen.bottom_navigation_height)))
+                Spacer(Modifier.height(dimensionResource(id = R.dimen.activity_horizontal_margin)))
 
                 // Section for displaying errors when loading recipes
                 HandleRecipeResponseErrorSection(
@@ -156,6 +157,7 @@ fun HomeScreen(
                     timeRecipeListState = timeBasedRecipeListState,
                     calorieRecipeListState = calorieBasedRecipeListState
                 )
+                Spacer(Modifier.height(dimensionResource(id = R.dimen.bottom_navigation_height)))
             }
         }
     }

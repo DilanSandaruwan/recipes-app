@@ -94,17 +94,16 @@ class HomeViewModel @Inject constructor(
      * the `sharedViewModel` and then calls the `filterRecipesByDuration` and
      * `filterRecipesByCalorie` methods to fetch recipes based on those preferences.
      */
-    fun updateFilters() {
+    fun updateFilters(loggedUserId: Int, maxDuration: Int, maxCalorie: Int) {
         filterRecipesByDuration(
-            loggedUserId = savedUser.value.idUser,
-            maxDuration = savedUser.value.preferDuration
+            loggedUserId = loggedUserId,
+            maxDuration = maxDuration
         )
         filterRecipesByCalorie(
-            loggedUserId = savedUser.value.idUser,
-            maxCalorie = savedUser.value.preferCalorie
+            loggedUserId = loggedUserId,
+            maxCalorie = maxCalorie
         )
     }
-
 
     /**
      * Fetches recipes filtered by cooking time asynchronously.
