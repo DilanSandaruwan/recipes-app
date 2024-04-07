@@ -21,6 +21,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.gtp01.group01.android.recipesmobileapp.R
@@ -79,7 +82,10 @@ fun HomeScreen(
         ) {
             Spacer(Modifier.height(dimensionResource(id = R.dimen.activity_horizontal_margin)))
 
-            Text(text = "user id: ${savedUser.idUser}")
+            // Section to show welcome message to user
+            WelcomeMessageSection(savedUser.fullName)
+            Spacer(Modifier.height(dimensionResource(id = R.dimen.activity_horizontal_margin)))
+
             // Section for displaying the search bar
             SearchBarSection(
                 searchKeyword = homeViewModel.searchKeyword,
@@ -88,7 +94,6 @@ fun HomeScreen(
                 onKeyboardSearch = onKeyboardSearch,
                 onClearButtonClicked = { homeViewModel.clearSearchKeyword() }
             )
-            Text(text = "USER ID IS $savedUser")
             Spacer(Modifier.height(dimensionResource(id = R.dimen.activity_horizontal_margin)))
 
             // Section for displaying the categories to select
@@ -104,28 +109,28 @@ fun HomeScreen(
                 )
             } else {
                 // Section for displaying the filtered recipes based on preferred preparation time
-                if (timeBasedRecipeListState.value is Result.Success) {
-                    val recipeResult =
-                        timeBasedRecipeListState.value as Result.Success<List<Recipe>>
-                    RecipeSuggestionByTimeSection(
-                        timeBasedRecipeList = recipeResult.result,
-                        timeFilterValue = savedUser.preferDuration,
-                        decodeImageToBitmap = { homeViewModel.decodeImageToBitmap(it) },
-                        navigateToViewRecipe = navigateToViewRecipe
-                    )
-                }
+                homeViewModel.filterRecipesByDuration(
+                    loggedUserId = savedUser.idUser,
+                    maxDuration = savedUser.preferDuration
+                )
+                RecipeSuggestionByTimeSection(
+                    timeBasedRecipeListState = timeBasedRecipeListState,
+                    timeFilterValue = savedUser.preferDuration,
+                    decodeImageToBitmap = { homeViewModel.decodeImageToBitmap(it) },
+                    navigateToViewRecipe = navigateToViewRecipe
+                )
 
                 // Section for displaying the filtered recipes based on preferred calorie count
-                if (calorieBasedRecipeListState.value is Result.Success) {
-                    val recipeResult =
-                        calorieBasedRecipeListState.value as Result.Success<List<Recipe>>
-                    RecipeSuggestionByCalorieSection(
-                        calorieBasedRecipeList = recipeResult.result,
-                        calorieFilterValue = savedUser.preferCalorie,
-                        decodeImageToBitmap = { homeViewModel.decodeImageToBitmap(it) },
-                        navigateToViewRecipe = navigateToViewRecipe
-                    )
-                }
+                homeViewModel.filterRecipesByCalorie(
+                    loggedUserId = savedUser.idUser,
+                    maxCalorie = savedUser.preferCalorie
+                )
+                RecipeSuggestionByCalorieSection(
+                    calorieBasedRecipeListState = calorieBasedRecipeListState,
+                    calorieFilterValue = savedUser.preferCalorie,
+                    decodeImageToBitmap = { homeViewModel.decodeImageToBitmap(it) },
+                    navigateToViewRecipe = navigateToViewRecipe
+                )
                 Spacer(Modifier.height(dimensionResource(id = R.dimen.bottom_navigation_height)))
 
                 // Section for displaying errors when loading recipes
@@ -153,6 +158,27 @@ fun HomeScreen(
                 )
             }
         }
+    }
+}
+
+/**
+ * Composable function to display the welcome message to user.
+ *
+ * @param userName String: The user's name
+ */
+@Composable
+fun WelcomeMessageSection(userName: String?) {
+    Column(
+        modifier = Modifier
+            .height(dimensionResource(id = R.dimen.editText_height))
+            .padding(vertical = dimensionResource(id = R.dimen.padding))
+    ) {
+        Text(
+            text = stringResource(R.string.hello, if (userName.isNullOrEmpty()) "" else userName),
+            style = MaterialTheme.typography.headlineMedium,
+            overflow = TextOverflow.Ellipsis,
+            fontWeight = FontWeight.SemiBold
+        )
     }
 }
 

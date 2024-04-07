@@ -35,8 +35,8 @@ class SharedViewModel : ViewModel() {
      * @param user The user object containing the information to be validated and set.
      */
     fun setCurrentUser(user: User) {
+        // If user id is 0, uses default values for all preferences.
         if (user.idUser == GUEST_USER_ID) {
-            // If user id is 0, uses default values for all preferences.
             _savedUser.value = User(
                 idUser = GUEST_USER_ID,
                 preferDuration = UserDefaultConstant.GUEST_DURATION_PREFERENCE,
@@ -46,12 +46,17 @@ class SharedViewModel : ViewModel() {
             // Handles the case where valid user data is available
             _savedUser.value = User(
                 idUser = user.idUser,
+                email = user.email,
+                fullName = user.fullName,
+                preferCategories = user.preferCategories,
+
                 // Assigns user's preferred duration, using a default of 30 if it's null or 0
                 preferDuration = user.preferDuration.takeIf { it != 0 }
                     ?: UserDefaultConstant.GUEST_DURATION_PREFERENCE,
+
                 // Assigns user's preferred calorie, using a default of 300 if it's null or 0
                 preferCalorie = user.preferCalorie.takeIf { it != 0 }
-                    ?: UserDefaultConstant.GUEST_CALORIE_PREFERENCE
+                    ?: UserDefaultConstant.GUEST_CALORIE_PREFERENCE,
             )
         }
     }

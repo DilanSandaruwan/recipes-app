@@ -24,6 +24,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -35,15 +36,14 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import com.gtp01.group01.android.recipesmobileapp.R
-import com.gtp01.group01.android.recipesmobileapp.data.RecipeListTestData
+import com.gtp01.group01.android.recipesmobileapp.shared.common.Result
 import com.gtp01.group01.android.recipesmobileapp.shared.model.Recipe
 
 /**
  * Composable function to display the section of recipe suggestions based on time.
  *
- * @param timeBasedRecipeList List<Recipe>: The list of recipes to display in this section. Default is an empty list.
+ * @param timeBasedRecipeListState State<Result<List<Recipe>>>: Time-based recipe list state.
  * @param timeFilterValue Int: The time duration used for filtering the recipes. Default is 30 min.
  * @param decodeImageToBitmap Function: Function to decode recipe images to Bitmap.
  * @param navigateToViewRecipe Function: Callback to navigate to the recipe details screen.
@@ -51,7 +51,7 @@ import com.gtp01.group01.android.recipesmobileapp.shared.model.Recipe
  */
 @Composable
 fun RecipeSuggestionByTimeSection(
-    timeBasedRecipeList: List<Recipe>? = emptyList(),
+    timeBasedRecipeListState: State<Result<List<Recipe>>>,
     timeFilterValue: Int,
     decodeImageToBitmap: (String) -> Bitmap?,
     navigateToViewRecipe: (Int) -> Unit,
@@ -60,11 +60,14 @@ fun RecipeSuggestionByTimeSection(
     val title = stringResource(R.string.home_suggestion_bytime_title, timeFilterValue)
     Column {
         RecipeSuggestionByTimeTitle(title)
-        if (timeBasedRecipeList != null) {
+        if (timeBasedRecipeListState.value is Result.Success) {
+            val recipeResult =
+                timeBasedRecipeListState.value as Result.Success<List<Recipe>>
             RecipeSuggestionByTimeGrid(
-                timeBasedRecipeList = timeBasedRecipeList,
+                timeBasedRecipeList = recipeResult.result,
                 decodeImageToBitmap = decodeImageToBitmap,
-                navigateToViewRecipe = navigateToViewRecipe
+                navigateToViewRecipe = navigateToViewRecipe,
+                modifier = modifier
             )
         }
     }
@@ -261,22 +264,5 @@ fun RecipeSuggestionByTimeTitle(title: String) {
             style = MaterialTheme.typography.titleLarge,
             fontWeight = FontWeight.SemiBold
         )
-    }
-}
-
-/**
- * Below are preview composable functions.
- * These functions are intended for use in a preview environment during development.
- */
-@Composable
-@Preview(showBackground = true, showSystemUi = true)
-fun PreviewRecipeSuggestionByTimeSection() {
-    val recipeListTestData = RecipeListTestData.getRecipeList()
-    MaterialTheme {
-        RecipeSuggestionByTimeSection(
-            timeBasedRecipeList = recipeListTestData,
-            timeFilterValue = 30,
-            decodeImageToBitmap = { null },
-            navigateToViewRecipe = {})
     }
 }
