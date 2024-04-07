@@ -20,6 +20,7 @@ import com.gtp01.group01.android.recipesmobileapp.constant.AuthProviders.provide
 import com.gtp01.group01.android.recipesmobileapp.constant.AuthUtils
 import com.gtp01.group01.android.recipesmobileapp.constant.ConstantRequestCode.MY_REQUEST_CODE
 import com.gtp01.group01.android.recipesmobileapp.databinding.FragmentProfileBinding
+import com.gtp01.group01.android.recipesmobileapp.feature.main.MainActivity
 import com.gtp01.group01.android.recipesmobileapp.shared.sources.Local.LocalDataSource
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -33,6 +34,10 @@ import javax.inject.Inject
  */
 @AndroidEntryPoint
 class ProfileFragment : Fragment() {
+
+    // Reference to the MainActivity
+    private lateinit var activity: MainActivity
+
     private lateinit var viewModel: ProfileViewModel
     private lateinit var binding: FragmentProfileBinding
 
@@ -68,14 +73,24 @@ class ProfileFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        activity = requireActivity() as MainActivity
+        activity.setBottomNavVisibility(true) // Make bottom navigation bar visible
+
         // Access the list of providers
         val providers = AuthProviders.providers
 
         viewUserDetails()
+
+
         binding.tvNotification
+
+        // Navigate to My Recipes Screen
+        binding.ivMyrecipes.setOnClickListener {
+            navigateToMyRecipes()
+        }
+
         // Sign-out from Firebase Authentication
-
-
         binding.ivLogout.setOnClickListener {
             logout()
         }
@@ -84,6 +99,14 @@ class ProfileFragment : Fragment() {
             logout()
         }
 
+    }
+
+    /**
+     * Navigates to the MyRecipes screen.
+     */
+    private fun navigateToMyRecipes() {
+        // Navigate to MyRecipes Screen Fragment
+        findNavController().navigate(R.id.action_profileFragment_to_myRecipesFragment)
     }
 
     private fun logout() {

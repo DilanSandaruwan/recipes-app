@@ -145,4 +145,12 @@
     <string name="english">English</string>
     <string name="light_mode">Light Mode</string>
     <string name="guest_user">Guest User</string>
+
+    <!--  Update Recipe  -->
+    <string name="nothing_to_update">Nothing to update.</string>
+    <string name="nothing_to_show_recipes">No recipes to show.</string>
+    <string name="info_nothing">Nothing?</string>
+    <string name="error_occured_while_getting_the_recipe">Error occured when retrieving the recipe</string>
+    <string name="got_recipe">Received recipe</string>
+    <string name="update_my_recipe_title">Update My Recipe</string>
 </resources>

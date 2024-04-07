@@ -78,8 +78,21 @@ class MainActivity : AppCompatActivity() {
      */
     private fun eventListeners() {
         binding.lytPopupIncluded.ivPopupClose.setOnClickListener {
+            setBottomNavVisibility(true)
             binding.lytPopupIncluded.lytPopupScreen.visibility = View.GONE
+        }
+    }
+
+    /**
+     * Updates the visibility of the bottom navigation bar.
+     *
+     * @paramisVisible: A boolean indicating whether to make the navigation bar visible.
+     */
+    fun setBottomNavVisibility(isVisible: Boolean) {
+        if (isVisible && binding.navView.visibility == View.GONE) {
             binding.navView.visibility = View.VISIBLE
+        } else if (!isVisible && binding.navView.visibility == View.VISIBLE) {
+            binding.navView.visibility = View.GONE
         }
     }
 

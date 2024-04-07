@@ -22,6 +22,9 @@
         <action
             android:id="@+id/action_profileFragment_to_editProfileFragment"
             app:destination="@id/editProfileFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_myRecipesFragment"
+            app:destination="@id/myRecipesFragment" />
     </fragment>
     <fragment
         android:id="@+id/favouriteFragment"
@@ -62,4 +65,24 @@
         android:id="@+id/editProfileFragment"
         android:name="com.gtp01.group01.android.recipesmobileapp.feature.my_profile.EditProfileFragment"
         android:label="EditProfileFragment" />
+    <fragment
+        android:id="@+id/recipeUpdateFragment"
+        android:name="com.gtp01.group01.android.recipesmobileapp.feature.recipe_delete_update.RecipeUpdateFragment"
+        android:label="fragment_recipe_update"
+        tools:layout="@layout/fragment_recipe_update">
+        <argument
+            android:name="recipeId"
+            app:argType="integer" />
+        <deepLink
+            android:id="@+id/deepLink2"
+            app:uri="android-app://androidx.navigation/com.gtp01.group01.android.recipesmobileapp.feature.recipe_delete_update.RecipeUpdateFragment/{recipeId}" />
+    </fragment>
+    <fragment
+        android:id="@+id/myRecipesFragment"
+        android:name="com.gtp01.group01.android.recipesmobileapp.feature.my_recipes.MyRecipesFragment"
+        android:label="MyRecipesFragment" >
+        <action
+            android:id="@+id/action_myRecipesFragment_to_recipeUpdateFragment"
+            app:destination="@id/recipeUpdateFragment" />
+    </fragment>
 </navigation>
