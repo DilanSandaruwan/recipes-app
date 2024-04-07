@@ -1,5 +1,8 @@
 package com.gtp01.group01.android.recipesmobileapp.di
 
+import android.app.Application
+import android.content.Context
+import android.net.ConnectivityManager
 import android.util.Log
 import com.gtp01.group01.android.recipesmobileapp.constant.ConstantNetworkService
 import com.gtp01.group01.android.recipesmobileapp.feature.my_profile.repository.AuthRepository
@@ -162,7 +165,6 @@ object NetworkModule {
      */
     @Provides
     fun provideUserIdApiService(retrofit: Retrofit): UserIdApiService {
-
         return retrofit.create(UserIdApiService::class.java)
     }
 
@@ -178,5 +180,20 @@ object NetworkModule {
 
         return GetUserIdRepository(userIdApiService)
 
+    }
+
+    /**
+     * Provides an instance of [ConnectivityManager].
+     *
+     * This method is used to provide the ConnectivityManager object to components
+     * that require network connectivity checks. It retrieves the ConnectivityManager
+     * service from the application context.
+     *
+     * @param application The application context used to access system services.
+     * @return An instance of ConnectivityManager for network connectivity management.
+     */
+    @Provides
+    fun provideConnectivityManager(application: Application): ConnectivityManager {
+        return application.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
     }
 }
