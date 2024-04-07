@@ -28,17 +28,25 @@ class SearchResultFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         return ComposeView(requireContext()).apply {
+            // Extracts recipe name and category ID from navigation arguments.
             val args: SearchResultFragmentArgs by navArgs()
             val recipeName = args.recipeName
+            val categoryId = args.categoryId
+
             // Dispose of the Composition when the view's LifecycleOwner is destroyed
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
+
+            /**
+             * Sets the content of the ComposeView with the SearchResultScreen composable.
+             * Passes the extracted search criteria and navigation callback.
+             */
             setContent {
-                // Display the SearchResultScreen Composable with searched results
                 SearchResultScreen(
                     recipeName = recipeName,
+                    categoryId = categoryId,
                     navigateToViewRecipe = { recipeId ->
                         navController.navigate("com.gtp01.group01.android.recipesmobileapp.feature.view_recipe.recipe_details.ViewRecipe/$recipeId")
-                    },
+                    }
                 )
             }
         }

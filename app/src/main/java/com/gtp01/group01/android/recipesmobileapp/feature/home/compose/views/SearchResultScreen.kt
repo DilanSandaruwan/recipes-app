@@ -58,6 +58,7 @@ import com.gtp01.group01.android.recipesmobileapp.shared.model.Recipe
  * Composable function to display search results based on the entered recipe name.
  *
  * @param recipeName The name of the recipe entered by the user for searching.
+ * @param categoryId The category id of the recipe selected by the user for searching.
  * @param searchResultViewModel The ViewModel responsible for managing search results.
  * @param navigateToViewRecipe Lambda function to navigate to the details of a selected recipe.
  * @param modifier The modifier for customizing the layout of the SearchResultScreen.
@@ -65,6 +66,7 @@ import com.gtp01.group01.android.recipesmobileapp.shared.model.Recipe
 @Composable
 fun SearchResultScreen(
     recipeName: String,
+    categoryId: Int,
     searchResultViewModel: SearchResultViewModel = hiltViewModel(),
     navigateToViewRecipe: (Int) -> Unit,
     modifier: Modifier = Modifier
@@ -91,10 +93,19 @@ fun SearchResultScreen(
     // Data fetching logic triggered when the network is available.
     isNetworkAvailable = networkAvailable
     if (isNetworkAvailable) {
-        searchResultViewModel.filterRecipesByName(
-            loggedUserId = userId,
-            recipeName = recipeName
-        )
+        // Filters recipes by category if a valid category ID is provided.
+        if (categoryId != 0) {
+            searchResultViewModel.filterRecipesByCategory(
+                loggedUserId = userId,
+                categoryId = categoryId
+            )
+        } else {
+            // Filters recipes by name if no category is selected and a recipe name is provided.
+            searchResultViewModel.filterRecipesByName(
+                loggedUserId = userId,
+                recipeName = recipeName
+            )
+        }
     }
 
     // Content for search result screen
@@ -115,10 +126,19 @@ fun SearchResultScreen(
         if (!isNetworkAvailable) {
             UnavailableNetworkErrorSection(errorCode = ConstantResponseCode.IOEXCEPTION,
                 onRetry = {
-                    searchResultViewModel.filterRecipesByName(
-                        loggedUserId = userId,
-                        recipeName = recipeName
-                    )
+                    // Filters recipes by category if a valid category ID is provided.
+                    if (categoryId != 0) {
+                        searchResultViewModel.filterRecipesByCategory(
+                            loggedUserId = userId,
+                            categoryId = categoryId
+                        )
+                    } else {
+                        // Filters recipes by name if no category is selected and a recipe name is provided.
+                        searchResultViewModel.filterRecipesByName(
+                            loggedUserId = userId,
+                            recipeName = recipeName
+                        )
+                    }
                 }
             )
         } else {
@@ -136,10 +156,19 @@ fun SearchResultScreen(
             HandleRecipeResponseErrorSection(
                 searchResultRecipeListState = searchResultRecipeListState,
                 onRetrySearchRecipes = {
-                    searchResultViewModel.filterRecipesByName(
-                        loggedUserId = userId,
-                        recipeName = recipeName
-                    )
+                    // Filters recipes by category if a valid category ID is provided.
+                    if (categoryId != 0) {
+                        searchResultViewModel.filterRecipesByCategory(
+                            loggedUserId = userId,
+                            categoryId = categoryId
+                        )
+                    } else {
+                        // Filters recipes by name if no category is selected and a recipe name is provided.
+                        searchResultViewModel.filterRecipesByName(
+                            loggedUserId = userId,
+                            recipeName = recipeName
+                        )
+                    }
                 }
             )
 
@@ -380,8 +409,7 @@ private fun HandleRecipeResponseErrorSection(
 /**
  * Handles displaying loading indicator while searching recipes.
  *
- * @param timeRecipeListState The state representing the time-based recipe list.
- * @param calorieRecipeListState The state representing the calorie-based recipe list.
+ * @param searchResultRecipeListState The state representing the fetched recipe list.
  */
 @Composable
 private fun HandleRecipeLoadingSection(
@@ -403,7 +431,8 @@ fun PreviewSearchResultScreen() {
     MaterialTheme {
         SearchResultScreen(
             recipeName = "berry",
-            navigateToViewRecipe = { null }
+            navigateToViewRecipe = { null },
+            categoryId = 1
         )
     }
 }

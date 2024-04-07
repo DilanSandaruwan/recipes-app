@@ -30,14 +30,21 @@ class HomeFragment : Fragment() {
         return ComposeView(requireContext()).apply {
             // Dispose of the Composition when the view's LifecycleOwner is destroyed
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
+
+            /**
+             * Sets the content of the ComposeView with the HomeScreen composable as the main layout of the home screen.
+             * Passes the navigation callbacks.
+             */
             setContent {
-                // Display the HomeScreen Composable as the main layout of the home screen
                 HomeScreen(
                     navigateToViewRecipe = { recipeId ->
                         navController.navigate("com.gtp01.group01.android.recipesmobileapp.feature.view_recipe.recipe_details.ViewRecipe/$recipeId")
                     },
                     onKeyboardSearch = { recipeName ->
                         navController.navigate("com.gtp01.group01.android.recipesmobileapp.feature.home.SearchResultFragment/$recipeName")
+                    },
+                    onFilterByCategory = { categoryId ->
+                        navController.navigate("com.gtp01.group01.android.recipesmobileapp.feature.home.SearchResultFragment/category/$categoryId")
                     }
                 )
             }

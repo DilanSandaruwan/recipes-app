@@ -1,4 +1,5 @@
 package com.gtp01.group01.android.recipesmobileapp.constant
+
 /**
  * Singleton object containing constant response codes commonly used in HTTP requests.
  * These codes represent different types of responses such as informational, successful, redirection,
