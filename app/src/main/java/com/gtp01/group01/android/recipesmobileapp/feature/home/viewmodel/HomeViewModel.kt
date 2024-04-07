@@ -16,9 +16,9 @@ import androidx.lifecycle.viewModelScope
 import com.gtp01.group01.android.recipesmobileapp.constant.ConstantResponseCode.EXCEPTION
 import com.gtp01.group01.android.recipesmobileapp.feature.my_profile.repository.RecipeManagementRepository
 import com.gtp01.group01.android.recipesmobileapp.shared.common.Result
+import com.gtp01.group01.android.recipesmobileapp.shared.common.viewmodel.SharedViewModel
 import com.gtp01.group01.android.recipesmobileapp.shared.model.Recipe
 import com.gtp01.group01.android.recipesmobileapp.shared.model.User
-import com.gtp01.group01.android.recipesmobileapp.shared.sources.Local.LocalDataSource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -31,16 +31,18 @@ import javax.inject.Inject
  * ViewModel responsible for managing data related to recipes on the Home screen.
  *
  * This ViewModel provides functionality to fetch and manage recipes based on various criteria,
- * such as cooking time and calorie count. It also handles network connectivity and user input for searching.
+ * such as cooking time, calorie count, and user preferences. It also handles network connectivity
+ * and user input for searching recipes.
  *
- * @property recipeManagementRepository The repository for managing recipe data.
- * @param recipeManagementRepository The repository for fetching recipe data.
+ * @property recipeManagementRepository The repository for fetching recipe data.
+ * @property connectivityManager The manager for network connectivity monitoring.
+ * @property sharedViewModel The shared view model holding logged-in user information.
  */
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    connectivityManager: ConnectivityManager,
+    private val connectivityManager: ConnectivityManager,
     private val recipeManagementRepository: RecipeManagementRepository,
-    private val localDataSource: LocalDataSource
+    private val sharedViewModel: SharedViewModel
 ) : ViewModel() {
     // Logging tag for this class
     private val TAG = this::class.java.simpleName
@@ -49,9 +51,8 @@ class HomeViewModel @Inject constructor(
     private val _networkAvailable = MutableLiveData(true)
     val networkAvailable: LiveData<Boolean> = _networkAvailable
 
-    // LiveData for holding logged-in user
-    private val _user = MutableLiveData<User?>(null)
-    val user: LiveData<User?> = _user
+    // StateFlow for holding logged-in user from Shared view model
+    val savedUser: StateFlow<User> = sharedViewModel.savedUser
 
     // StateFlow for holding time-based recipe list state
     private val _timeBasedRecipeListState = MutableStateFlow<Result<List<Recipe>>>(Result.Loading)
@@ -84,6 +85,26 @@ class HomeViewModel @Inject constructor(
         val networkRequest = NetworkRequest.Builder().build()
         connectivityManager.registerNetworkCallback(networkRequest, networkCallback)
     }
+
+    /**
+     * Fetches and updates recipes filtered by cooking time and calorie count asynchronously,
+     * using the logged-in user's preferences for filtering.
+     *
+     * This method retrieves the logged-in user's preferred duration and calorie count from
+     * the `sharedViewModel` and then calls the `filterRecipesByDuration` and
+     * `filterRecipesByCalorie` methods to fetch recipes based on those preferences.
+     */
+    fun updateFilters() {
+        filterRecipesByDuration(
+            loggedUserId = savedUser.value.idUser,
+            maxDuration = savedUser.value.preferDuration
+        )
+        filterRecipesByCalorie(
+            loggedUserId = savedUser.value.idUser,
+            maxCalorie = savedUser.value.preferCalorie
+        )
+    }
+
 
     /**
      * Fetches recipes filtered by cooking time asynchronously.
@@ -125,19 +146,6 @@ class HomeViewModel @Inject constructor(
                 Log.e(TAG, ex.message ?: "An error occurred", ex)
             }
         }
-    }
-
-    /**
-     * Fetches and sets the currently logged-in user's information.
-     *
-     * This function retrieves the user ID from the local data source using `localDataSource.getUserId()`.
-     * It then creates a new `User` object with the retrieved ID and sets the value of the private member variable `_user`
-     * to this newly created user object.
-     */
-    fun getUser() {
-        _user.value = User(
-            idUser = localDataSource.getUserId()
-        )
     }
 
     /**

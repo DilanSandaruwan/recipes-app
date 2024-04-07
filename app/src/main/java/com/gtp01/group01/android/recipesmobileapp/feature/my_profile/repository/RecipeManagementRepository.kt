@@ -5,6 +5,7 @@ import com.gtp01.group01.android.recipesmobileapp.constant.ConstantResponseCode
 import com.gtp01.group01.android.recipesmobileapp.shared.common.Result
 import com.gtp01.group01.android.recipesmobileapp.shared.model.FoodCategory
 import com.gtp01.group01.android.recipesmobileapp.shared.model.Recipe
+import com.gtp01.group01.android.recipesmobileapp.shared.model.User
 import com.gtp01.group01.android.recipesmobileapp.shared.models.NutritionModel
 import com.gtp01.group01.android.recipesmobileapp.shared.sources.RecipeManagementApiService
 import kotlinx.coroutines.Dispatchers

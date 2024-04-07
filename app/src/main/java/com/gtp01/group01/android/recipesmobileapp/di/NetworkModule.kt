@@ -8,8 +8,8 @@ import com.gtp01.group01.android.recipesmobileapp.constant.ConstantNetworkServic
 import com.gtp01.group01.android.recipesmobileapp.feature.my_profile.repository.AuthRepository
 import com.gtp01.group01.android.recipesmobileapp.feature.my_profile.repository.GetUserIdRepository
 import com.gtp01.group01.android.recipesmobileapp.feature.my_profile.repository.RecipeManagementRepository
+import com.gtp01.group01.android.recipesmobileapp.shared.common.viewmodel.SharedViewModel
 import com.gtp01.group01.android.recipesmobileapp.shared.sources.AuthApiService
-import com.gtp01.group01.android.recipesmobileapp.shared.sources.Local.LocalDataSource
 import com.gtp01.group01.android.recipesmobileapp.shared.sources.RecipeManagementApiService
 import com.gtp01.group01.android.recipesmobileapp.shared.sources.UserIdApiService
 import dagger.Module
@@ -196,5 +196,16 @@ object NetworkModule {
     @Provides
     fun provideConnectivityManager(application: Application): ConnectivityManager {
         return application.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+    }
+
+    /**
+     * Provides a singleton instance of SharedViewModel.
+     *
+     * @return SharedViewModel instance.
+     */
+    @Singleton
+    @Provides
+    fun provideSharedViewModel(): SharedViewModel {
+        return SharedViewModel()
     }
 }

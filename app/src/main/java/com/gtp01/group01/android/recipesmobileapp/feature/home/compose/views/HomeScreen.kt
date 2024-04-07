@@ -15,7 +15,6 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -54,41 +53,17 @@ fun HomeScreen(
 
     // Collecting calorie-based recipe list state
     val calorieBasedRecipeListState = homeViewModel.calorieBasedRecipeListState.collectAsState()
-    homeViewModel.getUser()
 
     // Observing user LiveData to get logged-in user information
-    val user by homeViewModel.user.observeAsState(null)
+    val savedUser by homeViewModel.savedUser.collectAsState()
 
     // Mutable state variables with default values
-    var userId by remember { mutableIntStateOf(0) }
-    var preferDuration by remember { mutableIntStateOf(30) }
-    var preferCalorie by remember { mutableIntStateOf(300) }
     var isNetworkAvailable by remember { mutableStateOf(true) }
-
-    // Assigning user's preferences when user data changes
-    user?.let {
-        if (it.idUser != 0) {
-            userId = it.idUser
-            preferDuration = it.preferDuration
-            preferCalorie = it.preferCalorie
-        } else {
-            userId = 0
-            preferDuration = 30
-            preferCalorie = 300
-        }
-    }
 
     // Data fetching logic triggered when the network is available.
     isNetworkAvailable = networkAvailable
     if (isNetworkAvailable) {
-        homeViewModel.filterRecipesByDuration(
-            loggedUserId = userId,
-            maxDuration = preferDuration
-        )
-        homeViewModel.filterRecipesByCalorie(
-            loggedUserId = userId,
-            maxCalorie = preferCalorie
-        )
+        homeViewModel.updateFilters()
     }
     MaterialTheme {
         Column(
@@ -104,6 +79,7 @@ fun HomeScreen(
         ) {
             Spacer(Modifier.height(dimensionResource(id = R.dimen.activity_horizontal_margin)))
 
+            Text(text = "user id: ${savedUser.idUser}")
             // Section for displaying the search bar
             SearchBarSection(
                 searchKeyword = homeViewModel.searchKeyword,
@@ -112,7 +88,7 @@ fun HomeScreen(
                 onKeyboardSearch = onKeyboardSearch,
                 onClearButtonClicked = { homeViewModel.clearSearchKeyword() }
             )
-            Text(text = "USER ID IS $userId")
+            Text(text = "USER ID IS $savedUser")
             Spacer(Modifier.height(dimensionResource(id = R.dimen.activity_horizontal_margin)))
 
             // Section for displaying the categories to select
@@ -123,14 +99,7 @@ fun HomeScreen(
             if (!isNetworkAvailable) {
                 UnavailableNetworkErrorSection(errorCode = ConstantResponseCode.IOEXCEPTION,
                     onRetry = {
-                        homeViewModel.filterRecipesByDuration(
-                            loggedUserId = userId,
-                            maxDuration = preferDuration
-                        )
-                        homeViewModel.filterRecipesByCalorie(
-                            loggedUserId = userId,
-                            maxCalorie = preferCalorie
-                        )
+                        homeViewModel.updateFilters()
                     }
                 )
             } else {
@@ -140,7 +109,7 @@ fun HomeScreen(
                         timeBasedRecipeListState.value as Result.Success<List<Recipe>>
                     RecipeSuggestionByTimeSection(
                         timeBasedRecipeList = recipeResult.result,
-                        timeFilterValue = preferDuration,
+                        timeFilterValue = savedUser.preferDuration,
                         decodeImageToBitmap = { homeViewModel.decodeImageToBitmap(it) },
                         navigateToViewRecipe = navigateToViewRecipe
                     )
@@ -152,11 +121,12 @@ fun HomeScreen(
                         calorieBasedRecipeListState.value as Result.Success<List<Recipe>>
                     RecipeSuggestionByCalorieSection(
                         calorieBasedRecipeList = recipeResult.result,
-                        calorieFilterValue = preferCalorie,
+                        calorieFilterValue = savedUser.preferCalorie,
                         decodeImageToBitmap = { homeViewModel.decodeImageToBitmap(it) },
                         navigateToViewRecipe = navigateToViewRecipe
                     )
                 }
+                Spacer(Modifier.height(dimensionResource(id = R.dimen.bottom_navigation_height)))
 
                 // Section for displaying errors when loading recipes
                 HandleRecipeResponseErrorSection(
@@ -164,18 +134,17 @@ fun HomeScreen(
                     calorieRecipeListState = calorieBasedRecipeListState,
                     onRetryFilterRecipesByDuration = {
                         homeViewModel.filterRecipesByDuration(
-                            loggedUserId = userId,
-                            maxDuration = preferDuration
+                            loggedUserId = savedUser.idUser,
+                            maxDuration = savedUser.preferDuration
                         )
                     },
                     onRetryFilterRecipesByCalorie = {
                         homeViewModel.filterRecipesByCalorie(
-                            loggedUserId = userId,
-                            maxCalorie = preferCalorie
+                            loggedUserId = savedUser.idUser,
+                            maxCalorie = savedUser.preferCalorie
                         )
                     },
                 )
-                Spacer(Modifier.height(dimensionResource(id = R.dimen.bottom_navigation_height)))
 
                 // Section for displaying loading progress
                 HandleRecipeLoadingSection(
@@ -183,7 +152,6 @@ fun HomeScreen(
                     calorieRecipeListState = calorieBasedRecipeListState
                 )
             }
-            Spacer(Modifier.height(dimensionResource(id = R.dimen.bottom_navigation_height)))
         }
     }
 }
