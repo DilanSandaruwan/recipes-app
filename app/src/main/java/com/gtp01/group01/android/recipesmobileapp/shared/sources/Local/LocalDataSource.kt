@@ -1,7 +1,6 @@
 package com.gtp01.group01.android.recipesmobileapp.shared.sources.Local
 
 import android.content.SharedPreferences
-import android.util.Log
 import javax.inject.Inject
 
 /**
