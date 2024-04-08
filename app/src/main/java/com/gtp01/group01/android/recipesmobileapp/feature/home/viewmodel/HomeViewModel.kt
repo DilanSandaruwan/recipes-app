@@ -247,6 +247,74 @@ class HomeViewModel @Inject constructor(
     }
 
     /**
+     * Adds a recipe to my favorites.
+     *
+     * @param loggedUserId The ID of the logged-in user.
+     * @param recipeId The ID of the recipe to add to my favorites.
+     * @param onSuccess Callback function to be invoked when add favorite operation is successful.
+     * @param onFailure Callback function to be invoked when add favorite operation fails, with the error message as parameter.
+     * @param onLoading Callback function to be invoked when add favorite operation is in progress.
+     */
+    fun addFavoriteRecipe(
+        loggedUserId: Int,
+        recipeId: Int,
+        onSuccess: () -> Unit,
+        onFailure: (String) -> Unit,
+        onLoading: () -> Unit
+    ) {
+        viewModelScope.launch {
+            try {
+                recipeManagementRepository.addFavoriteRecipe(loggedUserId, recipeId)
+                    .flowOn(Dispatchers.IO)
+                    .collect { favoriteResult ->
+                        when (favoriteResult) {
+                            is Result.Success -> onSuccess()
+                            is Result.Failure -> onFailure(favoriteResult.error)
+                            is Result.Loading -> onLoading()
+                        }
+                    }
+            } catch (ex: Exception) {
+                onFailure("An error occurred")
+                Log.e(TAG, ex.message ?: "An error occurred", ex)
+            }
+        }
+    }
+
+    /**
+     * Removes a recipe from my favorites.
+     *
+     * @param loggedUserId The ID of the logged-in user.
+     * @param recipeId The ID of the recipe to remove from my favorites.
+     * @param onSuccess Callback function to be invoked when remove favorite operation is successful.
+     * @param onFailure Callback function to be invoked when remove favorite operation fails, with the error message as parameter.
+     * @param onLoading Callback function to be invoked when remove favorite operation is in progress.
+     */
+    fun removeFavoriteRecipe(
+        loggedUserId: Int,
+        recipeId: Int,
+        onSuccess: () -> Unit,
+        onFailure: (String) -> Unit,
+        onLoading: () -> Unit
+    ) {
+        viewModelScope.launch {
+            try {
+                recipeManagementRepository.removeFavoriteRecipe(loggedUserId, recipeId)
+                    .flowOn(Dispatchers.IO)
+                    .collect { removeFavoriteResult ->
+                        when (removeFavoriteResult) {
+                            is Result.Success -> onSuccess()
+                            is Result.Failure -> onFailure(removeFavoriteResult.error)
+                            is Result.Loading -> onLoading()
+                        }
+                    }
+            } catch (ex: Exception) {
+                onFailure("An error occurred")
+                Log.e(TAG, ex.message ?: "An error occurred", ex)
+            }
+        }
+    }
+
+    /**
      * Decodes Base64 encoded image data to Bitmap.
      *
      * @param imageValue The Base64 encoded string representing the image.

@@ -116,4 +116,28 @@ interface RecipeManagementApiService {
         @Path(value = "idLoggedUser") idLoggedUser: Int,
         @Path(value = "idrecipe") recipeId: Int
     ): Response<Recipe>
+
+    /**
+     * Adds a recipe to my favorites.
+     * @param idLoggedUser The USER ID of the logged in user.
+     * @param recipeId The RECIPE ID of the recipe.
+     * @return A [Recipe] containing the new information.
+     */
+    @POST(ConstantNetworkService.ADD_FAVORITE_RECIPE_ENDPOINT)
+    suspend fun addFavoriteRecipe(
+        @Path(value = "idLoggedUser") idLoggedUser: Int,
+        @Path(value = "idrecipe") recipeId: Int
+    ): Response<Recipe>
+
+    /**
+     * Removes a recipe from my favorites.
+     * @param idLoggedUser The USER ID of the logged in user.
+     * @param recipeId The RECIPE ID of the recipe.
+     * @return A [Recipe] containing the new information.
+     */
+    @DELETE(ConstantNetworkService.REMOVE_FAVORITE_RECIPE_ENDPOINT)
+    suspend fun removeFavoriteRecipe(
+        @Path(value = "idLoggedUser") idLoggedUser: Int,
+        @Path(value = "idrecipe") recipeId: Int
+    ): Response<Recipe>
 }

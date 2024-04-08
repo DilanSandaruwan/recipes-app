@@ -74,4 +74,16 @@ object ConstantNetworkService {
      * Endpoint for removing a like
      */
     const val REMOVE_LIKE_RECIPE_ENDPOINT = "/api/v1/reader/{idLoggedUser}/likes/recipe/{idrecipe}"
+
+    /***
+     * Endpoint for adding a recipe to my favorites
+     */
+    const val ADD_FAVORITE_RECIPE_ENDPOINT =
+        "/api/v1/reader/{idLoggedUser}/favorite/recipe/{idrecipe}"
+
+    /***
+     * Endpoint for removing a recipe from my favorites
+     */
+    const val REMOVE_FAVORITE_RECIPE_ENDPOINT =
+        "/api/v1/reader/{idLoggedUser}/favorite/recipe/{idrecipe}"
 }
