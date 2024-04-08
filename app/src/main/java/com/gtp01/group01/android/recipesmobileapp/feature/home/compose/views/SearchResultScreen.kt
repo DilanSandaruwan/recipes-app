@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -21,6 +22,7 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.FavoriteBorder
+import androidx.compose.material.icons.filled.ThumbUp
 import androidx.compose.material.icons.outlined.ThumbUp
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -50,6 +52,7 @@ import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.gtp01.group01.android.recipesmobileapp.R
 import com.gtp01.group01.android.recipesmobileapp.constant.ConstantResponseCode
+import com.gtp01.group01.android.recipesmobileapp.constant.UserDefaultConstant
 import com.gtp01.group01.android.recipesmobileapp.feature.home.viewmodel.SearchResultViewModel
 import com.gtp01.group01.android.recipesmobileapp.shared.common.Result
 import com.gtp01.group01.android.recipesmobileapp.shared.model.Recipe
@@ -75,34 +78,28 @@ fun SearchResultScreen(
     val networkAvailable by searchResultViewModel.networkAvailable.observeAsState(true)
 
     // Observing user LiveData to get logged-in user information
-    val user by searchResultViewModel.user.observeAsState(null)
+    val savedUser by searchResultViewModel.savedUser.collectAsState()
 
     // Collecting searched recipe list state
     val searchResultRecipeListState =
         searchResultViewModel.searchResultRecipeListState.collectAsState()
 
     // Mutable state variables with default values
-    var userId by remember { mutableIntStateOf(0) }
     var isNetworkAvailable by remember { mutableStateOf(true) }
-
-    // Assigning user's preferences when user data changes
-    user?.let {
-        userId = it.idUser
-    }
+    isNetworkAvailable = networkAvailable
 
     // Data fetching logic triggered when the network is available.
-    isNetworkAvailable = networkAvailable
     if (isNetworkAvailable) {
         // Filters recipes by category if a valid category ID is provided.
         if (categoryId != 0) {
             searchResultViewModel.filterRecipesByCategory(
-                loggedUserId = userId,
+                loggedUserId = savedUser.idUser,
                 categoryId = categoryId
             )
         } else {
             // Filters recipes by name if no category is selected and a recipe name is provided.
             searchResultViewModel.filterRecipesByName(
-                loggedUserId = userId,
+                loggedUserId = savedUser.idUser,
                 recipeName = recipeName
             )
         }
@@ -129,13 +126,13 @@ fun SearchResultScreen(
                     // Filters recipes by category if a valid category ID is provided.
                     if (categoryId != 0) {
                         searchResultViewModel.filterRecipesByCategory(
-                            loggedUserId = userId,
+                            loggedUserId = savedUser.idUser,
                             categoryId = categoryId
                         )
                     } else {
                         // Filters recipes by name if no category is selected and a recipe name is provided.
                         searchResultViewModel.filterRecipesByName(
-                            loggedUserId = userId,
+                            loggedUserId = savedUser.idUser,
                             recipeName = recipeName
                         )
                     }
@@ -146,11 +143,15 @@ fun SearchResultScreen(
             if (searchResultRecipeListState.value is Result.Success) {
                 val recipeResult = searchResultRecipeListState.value as Result.Success<List<Recipe>>
                 SearchRecipeGrid(
+                    loggedUserId = savedUser.idUser,
                     searchResultList = recipeResult.result,
                     decodeImageToBitmap = { searchResultViewModel.decodeImageToBitmap(it) },
+                    onLikeClicked = searchResultViewModel::likeRecipe,
+                    onRemoveLikeClicked = searchResultViewModel::removeLikeRecipe,
                     navigateToViewRecipe = navigateToViewRecipe
                 )
             }
+            Spacer(Modifier.height(dimensionResource(id = R.dimen.activity_horizontal_margin)))
 
             // Section for displaying errors when loading recipes
             HandleRecipeResponseErrorSection(
@@ -159,13 +160,13 @@ fun SearchResultScreen(
                     // Filters recipes by category if a valid category ID is provided.
                     if (categoryId != 0) {
                         searchResultViewModel.filterRecipesByCategory(
-                            loggedUserId = userId,
+                            loggedUserId = savedUser.idUser,
                             categoryId = categoryId
                         )
                     } else {
                         // Filters recipes by name if no category is selected and a recipe name is provided.
                         searchResultViewModel.filterRecipesByName(
-                            loggedUserId = userId,
+                            loggedUserId = savedUser.idUser,
                             recipeName = recipeName
                         )
                     }
@@ -198,15 +199,28 @@ private fun UnavailableNetworkErrorSection(
 /**
  * Composable function to display the grid of recipe suggestions based on calorie.
  *
+ * @param loggedUserId [Int]: The ID of the currently logged-in user (used for like/unlike functionality).
  * @param searchResultList List<Recipe>: The list of recipes to display in this section.
  * @param decodeImageToBitmap Function: Function to decode recipe images to Bitmap.
+ * @param onLikeClicked [Function<Int, Int, () -> Unit, (String) -> Unit, () -> Unit>]: Callback function for liking a recipe.
+ *     - Takes:
+ *        - loggedUserId: The ID of the logged-in user.
+ *        - recipeId: The ID of the recipe to like.
+ *        - onSuccess: Function to execute upon successful like operation.
+ *        - onFailure: Function to execute upon like operation failure.
+ *        - onLoading: Function to execute while the like operation is ongoing.
+ * @param onRemoveLikeClicked [Function() -> Unit)]: Callback function for removing a like from a recipe.
+ *      - Takes the same arguments as `onLikeClicked`.
  * @param navigateToViewRecipe Function: Callback to navigate to the recipe details screen.
  * @param modifier Modifier: The modifier for styling the layout. Default is [Modifier].
  */
 @Composable
 fun SearchRecipeGrid(
+    loggedUserId: Int,
     searchResultList: List<Recipe>,
     decodeImageToBitmap: (String) -> Bitmap?,
+    onLikeClicked: (loggedUserId: Int, recipeId: Int, onSuccess: () -> Unit, onFailure: (String) -> Unit, onLoading: () -> Unit) -> Unit,
+    onRemoveLikeClicked: (loggedUserId: Int, recipeId: Int, onSuccess: () -> Unit, onFailure: (String) -> Unit, onLoading: () -> Unit) -> Unit,
     navigateToViewRecipe: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -220,6 +234,9 @@ fun SearchRecipeGrid(
         items(searchResultList) {
             SearchRecipeCard(
                 recipe = it,
+                loggedUserId = loggedUserId,
+                onLikeClicked = onLikeClicked,
+                onRemoveLikeClicked = onRemoveLikeClicked,
                 decodeImageToBitmap = decodeImageToBitmap,
                 navigateToViewRecipe = navigateToViewRecipe
             )
@@ -231,6 +248,16 @@ fun SearchRecipeGrid(
  * Composable function to display a single recipe card based on calorie.
  *
  * @param recipe Recipe: The recipe to display.
+ * @param loggedUserId [Int]: The ID of the currently logged-in user (used for like/unlike functionality).
+ * @param onLikeClicked [Function<Int, Int, () -> Unit, (String) -> Unit, () -> Unit>]: Callback function for liking a recipe.
+ *     - Takes:
+ *        - loggedUserId: The ID of the logged-in user.
+ *        - recipeId: The ID of the recipe to like.
+ *        - onSuccess: Function to execute upon successful like operation.
+ *        - onFailure: Function to execute upon like operation failure.
+ *        - onLoading: Function to execute while the like operation is ongoing.
+ * @param onRemoveLikeClicked [Function() -> Unit)]: Callback function for removing a like from a recipe.
+ *      - Takes the same arguments as `onLikeClicked`.
  * @param decodeImageToBitmap Function: Function to decode recipe images to Bitmap.
  * @param navigateToViewRecipe Function: Callback to navigate to the recipe details screen.
  * @param modifier Modifier: The modifier for styling the layout. Default is [Modifier].
@@ -238,36 +265,61 @@ fun SearchRecipeGrid(
 @Composable
 fun SearchRecipeCard(
     recipe: Recipe,
+    loggedUserId: Int,
+    onLikeClicked: (loggedUserId: Int, recipeId: Int, onSuccess: () -> Unit, onFailure: (String) -> Unit, onLoading: () -> Unit) -> Unit,
+    onRemoveLikeClicked: (loggedUserId: Int, recipeId: Int, onSuccess: () -> Unit, onFailure: (String) -> Unit, onLoading: () -> Unit) -> Unit,
     decodeImageToBitmap: (String) -> Bitmap?,
     navigateToViewRecipe: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Box(
-        modifier = modifier
-            .clickable { navigateToViewRecipe(recipe.idRecipe) }
-            .padding(top = dimensionResource(id = R.dimen.search_grid_top_padding))
+    var likeCount by remember { mutableIntStateOf(0) }
+    var isLiked by remember { mutableStateOf(false) }
+    var isLoading by remember { mutableStateOf(false) } // Track loading state
+
+    isLiked = recipe.hasLike
+    likeCount = recipe.likeCount
+
+    Surface(
+        color = colorResource(id = R.color.md_theme_surfaceContainer)
     ) {
-        // section for displaying recipe image
-        Column(
-            modifier = modifier
-                .width(dimensionResource(id = R.dimen.search_recipe_card_width))
-                .zIndex(1f),
-            horizontalAlignment = Alignment.CenterHorizontally
+        Box(
+            modifier = modifier.padding(top = dimensionResource(id = R.dimen.search_grid_top_padding))
         ) {
-            recipe.photo?.let {
-                val bitmap: Bitmap? = decodeImageToBitmap(recipe.photo.toString())
-                bitmap?.let {
-                    Image(
-                        bitmap = it.asImageBitmap(),
-                        contentDescription = null,
-                        contentScale = ContentScale.FillHeight,
-                        modifier = modifier
-                            .size(
-                                width = dimensionResource(id = R.dimen.search_recipe_card_img_width),
-                                height = dimensionResource(id = R.dimen.search_recipe_card_img_height)
-                            )
-                            .clip(shape = RoundedCornerShape(dimensionResource(id = R.dimen.list_card_view_corner_radius)))
-                    )
+            // section for displaying recipe image
+            Column(
+                modifier = modifier
+                    .width(dimensionResource(id = R.dimen.search_recipe_card_width))
+                    .zIndex(1f)
+                    .clickable { navigateToViewRecipe(recipe.idRecipe) },
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                recipe.photo?.let {
+                    val bitmap: Bitmap? = decodeImageToBitmap(recipe.photo.toString())
+                    bitmap?.let {
+                        Image(
+                            bitmap = it.asImageBitmap(),
+                            contentDescription = null,
+                            contentScale = ContentScale.FillHeight,
+                            modifier = modifier
+                                .size(
+                                    width = dimensionResource(id = R.dimen.search_recipe_card_img_width),
+                                    height = dimensionResource(id = R.dimen.search_recipe_card_img_height)
+                                )
+                                .clip(shape = RoundedCornerShape(dimensionResource(id = R.dimen.list_card_view_corner_radius)))
+                        )
+                    } ?: run {
+                        Image(
+                            painter = painterResource(R.drawable.error_image),
+                            contentDescription = null,
+                            contentScale = ContentScale.FillBounds,
+                            modifier = modifier
+                                .size(
+                                    width = dimensionResource(id = R.dimen.search_recipe_card_img_width),
+                                    height = dimensionResource(id = R.dimen.search_recipe_card_img_height)
+                                )
+                                .clip(shape = RoundedCornerShape(dimensionResource(id = R.dimen.list_card_view_corner_radius)))
+                        )
+                    }
                 } ?: run {
                     Image(
                         painter = painterResource(R.drawable.error_image),
@@ -281,100 +333,161 @@ fun SearchRecipeCard(
                             .clip(shape = RoundedCornerShape(dimensionResource(id = R.dimen.list_card_view_corner_radius)))
                     )
                 }
-            } ?: run {
-                Image(
-                    painter = painterResource(R.drawable.error_image),
+            }
+
+            // favorite icon placed on top of the image
+            Box(
+                modifier = Modifier
+                    .align(Alignment.TopEnd)
+                    .size(dimensionResource(id = R.dimen.search_favorite_icon_box_size))
+                    .clip(RoundedCornerShape(dimensionResource(id = R.dimen.search_favorite_icon_box_corner_radius)))
+                    .background(colorResource(id = R.color.md_theme_outlineVariant))
+                    .zIndex(2f),
+            ) {
+                Icon(
+                    imageVector = Icons.Filled.FavoriteBorder,
                     contentDescription = null,
-                    contentScale = ContentScale.FillBounds,
-                    modifier = modifier
-                        .size(
-                            width = dimensionResource(id = R.dimen.search_recipe_card_img_width),
-                            height = dimensionResource(id = R.dimen.search_recipe_card_img_height)
-                        )
-                        .clip(shape = RoundedCornerShape(dimensionResource(id = R.dimen.list_card_view_corner_radius)))
+                    tint = colorResource(id = R.color.md_theme_outline),
+                    modifier = Modifier
+                        .size(dimensionResource(id = R.dimen.search_favorite_icon_size))
+                        .align(Alignment.Center)
                 )
             }
-        }
 
-        // favorite icon placed on top of the image
-        Box(
-            modifier = Modifier
-                .align(Alignment.TopEnd)
-                .size(dimensionResource(id = R.dimen.search_favorite_icon_box_size))
-                .clip(RoundedCornerShape(dimensionResource(id = R.dimen.search_favorite_icon_box_corner_radius)))
-                .background(colorResource(id = R.color.md_theme_outlineVariant))
-                .zIndex(2f),
-        ) {
-            Icon(
-                imageVector = Icons.Filled.FavoriteBorder,
-                contentDescription = null,
-                tint = colorResource(id = R.color.md_theme_outline),
-                modifier = Modifier
-                    .size(dimensionResource(id = R.dimen.search_favorite_icon_size))
-                    .align(Alignment.Center)
-            )
-        }
-
-        //section for displaying recipe details
-        Column(
-            modifier = Modifier
-                .width(dimensionResource(id = R.dimen.search_recipe_card_width))
-                .padding(top = dimensionResource(id = R.dimen.search_recipe_card_text_top_padding))
-                .clip(shape = RoundedCornerShape(dimensionResource(id = R.dimen.list_card_view_corner_radius)))
-
-        ) {
+            //section for displaying recipe details
             Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier
-                    .background(colorResource(id = R.color.md_theme_onPrimary))
-                    .padding(
-                        top = dimensionResource(id = R.dimen.search_recipe_card_text_top_padding),
-                        bottom = dimensionResource(id = R.dimen.search_recipe_card_text_bottom_padding)
-                    )
-                    .padding(horizontal = dimensionResource(id = R.dimen.search_recipe_card_text_bottom_padding))
+                    .width(dimensionResource(id = R.dimen.search_recipe_card_width))
+                    .padding(top = dimensionResource(id = R.dimen.search_recipe_card_text_top_padding))
                     .clip(shape = RoundedCornerShape(dimensionResource(id = R.dimen.list_card_view_corner_radius)))
             ) {
-                //section for displaying recipe name
-                Text(
-                    text = recipe.recipeName,
-                    style = MaterialTheme.typography.bodyLarge,
-                    color = colorResource(id = R.color.md_theme_onSurface),
-                    overflow = TextOverflow.Ellipsis,
-                    modifier = modifier.height(dimensionResource(id = R.dimen.search_recipe_card_name_label_height))
-
-                )
-
-                //section for displaying recipe calorie
-                Row(
-                    modifier = modifier.fillMaxWidth()
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier
+                        .background(colorResource(id = R.color.md_theme_onPrimary))
+                        .padding(
+                            top = dimensionResource(id = R.dimen.search_recipe_card_text_top_padding),
+                            bottom = dimensionResource(id = R.dimen.search_recipe_card_text_bottom_padding)
+                        )
+                        .padding(horizontal = dimensionResource(id = R.dimen.search_recipe_card_text_bottom_padding))
+                        .clip(shape = RoundedCornerShape(dimensionResource(id = R.dimen.list_card_view_corner_radius)))
                 ) {
-                    Text(
-                        text = stringResource(id = R.string.calorie_kcal, recipe.calorie),
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = colorResource(id = R.color.md_theme_outline_mediumContrast),
-                        overflow = TextOverflow.Ellipsis,
-                        modifier = modifier.height(dimensionResource(id = R.dimen.search_recipe_card_name_label_height))
-                    )
-                }
+                    //section for displaying recipe name
+                    Row(
+                        modifier = modifier
+                            .fillMaxWidth()
+                            .clickable { navigateToViewRecipe(recipe.idRecipe) },
+                    ) {
+                        Text(
+                            text = recipe.recipeName,
+                            style = MaterialTheme.typography.bodyLarge,
+                            color = colorResource(id = R.color.md_theme_onSurface),
+                            overflow = TextOverflow.Ellipsis,
+                            modifier = modifier.height(dimensionResource(id = R.dimen.search_recipe_card_name_label_height))
+                        )
+                    }
 
-                //section for displaying recipe likes
-                Row(
-                    modifier = modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.Start,
-                    verticalAlignment = Alignment.Bottom
-                ) {
-                    Icon(
-                        imageVector = Icons.Outlined.ThumbUp,
-                        contentDescription = null,
-                        tint = colorResource(id = R.color.md_theme_outline_mediumContrast),
-                        modifier = Modifier
-                            .size(dimensionResource(id = R.dimen.search_like_icon_size))
-                    )
-                    Text(
-                        text = stringResource(R.string.like_count, recipe.likeCount),
-                        style = MaterialTheme.typography.bodySmall,
-                        color = colorResource(id = R.color.md_theme_onSurface),
-                    )
+                    //section for displaying recipe calorie
+                    Row(
+                        modifier = modifier
+                            .fillMaxWidth()
+                            .clickable { navigateToViewRecipe(recipe.idRecipe) },
+                    ) {
+                        Text(
+                            text = stringResource(id = R.string.calorie_kcal, recipe.calorie),
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = colorResource(id = R.color.md_theme_outline_mediumContrast),
+                            overflow = TextOverflow.Ellipsis,
+                            modifier = modifier.height(dimensionResource(id = R.dimen.search_recipe_card_name_label_height))
+                        )
+                    }
+
+                    //section for displaying recipe likes
+                    Row(
+                        modifier = modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.Start,
+                        verticalAlignment = Alignment.Bottom
+                    ) {
+                        if (loggedUserId == UserDefaultConstant.GUEST_USER_ID) {
+                            // Does not allow logged in users to like recipes
+                            Icon(
+                                imageVector = Icons.Outlined.ThumbUp,
+                                contentDescription = null,
+                                tint = colorResource(id = R.color.md_theme_outline_mediumContrast),
+                                modifier = Modifier.size(dimensionResource(id = R.dimen.search_like_icon_size))
+                            )
+                        } else {
+                            // Allow logged in users to like recipes
+                            Icon(
+                                imageVector = if (isLiked) Icons.Filled.ThumbUp else Icons.Outlined.ThumbUp,
+                                contentDescription = null,
+                                tint = colorResource(id = R.color.md_theme_primary),
+                                modifier = Modifier
+                                    .size(dimensionResource(id = R.dimen.search_like_icon_size))
+                                    .clickable {
+                                        // Only allow liking when not loading
+                                        if (!isLoading) {
+                                            isLiked = !isLiked
+                                            if (isLiked) {
+                                                // Call to like a recipe
+                                                onLikeClicked(
+                                                    loggedUserId,
+                                                    recipe.idRecipe,
+                                                    {
+                                                        // Reset loading state on success
+                                                        isLoading = false
+                                                    },
+                                                    {
+                                                        // Reset loading state on failure
+                                                        isLoading = false
+
+                                                        // Revert the like status and like count on failure
+                                                        isLiked = !isLiked
+                                                        --likeCount
+                                                    },
+                                                    {
+                                                        // Set loading state on loading
+                                                        isLoading = true
+                                                    }
+                                                )
+                                                // Increment like count
+                                                ++likeCount
+                                            } else {
+                                                // Call to remove a like from a recipe
+                                                onRemoveLikeClicked(
+                                                    loggedUserId,
+                                                    recipe.idRecipe,
+                                                    {
+                                                        // Reset loading state on success
+                                                        isLoading = false
+                                                    },
+                                                    {
+                                                        // Reset loading state on failure
+                                                        isLoading = false
+
+                                                        // Revert the like status and like count on failure
+                                                        isLiked = !isLiked
+                                                        ++likeCount
+                                                    },
+                                                    {
+                                                        // Set loading state on loading
+                                                        isLoading = true
+                                                    }
+                                                )
+                                                // Decrement like count
+                                                --likeCount
+                                            }
+                                        }
+                                    }
+                            )
+                        }
+
+                        Text(
+                            text = stringResource(R.string.like_count, likeCount),
+                            style = MaterialTheme.typography.bodySmall,
+                            color = colorResource(id = R.color.md_theme_onSurface),
+                        )
+                    }
                 }
             }
         }

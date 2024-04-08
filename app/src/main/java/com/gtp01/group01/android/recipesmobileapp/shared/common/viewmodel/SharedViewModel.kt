@@ -51,11 +51,11 @@ class SharedViewModel : ViewModel() {
                 preferCategories = user.preferCategories,
 
                 // Assigns user's preferred duration, using a default of 30 if it's null or 0
-                preferDuration = user.preferDuration.takeIf { it != 0 }
+                preferDuration = user.preferDuration.takeIf { it > 0 }
                     ?: UserDefaultConstant.GUEST_DURATION_PREFERENCE,
 
                 // Assigns user's preferred calorie, using a default of 300 if it's null or 0
-                preferCalorie = user.preferCalorie.takeIf { it != 0 }
+                preferCalorie = user.preferCalorie.takeIf { it > 0 }
                     ?: UserDefaultConstant.GUEST_CALORIE_PREFERENCE,
             )
         }

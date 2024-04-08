@@ -179,6 +179,74 @@ class HomeViewModel @Inject constructor(
     }
 
     /**
+     * Likes a recipe for the logged-in user.
+     *
+     * @param loggedUserId The ID of the logged-in user.
+     * @param recipeId The ID of the recipe to like.
+     * @param onSuccess Callback function to be invoked when the like operation is successful.
+     * @param onFailure Callback function to be invoked when the like operation fails, with the error message as parameter.
+     * @param onLoading Callback function to be invoked when the like operation is in progress.
+     */
+    fun likeRecipe(
+        loggedUserId: Int,
+        recipeId: Int,
+        onSuccess: () -> Unit,
+        onFailure: (String) -> Unit,
+        onLoading: () -> Unit
+    ) {
+        viewModelScope.launch {
+            try {
+                recipeManagementRepository.likeRecipe(loggedUserId, recipeId)
+                    .flowOn(Dispatchers.IO)
+                    .collect { likeResult ->
+                        when (likeResult) {
+                            is Result.Success -> onSuccess()
+                            is Result.Failure -> onFailure(likeResult.error)
+                            is Result.Loading -> onLoading()
+                        }
+                    }
+            } catch (ex: Exception) {
+                onFailure("An error occurred")
+                Log.e(TAG, ex.message ?: "An error occurred", ex)
+            }
+        }
+    }
+
+    /**
+     * Removes a like from a recipe for the logged-in user.
+     *
+     * @param loggedUserId The ID of the logged-in user.
+     * @param recipeId The ID of the recipe to like.
+     * @param onSuccess Callback function to be invoked when the remove like operation is successful.
+     * @param onFailure Callback function to be invoked when the remove like operation fails, with the error message as parameter.
+     * @param onLoading Callback function to be invoked when the remove like operation is in progress.
+     */
+    fun removeLikeRecipe(
+        loggedUserId: Int,
+        recipeId: Int,
+        onSuccess: () -> Unit,
+        onFailure: (String) -> Unit,
+        onLoading: () -> Unit
+    ) {
+        viewModelScope.launch {
+            try {
+                recipeManagementRepository.removeLikeRecipe(loggedUserId, recipeId)
+                    .flowOn(Dispatchers.IO)
+                    .collect { dislikeResult ->
+                        when (dislikeResult) {
+                            is Result.Success -> onSuccess()
+                            is Result.Failure -> onFailure(dislikeResult.error)
+                            is Result.Loading -> onLoading()
+                        }
+                    }
+            } catch (ex: Exception) {
+                onFailure("An error occurred")
+                Log.e(TAG, ex.message ?: "An error occurred", ex)
+            }
+        }
+    }
+
+    /**
      * Decodes Base64 encoded image data to Bitmap.
      *
      * @param imageValue The Base64 encoded string representing the image.
