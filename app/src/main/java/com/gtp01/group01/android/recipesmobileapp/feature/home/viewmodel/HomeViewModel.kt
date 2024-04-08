@@ -16,6 +16,7 @@ import androidx.lifecycle.viewModelScope
 import com.gtp01.group01.android.recipesmobileapp.constant.ConstantResponseCode.EXCEPTION
 import com.gtp01.group01.android.recipesmobileapp.feature.my_profile.repository.RecipeManagementRepository
 import com.gtp01.group01.android.recipesmobileapp.shared.common.Result
+import com.gtp01.group01.android.recipesmobileapp.shared.common.viewmodel.SharedViewModel
 import com.gtp01.group01.android.recipesmobileapp.shared.model.Recipe
 import com.gtp01.group01.android.recipesmobileapp.shared.model.User
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -30,15 +31,18 @@ import javax.inject.Inject
  * ViewModel responsible for managing data related to recipes on the Home screen.
  *
  * This ViewModel provides functionality to fetch and manage recipes based on various criteria,
- * such as cooking time and calorie count. It also handles network connectivity and user input for searching.
+ * such as cooking time, calorie count, and user preferences. It also handles network connectivity
+ * and user input for searching recipes.
  *
- * @property recipeManagementRepository The repository for managing recipe data.
- * @param recipeManagementRepository The repository for fetching recipe data.
+ * @property recipeManagementRepository The repository for fetching recipe data.
+ * @property connectivityManager The manager for network connectivity monitoring.
+ * @property sharedViewModel The shared view model holding logged-in user information.
  */
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    connectivityManager: ConnectivityManager,
-    private val recipeManagementRepository: RecipeManagementRepository
+    private val connectivityManager: ConnectivityManager,
+    private val recipeManagementRepository: RecipeManagementRepository,
+    private val sharedViewModel: SharedViewModel
 ) : ViewModel() {
     // Logging tag for this class
     private val TAG = this::class.java.simpleName
@@ -47,9 +51,8 @@ class HomeViewModel @Inject constructor(
     private val _networkAvailable = MutableLiveData(true)
     val networkAvailable: LiveData<Boolean> = _networkAvailable
 
-    // LiveData for holding logged-in user
-    private val _user = MutableLiveData<User?>(null)
-    val user: LiveData<User?> = _user
+    // StateFlow for holding logged-in user from Shared view model
+    val savedUser: StateFlow<User> = sharedViewModel.savedUser
 
     // StateFlow for holding time-based recipe list state
     private val _timeBasedRecipeListState = MutableStateFlow<Result<List<Recipe>>>(Result.Loading)
@@ -63,13 +66,13 @@ class HomeViewModel @Inject constructor(
     // MutableState for holding search keyword
     var searchKeyword by mutableStateOf("")
 
-    /**
-     * Initializes the network monitoring functionality for this ViewModel.
-     *
-     * This block creates a network callback to track network availability changes and
-     * registers the network callback with the ConnectivityManager.
-     */
     init {
+        /**
+         * Initializes the network monitoring functionality for this ViewModel.
+         *
+         * This block creates a network callback to track network availability changes and
+         * registers the network callback with the ConnectivityManager.
+         */
         val networkCallback = object : ConnectivityManager.NetworkCallback() {
             override fun onAvailable(network: Network) {
                 _networkAvailable.postValue(true)
@@ -84,6 +87,25 @@ class HomeViewModel @Inject constructor(
     }
 
     /**
+     * Fetches and updates recipes filtered by cooking time and calorie count asynchronously,
+     * using the logged-in user's preferences for filtering.
+     *
+     * This method retrieves the logged-in user's preferred duration and calorie count from
+     * the `sharedViewModel` and then calls the `filterRecipesByDuration` and
+     * `filterRecipesByCalorie` methods to fetch recipes based on those preferences.
+     */
+    fun updateFilters(loggedUserId: Int, maxDuration: Int, maxCalorie: Int) {
+        filterRecipesByDuration(
+            loggedUserId = loggedUserId,
+            maxDuration = maxDuration
+        )
+        filterRecipesByCalorie(
+            loggedUserId = loggedUserId,
+            maxCalorie = maxCalorie
+        )
+    }
+
+    /**
      * Fetches recipes filtered by cooking time asynchronously.
      *
      * @param loggedUserId The ID of the logged-in user.
@@ -92,11 +114,10 @@ class HomeViewModel @Inject constructor(
     fun filterRecipesByDuration(loggedUserId: Int, maxDuration: Int) {
         viewModelScope.launch {
             try {
-                _timeBasedRecipeListState.value = Result.Loading
                 recipeManagementRepository.filterRecipesByDuration(loggedUserId, maxDuration)
                     .flowOn(Dispatchers.IO)
-                    .collect { recipeList ->
-                        _timeBasedRecipeListState.value = recipeList
+                    .collect { recipeListResult ->
+                        _timeBasedRecipeListState.value = recipeListResult
                     }
             } catch (ex: Exception) {
                 _timeBasedRecipeListState.value = Result.Failure(EXCEPTION)
@@ -114,11 +135,10 @@ class HomeViewModel @Inject constructor(
     fun filterRecipesByCalorie(loggedUserId: Int, maxCalorie: Int) {
         viewModelScope.launch {
             try {
-                _calorieBasedRecipeListState.value = Result.Loading
                 recipeManagementRepository.filterRecipesByCalorie(loggedUserId, maxCalorie)
                     .flowOn(Dispatchers.IO)
-                    .collect { recipeList ->
-                        _calorieBasedRecipeListState.value = recipeList
+                    .collect { recipeListResult ->
+                        _calorieBasedRecipeListState.value = recipeListResult
                     }
             } catch (ex: Exception) {
                 _calorieBasedRecipeListState.value = Result.Failure(EXCEPTION)

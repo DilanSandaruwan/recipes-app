@@ -5,6 +5,7 @@ import com.gtp01.group01.android.recipesmobileapp.constant.ConstantResponseCode
 import com.gtp01.group01.android.recipesmobileapp.shared.common.Result
 import com.gtp01.group01.android.recipesmobileapp.shared.model.FoodCategory
 import com.gtp01.group01.android.recipesmobileapp.shared.model.Recipe
+import com.gtp01.group01.android.recipesmobileapp.shared.model.User
 import com.gtp01.group01.android.recipesmobileapp.shared.models.NutritionModel
 import com.gtp01.group01.android.recipesmobileapp.shared.sources.RecipeManagementApiService
 import kotlinx.coroutines.Dispatchers
@@ -102,7 +103,6 @@ class RecipeManagementRepository @Inject constructor(
     ): Flow<Result<List<Recipe>>> {
         return withContext(Dispatchers.IO) {
             return@withContext flow {
-                emit(Result.Loading) // Indicate loading state
                 try {
                     val response = recipeManagementApiService.filterRecipesByDuration(
                         loggedUserId,
@@ -153,7 +153,6 @@ class RecipeManagementRepository @Inject constructor(
     ): Flow<Result<List<Recipe>>> {
         return withContext(Dispatchers.IO) {
             return@withContext flow {
-                emit(Result.Loading) // Indicate loading state
                 try {
                     val response = recipeManagementApiService.filterRecipesByCalorie(
                         loggedUserId,

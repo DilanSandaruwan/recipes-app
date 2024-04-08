@@ -13,9 +13,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
-import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.FavoriteBorder
@@ -25,6 +24,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -36,15 +36,14 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import com.gtp01.group01.android.recipesmobileapp.R
-import com.gtp01.group01.android.recipesmobileapp.data.RecipeListTestData
+import com.gtp01.group01.android.recipesmobileapp.shared.common.Result
 import com.gtp01.group01.android.recipesmobileapp.shared.model.Recipe
 
 /**
  * Composable function to display the section of recipe suggestions based on time.
  *
- * @param timeBasedRecipeList List<Recipe>: The list of recipes to display in this section. Default is an empty list.
+ * @param timeBasedRecipeListState State<Result<List<Recipe>>>: Time-based recipe list state.
  * @param timeFilterValue Int: The time duration used for filtering the recipes. Default is 30 min.
  * @param decodeImageToBitmap Function: Function to decode recipe images to Bitmap.
  * @param navigateToViewRecipe Function: Callback to navigate to the recipe details screen.
@@ -52,7 +51,7 @@ import com.gtp01.group01.android.recipesmobileapp.shared.model.Recipe
  */
 @Composable
 fun RecipeSuggestionByTimeSection(
-    timeBasedRecipeList: List<Recipe>? = emptyList(),
+    timeBasedRecipeListState: State<Result<List<Recipe>>>,
     timeFilterValue: Int,
     decodeImageToBitmap: (String) -> Bitmap?,
     navigateToViewRecipe: (Int) -> Unit,
@@ -61,11 +60,14 @@ fun RecipeSuggestionByTimeSection(
     val title = stringResource(R.string.home_suggestion_bytime_title, timeFilterValue)
     Column {
         RecipeSuggestionByTimeTitle(title)
-        if (timeBasedRecipeList != null) {
+        if (timeBasedRecipeListState.value is Result.Success) {
+            val recipeResult =
+                timeBasedRecipeListState.value as Result.Success<List<Recipe>>
             RecipeSuggestionByTimeGrid(
-                timeBasedRecipeList = timeBasedRecipeList,
+                timeBasedRecipeList = recipeResult.result,
                 decodeImageToBitmap = decodeImageToBitmap,
-                navigateToViewRecipe = navigateToViewRecipe
+                navigateToViewRecipe = navigateToViewRecipe,
+                modifier = modifier
             )
         }
     }
@@ -86,8 +88,7 @@ fun RecipeSuggestionByTimeGrid(
     navigateToViewRecipe: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    LazyHorizontalGrid(
-        rows = GridCells.Fixed(1),
+    LazyRow(
         horizontalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.content_horizontal_margin)),
         modifier = modifier
             .height(dimensionResource(id = R.dimen.home_large_suggestion_card_height))
@@ -149,10 +150,12 @@ fun RecipeByTimeCard(
                                 painter = painterResource(R.drawable.error_image),
                                 contentDescription = null,
                                 contentScale = ContentScale.FillBounds,
-                                modifier = modifier.size(
-                                    dimensionResource(id = R.dimen.home_large_suggestion_card_width),
-                                    dimensionResource(id = R.dimen.home_large_suggestion_card_img_height)
-                                )
+                                modifier = modifier
+                                    .size(
+                                        dimensionResource(id = R.dimen.home_large_suggestion_card_width),
+                                        dimensionResource(id = R.dimen.home_large_suggestion_card_img_height)
+                                    )
+                                    .clip(RoundedCornerShape(dimensionResource(id = R.dimen.home_suggestion_card_corner_radius))),
                             )
                         }
                     } ?: run {
@@ -160,10 +163,12 @@ fun RecipeByTimeCard(
                             painter = painterResource(R.drawable.error_image),
                             contentDescription = null,
                             contentScale = ContentScale.FillBounds,
-                            modifier = modifier.size(
-                                dimensionResource(id = R.dimen.home_large_suggestion_card_width),
-                                dimensionResource(id = R.dimen.home_large_suggestion_card_img_height)
-                            )
+                            modifier = modifier
+                                .size(
+                                    dimensionResource(id = R.dimen.home_large_suggestion_card_width),
+                                    dimensionResource(id = R.dimen.home_large_suggestion_card_img_height)
+                                )
+                                .clip(RoundedCornerShape(dimensionResource(id = R.dimen.home_suggestion_card_corner_radius))),
                         )
                     }
 
@@ -259,22 +264,5 @@ fun RecipeSuggestionByTimeTitle(title: String) {
             style = MaterialTheme.typography.titleLarge,
             fontWeight = FontWeight.SemiBold
         )
-    }
-}
-
-/**
- * Below are preview composable functions.
- * These functions are intended for use in a preview environment during development.
- */
-@Composable
-@Preview(showBackground = true, showSystemUi = true)
-fun PreviewRecipeSuggestionByTimeSection() {
-    val recipeListTestData = RecipeListTestData.getRecipeList()
-    MaterialTheme {
-        RecipeSuggestionByTimeSection(
-            timeBasedRecipeList = recipeListTestData,
-            timeFilterValue = 30,
-            decodeImageToBitmap = { null },
-            navigateToViewRecipe = {})
     }
 }

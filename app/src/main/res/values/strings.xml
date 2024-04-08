@@ -103,6 +103,7 @@
     <string name="warn_please_add_ingredients_in_correct_format">Please add ingredients in correct format</string>
 
     <!-- Strings used in home screen -->
+    <string name="hello">Hello, %s</string>
     <string name="home_suggestion_bytime_title">Make It In %d Min</string>
     <string name="home_suggestion_bycalorie_title">Make It below %dKcal</string>
     <string name="placeholder_search">Enter Recipe Name</string>

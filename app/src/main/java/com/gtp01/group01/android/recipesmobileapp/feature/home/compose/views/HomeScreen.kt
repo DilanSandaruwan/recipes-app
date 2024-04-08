@@ -9,18 +9,21 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.gtp01.group01.android.recipesmobileapp.R
@@ -55,33 +58,21 @@ fun HomeScreen(
     val calorieBasedRecipeListState = homeViewModel.calorieBasedRecipeListState.collectAsState()
 
     // Observing user LiveData to get logged-in user information
-    val user by homeViewModel.user.observeAsState(null)
+    val savedUser by homeViewModel.savedUser.collectAsState()
 
     // Mutable state variables with default values
-    var userId by remember { mutableIntStateOf(0) }
-    var preferDuration by remember { mutableIntStateOf(30) }
-    var preferCalorie by remember { mutableIntStateOf(300) }
     var isNetworkAvailable by remember { mutableStateOf(true) }
-
-    // Assigning user's preferences when user data changes
-    user?.let {
-        userId = it.idUser
-        preferDuration = it.preferDuration
-        preferCalorie = it.preferCalorie
-    }
+    isNetworkAvailable = networkAvailable
 
     // Data fetching logic triggered when the network is available.
-    isNetworkAvailable = networkAvailable
     if (isNetworkAvailable) {
-        homeViewModel.filterRecipesByDuration(
-            loggedUserId = userId,
-            maxDuration = preferDuration
-        )
-        homeViewModel.filterRecipesByCalorie(
-            loggedUserId = userId,
-            maxCalorie = preferCalorie
+        homeViewModel.updateFilters(
+            loggedUserId = savedUser.idUser,
+            maxCalorie = savedUser.preferCalorie,
+            maxDuration = savedUser.preferDuration
         )
     }
+
     MaterialTheme {
         Column(
             Modifier
@@ -94,6 +85,10 @@ fun HomeScreen(
                 )
                 .fillMaxSize()
         ) {
+            Spacer(Modifier.height(dimensionResource(id = R.dimen.activity_horizontal_margin)))
+
+            // Section to show welcome message to user
+            WelcomeMessageSection(savedUser.fullName)
             Spacer(Modifier.height(dimensionResource(id = R.dimen.activity_horizontal_margin)))
 
             // Section for displaying the search bar
@@ -114,40 +109,30 @@ fun HomeScreen(
             if (!isNetworkAvailable) {
                 UnavailableNetworkErrorSection(errorCode = ConstantResponseCode.IOEXCEPTION,
                     onRetry = {
-                        homeViewModel.filterRecipesByDuration(
-                            loggedUserId = userId,
-                            maxDuration = preferDuration
-                        )
-                        homeViewModel.filterRecipesByCalorie(
-                            loggedUserId = userId,
-                            maxCalorie = preferCalorie
+                        homeViewModel.updateFilters(
+                            loggedUserId = savedUser.idUser,
+                            maxCalorie = savedUser.preferCalorie,
+                            maxDuration = savedUser.preferDuration
                         )
                     }
                 )
             } else {
                 // Section for displaying the filtered recipes based on preferred preparation time
-                if (timeBasedRecipeListState.value is Result.Success) {
-                    val recipeResult =
-                        timeBasedRecipeListState.value as Result.Success<List<Recipe>>
-                    RecipeSuggestionByTimeSection(
-                        timeBasedRecipeList = recipeResult.result,
-                        timeFilterValue = preferDuration,
-                        decodeImageToBitmap = { homeViewModel.decodeImageToBitmap(it) },
-                        navigateToViewRecipe = navigateToViewRecipe
-                    )
-                }
+                RecipeSuggestionByTimeSection(
+                    timeBasedRecipeListState = timeBasedRecipeListState,
+                    timeFilterValue = savedUser.preferDuration,
+                    decodeImageToBitmap = { homeViewModel.decodeImageToBitmap(it) },
+                    navigateToViewRecipe = navigateToViewRecipe
+                )
 
                 // Section for displaying the filtered recipes based on preferred calorie count
-                if (calorieBasedRecipeListState.value is Result.Success) {
-                    val recipeResult =
-                        calorieBasedRecipeListState.value as Result.Success<List<Recipe>>
-                    RecipeSuggestionByCalorieSection(
-                        calorieBasedRecipeList = recipeResult.result,
-                        calorieFilterValue = preferCalorie,
-                        decodeImageToBitmap = { homeViewModel.decodeImageToBitmap(it) },
-                        navigateToViewRecipe = navigateToViewRecipe
-                    )
-                }
+                RecipeSuggestionByCalorieSection(
+                    calorieBasedRecipeListState = calorieBasedRecipeListState,
+                    calorieFilterValue = savedUser.preferCalorie,
+                    decodeImageToBitmap = { homeViewModel.decodeImageToBitmap(it) },
+                    navigateToViewRecipe = navigateToViewRecipe
+                )
+                Spacer(Modifier.height(dimensionResource(id = R.dimen.activity_horizontal_margin)))
 
                 // Section for displaying errors when loading recipes
                 HandleRecipeResponseErrorSection(
@@ -155,27 +140,47 @@ fun HomeScreen(
                     calorieRecipeListState = calorieBasedRecipeListState,
                     onRetryFilterRecipesByDuration = {
                         homeViewModel.filterRecipesByDuration(
-                            loggedUserId = userId,
-                            maxDuration = preferDuration
+                            loggedUserId = savedUser.idUser,
+                            maxDuration = savedUser.preferDuration
                         )
                     },
                     onRetryFilterRecipesByCalorie = {
                         homeViewModel.filterRecipesByCalorie(
-                            loggedUserId = userId,
-                            maxCalorie = preferCalorie
+                            loggedUserId = savedUser.idUser,
+                            maxCalorie = savedUser.preferCalorie
                         )
                     },
                 )
-                Spacer(Modifier.height(dimensionResource(id = R.dimen.bottom_navigation_height)))
 
                 // Section for displaying loading progress
                 HandleRecipeLoadingSection(
                     timeRecipeListState = timeBasedRecipeListState,
                     calorieRecipeListState = calorieBasedRecipeListState
                 )
+                Spacer(Modifier.height(dimensionResource(id = R.dimen.bottom_navigation_height)))
             }
-            Spacer(Modifier.height(dimensionResource(id = R.dimen.bottom_navigation_height)))
         }
+    }
+}
+
+/**
+ * Composable function to display the welcome message to user.
+ *
+ * @param userName String: The user's name
+ */
+@Composable
+fun WelcomeMessageSection(userName: String?) {
+    Column(
+        modifier = Modifier
+            .height(dimensionResource(id = R.dimen.editText_height))
+            .padding(vertical = dimensionResource(id = R.dimen.padding))
+    ) {
+        Text(
+            text = stringResource(R.string.hello, if (userName.isNullOrEmpty()) "" else userName),
+            style = MaterialTheme.typography.headlineMedium,
+            overflow = TextOverflow.Ellipsis,
+            fontWeight = FontWeight.SemiBold
+        )
     }
 }
 

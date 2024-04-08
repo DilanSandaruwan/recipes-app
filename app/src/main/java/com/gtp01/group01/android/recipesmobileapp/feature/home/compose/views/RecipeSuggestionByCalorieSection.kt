@@ -13,9 +13,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
-import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.FavoriteBorder
@@ -24,6 +23,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -39,12 +39,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.zIndex
 import com.gtp01.group01.android.recipesmobileapp.R
 import com.gtp01.group01.android.recipesmobileapp.data.RecipeListTestData
+import com.gtp01.group01.android.recipesmobileapp.shared.common.Result
 import com.gtp01.group01.android.recipesmobileapp.shared.model.Recipe
 
 /**
  * Composable function to display the section of recipe suggestions based on calorie.
  *
- * @param calorieBasedRecipeList List<Recipe>: The list of recipes to display in this section. Default is an empty list.
+ * @param calorieBasedRecipeListState State<Result<List<Recipe>>>: Calorie-based recipe list state.
  * @param calorieFilterValue Int: The maximum calorie count used for filtering the recipes. Default is 300 kcal.
  * @param decodeImageToBitmap Function: Function to decode recipe images to Bitmap.
  * @param navigateToViewRecipe Function: Callback to navigate to the recipe details screen.
@@ -52,7 +53,7 @@ import com.gtp01.group01.android.recipesmobileapp.shared.model.Recipe
  */
 @Composable
 fun RecipeSuggestionByCalorieSection(
-    calorieBasedRecipeList: List<Recipe> = emptyList(),
+    calorieBasedRecipeListState: State<Result<List<Recipe>>>,
     calorieFilterValue: Int,
     decodeImageToBitmap: (String) -> Bitmap?,
     navigateToViewRecipe: (Int) -> Unit,
@@ -60,12 +61,17 @@ fun RecipeSuggestionByCalorieSection(
 ) {
     val title = stringResource(R.string.home_suggestion_bycalorie_title, calorieFilterValue)
     Column {
-        RecipeSuggestionByCalorieTitle(title = title)
-        RecipeSuggestionByCalorieGrid(
-            calorieBasedRecipeList = calorieBasedRecipeList,
-            decodeImageToBitmap = decodeImageToBitmap,
-            navigateToViewRecipe = navigateToViewRecipe
-        )
+        RecipeSuggestionByCalorieTitle(title)
+        if (calorieBasedRecipeListState.value is Result.Success) {
+            val recipeResult =
+                calorieBasedRecipeListState.value as Result.Success<List<Recipe>>
+            RecipeSuggestionByCalorieGrid(
+                calorieBasedRecipeList = recipeResult.result,
+                decodeImageToBitmap = decodeImageToBitmap,
+                navigateToViewRecipe = navigateToViewRecipe,
+                modifier = modifier
+            )
+        }
     }
 }
 
@@ -104,8 +110,7 @@ fun RecipeSuggestionByCalorieGrid(
     navigateToViewRecipe: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    LazyHorizontalGrid(
-        rows = GridCells.Fixed(1),
+    LazyRow(
         horizontalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.content_horizontal_margin)),
         modifier = modifier
             .height(dimensionResource(id = R.dimen.home_small_suggestion_card_height))
