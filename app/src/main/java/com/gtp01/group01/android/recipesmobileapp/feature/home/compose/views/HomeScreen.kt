@@ -120,16 +120,34 @@ fun HomeScreen(
                 // Section for displaying the filtered recipes based on preferred preparation time
                 RecipeSuggestionByTimeSection(
                     timeBasedRecipeListState = timeBasedRecipeListState,
+                    loggedUserId = savedUser.idUser,
                     timeFilterValue = savedUser.preferDuration,
                     decodeImageToBitmap = { homeViewModel.decodeImageToBitmap(it) },
+                    onLikeClicked = homeViewModel::likeRecipe,
+                    onRemoveLikeClicked = homeViewModel::removeLikeRecipe,
+                    onSuccessfulRecipeUpdate = {
+                        homeViewModel.filterRecipesByCalorie(
+                            savedUser.idUser,
+                            savedUser.preferCalorie
+                        )
+                    },
                     navigateToViewRecipe = navigateToViewRecipe
                 )
 
                 // Section for displaying the filtered recipes based on preferred calorie count
                 RecipeSuggestionByCalorieSection(
                     calorieBasedRecipeListState = calorieBasedRecipeListState,
+                    loggedUserId = savedUser.idUser,
                     calorieFilterValue = savedUser.preferCalorie,
                     decodeImageToBitmap = { homeViewModel.decodeImageToBitmap(it) },
+                    onLikeClicked = homeViewModel::likeRecipe,
+                    onRemoveLikeClicked = homeViewModel::removeLikeRecipe,
+                    onSuccessfulRecipeUpdate = {
+                        homeViewModel.filterRecipesByDuration(
+                            savedUser.idUser,
+                            savedUser.preferDuration
+                        )
+                    },
                     navigateToViewRecipe = navigateToViewRecipe
                 )
                 Spacer(Modifier.height(dimensionResource(id = R.dimen.activity_horizontal_margin)))

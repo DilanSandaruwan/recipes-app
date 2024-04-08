@@ -12,6 +12,7 @@ import com.gtp01.group01.android.recipesmobileapp.shared.model.Recipe
 import com.gtp01.group01.android.recipesmobileapp.shared.models.NutritionModel
 import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Headers
 import retrofit2.http.POST
@@ -91,4 +92,28 @@ interface RecipeManagementApiService {
         @Path(value = "idLoggedUser") idLoggedUser: Int,
         @Path(value = "categoryids") categoryId: Int
     ): Response<List<Recipe>>
+
+    /**
+     * Like a recipe.
+     * @param idLoggedUser The USER ID of the logged in user.
+     * @param recipeId The RECIPE ID of the recipe.
+     * @return A [Recipe] containing the new information.
+     */
+    @POST(ConstantNetworkService.LIKE_RECIPE_ENDPOINT)
+    suspend fun likeRecipe(
+        @Path(value = "idLoggedUser") idLoggedUser: Int,
+        @Path(value = "idrecipe") recipeId: Int
+    ): Response<Recipe>
+
+    /**
+     * Removes a like from the recipe.
+     * @param idLoggedUser The USER ID of the logged in user.
+     * @param recipeId The RECIPE ID of the recipe.
+     * @return A [Recipe] containing the new information.
+     */
+    @DELETE(ConstantNetworkService.REMOVE_LIKE_RECIPE_ENDPOINT)
+    suspend fun removeLikeRecipe(
+        @Path(value = "idLoggedUser") idLoggedUser: Int,
+        @Path(value = "idrecipe") recipeId: Int
+    ): Response<Recipe>
 }

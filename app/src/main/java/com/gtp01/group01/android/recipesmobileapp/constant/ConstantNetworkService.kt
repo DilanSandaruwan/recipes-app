@@ -64,4 +64,14 @@ object ConstantNetworkService {
      * Endpoint for searching a user by email.
      */
     const val SEARCH_USER_BY_EMAIL_ENDPOINT = "api/v1/user/email/{useremail}"
+
+    /***
+     * Endpoint for liking a recipe
+     */
+    const val LIKE_RECIPE_ENDPOINT = "/api/v1/reader/{idLoggedUser}/likes/recipe/{idrecipe}"
+
+    /***
+     * Endpoint for removing a like
+     */
+    const val REMOVE_LIKE_RECIPE_ENDPOINT = "/api/v1/reader/{idLoggedUser}/likes/recipe/{idrecipe}"
 }
