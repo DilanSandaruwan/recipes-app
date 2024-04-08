@@ -132,6 +132,7 @@
     <string name="home_error_exception">Oops! Something unexpected occurred. Please try again.</string>
     <string name="home_error_ioexception">Oops! Network error. Please check your internet connection and try again.</string>
     <string name="edit_profile">Edit Profile</string>
+    <string name="favorites_item">Favourites</string>
     <string name="full_name">FULL NAME</string>
     <string name="sample_gmail_com">sample@gmail.com</string>
     <string name="my_recipes">My Recipes</string>
