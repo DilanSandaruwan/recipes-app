@@ -1,298 +1,355 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
-        android:id="@+id/coordinatorLayout"
+    xmlns:tools="http://schemas.android.com/tools">
+    <!-- Root layout container -->
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0"
         tools:context=".feature.view_recipe.recipe_details.ViewRecipe">
 
-
-        <com.google.android.material.appbar.AppBarLayout
-            android:id="@+id/appBar"
+        <!-- Main layout content -->
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fitsSystemWindows="true"
-            android:visibility="visible">
+            android:layout_height="match_parent"
+            android:fitsSystemWindows="true">
 
-            <com.google.android.material.appbar.CollapsingToolbarLayout
-                android:id="@+id/collapsingToolbarLayout"
+            <!-- App toolbar -->
+            <LinearLayout
+                android:id="@+id/app_tool_bar"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:fitsSystemWindows="true"
-                android:paddingTop="@dimen/_0dp"
-                android:paddingBottom="@dimen/_2dp"
-                app:contentScrim="?attr/colorPrimary"
-                app:layout_scrollFlags="scroll|enterAlways|enterAlwaysCollapsed">
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_app_toolbar"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-
-                <com.google.android.material.imageview.ShapeableImageView
-                    android:id="@+id/ivRecipeImage"
-                    android:layout_width="400dp"
-                    android:layout_height="350dp"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/error_image"
-                    app:layout_collapseMode="pin" />
-
-
-
-                <com.google.android.material.appbar.MaterialToolbar
-                    android:id="@+id/toolbar"
-                    android:layout_width="match_parent"
-                    android:layout_height="?attr/actionBarSize"
-                    app:layout_collapseMode="pin"
-                    app:layout_scrollFlags="scroll|enterAlways" />
-
+                <!-- Back button -->
                 <ImageButton
                     android:id="@+id/imgToolbarBtnBack"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="start"
-                    android:layout_margin="@dimen/_10sdp"
-                    android:background="@drawable/btn_bg2"
-                    android:clickable="true"
-                    android:contentDescription="@string/navigate_to_home"
-                    android:focusable="true"
-                    android:paddingStart="@dimen/_12sdp"
-                    android:paddingTop="@dimen/_8sdp"
-                    android:paddingEnd="@dimen/_4sdp"
-                    android:paddingBottom="@dimen/_8sdp"
-                    android:src="@drawable/ic_back" />
+                    android:layout_width="@dimen/width_app_bar_button"
+                    android:layout_height="@dimen/height_app_bar_button"
+                    android:background="@drawable/bg_app_tool_bar_btn_back"
+                    android:contentDescription="@string/desc_back_button"
+                    android:src="@drawable/ic_img_btn_back" />
 
-                <ImageButton
-                    android:id="@+id/imgToolbarBtnFav"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="end"
-                    android:layout_margin="@dimen/_10sdp"
-                    android:background="@drawable/btn_bg2"
-                    android:padding="@dimen/_8sdp"
-                    android:src="@drawable/ic_fav_unfill" />
-
-
-            </com.google.android.material.appbar.CollapsingToolbarLayout>
-
-        </com.google.android.material.appbar.AppBarLayout>
-
-        <androidx.core.widget.NestedScrollView
-            android:id="@+id/nestedScrollView"
-            android:layout_width="match_parent"
-            android:layout_height="764dp"
-            app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
-            app:layout_constraintBottom_toTopOf="@id/tabLayout"
-            app:layout_constraintTop_toBottomOf="@id/appBar">
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <ImageView
-                    android:id="@+id/carbsImageView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_16dp"
-                    android:layout_marginTop="@dimen/_120dp"
-                    android:src="@drawable/carbs_layor"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
+                <!-- Title -->
                 <TextView
-                    android:id="@+id/carbsTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/carbs"
-                    android:textColor="@color/black"
-                    app:layout_constraintEnd_toEndOf="@id/carbsImageView"
-                    app:layout_constraintStart_toStartOf="@id/carbsImageView"
-                    app:layout_constraintTop_toBottomOf="@id/carbsImageView" />
-
-                <ImageView
-                    android:id="@+id/calorieImageView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_16dp"
-                    android:layout_marginTop="@dimen/_120dp"
-                    android:layout_marginEnd="@dimen/_16dp"
-                    android:src="@drawable/calorie_layer"
-                    app:layout_constraintEnd_toStartOf="@+id/proteinImageView"
-                    app:layout_constraintHorizontal_bias="0.464"
-                    app:layout_constraintStart_toEndOf="@id/carbsImageView"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/calorieTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/calorie"
-                    android:textColor="@color/black"
-                    app:layout_constraintEnd_toEndOf="@id/calorieImageView"
-                    app:layout_constraintStart_toStartOf="@id/calorieImageView"
-                    app:layout_constraintTop_toBottomOf="@id/calorieImageView" />
-
-                <ImageView
-                    android:id="@+id/proteinImageView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_16dp"
-                    android:layout_marginTop="@dimen/_120dp"
-                    android:layout_marginEnd="@dimen/_16dp"
-                    android:src="@drawable/protein_layor"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/proteinTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/protein"
-                    android:textColor="@color/black"
-                    app:layout_constraintBottom_toBottomOf="@+id/calorieTextView"
-                    app:layout_constraintEnd_toEndOf="@id/proteinImageView"
-                    app:layout_constraintStart_toStartOf="@id/proteinImageView"
-                    app:layout_constraintTop_toBottomOf="@id/proteinImageView" />
-
-                <com.google.android.material.tabs.TabLayout
-                    android:id="@+id/tabLayout"
                     android:layout_width="0dp"
-                    android:layout_height="59dp"
-                    android:layout_marginTop="@dimen/_24dp"
-                    android:layout_marginEnd="@dimen/_16dp"
-                    android:background="@drawable/tab_background"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/calorieImageView"
-                    app:tabMode="fixed"
-                    app:tabRippleColor="@null" />
-
-                <androidx.viewpager2.widget.ViewPager2
-                    android:id="@+id/viewpager"
-                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_16dp"
-                    android:layout_marginTop="@dimen/_8dp"
-                    android:layout_marginEnd="@dimen/_16dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tabLayout" />
-
-                <TextView
-                    android:id="@+id/tvRecipeName"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_16dp"
-                    android:layout_marginTop="@dimen/_16dp"
-                    android:text="RecipeName"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/recipe_name_text_size"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="@string/Profile"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/dimen_text_size_title"
                     android:textStyle="bold"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.059"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    android:visibility="invisible" />
 
-                <TextView
-                    android:id="@+id/tvUserName"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_2dp"
-                    android:layout_marginBottom="@dimen/_16dp"
-                    android:text="@string/username"
-                    android:textColor="@color/black"
-                    app:layout_constraintBottom_toTopOf="@+id/carbsImageView"
-                    app:layout_constraintEnd_toStartOf="@+id/imageView3"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="@+id/tvRecipeName"
-                    app:layout_constraintTop_toBottomOf="@+id/tvRecipeName"
-                    app:layout_constraintVertical_bias="0.0" />
+                <!-- Placeholder button -->
+                <ImageButton
+                    android:layout_width="@dimen/width_app_bar_button"
+                    android:layout_height="@dimen/height_app_bar_button"
+                    android:background="@color/bg_img_btn_back"
+                    android:contentDescription="@string/desc_back_button"
+                    android:src="@drawable/ic_img_btn_back"
+                    android:visibility="invisible" />
+            </LinearLayout>
 
-                <ImageView
-                    android:id="@+id/imageView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/_16dp"
-                    android:src="@drawable/tme"
-                    app:layout_constraintBottom_toTopOf="@+id/imageView3"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.511"
-                    app:layout_constraintStart_toEndOf="@+id/tvRecipeName"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.104" />
-
-                <ImageView
-                    android:id="@+id/imageView3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_2dp"
-                    android:layout_marginBottom="@dimen/_16dp"
-                    android:src="@drawable/like"
-                    app:layout_constraintBottom_toTopOf="@+id/calorieImageView"
-                    app:layout_constraintEnd_toEndOf="@+id/imageView"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="@+id/imageView"
-                    app:layout_constraintTop_toBottomOf="@+id/imageView" />
-
-                <TextView
-                    android:id="@+id/tvLikeCount"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/_16dp"
-                    android:text="@string/likecount"
-                    android:textColor="@color/black"
-                    app:layout_constraintBottom_toBottomOf="@+id/imageView3"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toEndOf="@+id/imageView3"
-                    app:layout_constraintTop_toTopOf="@+id/imageView3"
-                    app:layout_constraintVertical_bias="0.0" />
-
-                <TextView
-                    android:id="@+id/tvTime"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_16dp"
-                    android:layout_marginEnd="@dimen/_16dp"
-                    android:text="@string/time"
-                    android:textColor="@color/black"
-                    app:layout_constraintBottom_toBottomOf="@+id/imageView"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toEndOf="@+id/imageView"
-                    app:layout_constraintTop_toTopOf="@+id/imageView"
-                    app:layout_constraintVertical_bias="1.0" />
+            <!-- Main content area -->
+            <RelativeLayout
+                style="@style/TopHalfRoundedWhiteBackground"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_0dp"
+                android:layout_marginTop="@dimen/margin_top_bg_half_rounded"
+                android:paddingBottom="@dimen/bottom_navigation_height"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/app_tool_bar">
 
 
-                <ProgressBar
-                    android:id="@+id/progressBar"
-                    style="?android:attr/progressBarStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent" />
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-        </androidx.core.widget.NestedScrollView>
-
-
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+                    <androidx.coordinatorlayout.widget.CoordinatorLayout
+                        android:id="@+id/coordinatorLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/white"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="0.0">
 
 
+                        <com.google.android.material.appbar.AppBarLayout
+                            android:id="@+id/appBar"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fitsSystemWindows="true"
+                            android:visibility="visible">
+
+                            <com.google.android.material.appbar.CollapsingToolbarLayout
+                                android:id="@+id/collapsingToolbarLayout"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:fitsSystemWindows="true"
+                                android:paddingTop="@dimen/_0dp"
+                                android:paddingBottom="@dimen/_2dp"
+                                app:contentScrim="?attr/colorPrimary"
+                                app:layout_scrollFlags="scroll|enterAlways|enterAlwaysCollapsed">
+
+
+                                <com.google.android.material.imageview.ShapeableImageView
+                                    android:id="@+id/ivRecipeImage"
+                                    android:layout_width="400dp"
+                                    android:layout_height="350dp"
+                                    android:scaleType="centerCrop"
+                                    android:src="@drawable/error_image"
+                                    app:layout_collapseMode="pin" />
+
+
+                                <com.google.android.material.appbar.MaterialToolbar
+                                    android:id="@+id/toolbar"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="?attr/actionBarSize"
+                                    app:layout_collapseMode="pin"
+                                    app:layout_scrollFlags="scroll|enterAlways" />
+
+
+                                <ImageButton
+                                    android:id="@+id/imgToolbarBtnFav"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="end"
+                                    android:layout_margin="@dimen/_10sdp"
+                                    android:background="@drawable/btn_bg2"
+                                    android:padding="@dimen/_8sdp"
+                                    android:src="@drawable/ic_fav_unfill" />
+
+
+                            </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+                        </com.google.android.material.appbar.AppBarLayout>
+
+                        <androidx.core.widget.NestedScrollView
+                            android:id="@+id/nestedScrollView"
+                            android:layout_width="match_parent"
+                            android:layout_height="764dp"
+                            app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
+                            app:layout_constraintBottom_toTopOf="@id/tabLayout"
+                            app:layout_constraintTop_toBottomOf="@id/appBar">
+
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                                <ImageView
+                                    android:id="@+id/carbsImageView"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="@dimen/_16dp"
+                                    android:layout_marginTop="@dimen/_120dp"
+                                    android:src="@drawable/carbs_layor"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent" />
+
+                                <TextView
+                                    android:id="@+id/carbsTextView"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/carbs"
+                                    android:textColor="@color/black"
+                                    app:layout_constraintEnd_toEndOf="@id/carbsImageView"
+                                    app:layout_constraintStart_toStartOf="@id/carbsImageView"
+                                    app:layout_constraintTop_toBottomOf="@id/carbsImageView" />
+
+                                <ImageView
+                                    android:id="@+id/calorieImageView"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="@dimen/_16dp"
+                                    android:layout_marginTop="@dimen/_120dp"
+                                    android:layout_marginEnd="@dimen/_16dp"
+                                    android:src="@drawable/calorie_layer"
+                                    app:layout_constraintEnd_toStartOf="@+id/proteinImageView"
+                                    app:layout_constraintHorizontal_bias="0.464"
+                                    app:layout_constraintStart_toEndOf="@id/carbsImageView"
+                                    app:layout_constraintTop_toTopOf="parent" />
+
+                                <TextView
+                                    android:id="@+id/calorieTextView"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/calorie"
+                                    android:textColor="@color/black"
+                                    app:layout_constraintEnd_toEndOf="@id/calorieImageView"
+                                    app:layout_constraintStart_toStartOf="@id/calorieImageView"
+                                    app:layout_constraintTop_toBottomOf="@id/calorieImageView" />
+
+                                <ImageView
+                                    android:id="@+id/proteinImageView"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="@dimen/_16dp"
+                                    android:layout_marginTop="@dimen/_120dp"
+                                    android:layout_marginEnd="@dimen/_16dp"
+                                    android:src="@drawable/protein_layor"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent" />
+
+                                <TextView
+                                    android:id="@+id/proteinTextView"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/protein"
+                                    android:textColor="@color/black"
+                                    app:layout_constraintBottom_toBottomOf="@+id/calorieTextView"
+                                    app:layout_constraintEnd_toEndOf="@id/proteinImageView"
+                                    app:layout_constraintStart_toStartOf="@id/proteinImageView"
+                                    app:layout_constraintTop_toBottomOf="@id/proteinImageView" />
+
+                                <com.google.android.material.tabs.TabLayout
+                                    android:id="@+id/tabLayout"
+                                    android:layout_width="0dp"
+                                    android:layout_height="59dp"
+                                    android:layout_marginTop="@dimen/_24dp"
+                                    android:layout_marginEnd="@dimen/_16dp"
+                                    android:background="@drawable/tab_background"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintHorizontal_bias="0.0"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toBottomOf="@+id/calorieImageView"
+                                    app:tabMode="fixed"
+                                    app:tabRippleColor="@null" />
+
+                                <androidx.viewpager2.widget.ViewPager2
+                                    android:id="@+id/viewpager"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="@dimen/_16dp"
+                                    android:layout_marginTop="@dimen/_8dp"
+                                    android:layout_marginEnd="@dimen/_16dp"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toBottomOf="@id/tabLayout" />
+
+                                <TextView
+                                    android:id="@+id/tvRecipeName"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="@dimen/_16dp"
+                                    android:layout_marginTop="@dimen/_16dp"
+                                    android:text="RecipeName"
+                                    android:textColor="@color/black"
+                                    android:textSize="@dimen/recipe_name_text_size"
+                                    android:textStyle="bold"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintHorizontal_bias="0.059"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent" />
+
+                                <TextView
+                                    android:id="@+id/tvUserName"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/_2dp"
+                                    android:layout_marginBottom="@dimen/_16dp"
+                                    android:text="@string/username"
+                                    android:textColor="@color/black"
+                                    app:layout_constraintBottom_toTopOf="@+id/carbsImageView"
+                                    app:layout_constraintEnd_toStartOf="@+id/imageView3"
+                                    app:layout_constraintHorizontal_bias="0.0"
+                                    app:layout_constraintStart_toStartOf="@+id/tvRecipeName"
+                                    app:layout_constraintTop_toBottomOf="@+id/tvRecipeName"
+                                    app:layout_constraintVertical_bias="0.0" />
+
+                                <ImageView
+                                    android:id="@+id/imageView"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginEnd="@dimen/_16dp"
+                                    android:src="@drawable/tme"
+                                    app:layout_constraintBottom_toTopOf="@+id/imageView3"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintHorizontal_bias="0.511"
+                                    app:layout_constraintStart_toEndOf="@+id/tvRecipeName"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    app:layout_constraintVertical_bias="0.104" />
+
+                                <ImageView
+                                    android:id="@+id/imageView3"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/_2dp"
+                                    android:layout_marginBottom="@dimen/_16dp"
+                                    android:src="@drawable/like"
+                                    app:layout_constraintBottom_toTopOf="@+id/calorieImageView"
+                                    app:layout_constraintEnd_toEndOf="@+id/imageView"
+                                    app:layout_constraintHorizontal_bias="0.0"
+                                    app:layout_constraintStart_toStartOf="@+id/imageView"
+                                    app:layout_constraintTop_toBottomOf="@+id/imageView" />
+
+                                <TextView
+                                    android:id="@+id/tvLikeCount"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginEnd="@dimen/_16dp"
+                                    android:text="@string/likecount"
+                                    android:textColor="@color/black"
+                                    app:layout_constraintBottom_toBottomOf="@+id/imageView3"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintHorizontal_bias="0.0"
+                                    app:layout_constraintStart_toEndOf="@+id/imageView3"
+                                    app:layout_constraintTop_toTopOf="@+id/imageView3"
+                                    app:layout_constraintVertical_bias="0.0" />
+
+                                <TextView
+                                    android:id="@+id/tvTime"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/_16dp"
+                                    android:layout_marginEnd="@dimen/_16dp"
+                                    android:text="@string/time"
+                                    android:textColor="@color/black"
+                                    app:layout_constraintBottom_toBottomOf="@+id/imageView"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintHorizontal_bias="0.0"
+                                    app:layout_constraintStart_toEndOf="@+id/imageView"
+                                    app:layout_constraintTop_toTopOf="@+id/imageView"
+                                    app:layout_constraintVertical_bias="1.0" />
+
+
+                                <ProgressBar
+                                    android:id="@+id/progressBar"
+                                    style="?android:attr/progressBarStyle"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent" />
+
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        </androidx.core.widget.NestedScrollView>
+
+
+                    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </RelativeLayout>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </FrameLayout>
+</layout>
 
 
 
