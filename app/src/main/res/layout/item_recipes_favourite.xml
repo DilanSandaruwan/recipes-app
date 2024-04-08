@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<!-- Layout for displaying a single item in the RecyclerView -->
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="8dp">
 
+    <!-- ImageView to display the recipe image -->
     <ImageView
         android:id="@+id/recipeImage"
         android:layout_width="160dp"
@@ -14,7 +15,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-
+    <!-- TextView to display the title of the recipe -->
     <TextView
         android:id="@+id/recipeTitle"
         android:layout_width="0dp"
@@ -26,10 +27,11 @@
         android:textColor="@color/black"
         android:textSize="15sp"
         android:textStyle="bold"
-        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintLeft_toRightOf="@+id/recipeImage"
+        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <!-- TextView to display the description of the recipe -->
     <TextView
         android:id="@+id/recipeDescription"
         android:layout_width="0dp"
@@ -44,15 +46,16 @@
         app:layout_constraintStart_toEndOf="@+id/recipeImage"
         app:layout_constraintTop_toBottomOf="@+id/recipeTitle" />
 
+    <!-- TextView to display the date and time of the recipe -->
     <TextView
         android:id="@+id/articleDateTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="12dp"
         android:text="DATE TIME"
-        android:textSize="11sp"
-        android:layout_marginStart="8dp"
         android:textColor="@color/black"
+        android:textSize="11sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/recipeDescription" />
 

@@ -69,10 +69,12 @@ interface RecipeManagementApiService {
     ): Response<List<Recipe>>
 
 
-
-    GET(ConstantNetworkService.FAVORITES_ENDPOINT)
+    @GET(ConstantNetworkService.FAVORITES_RECIPES_ENDPOINT)
     suspend fun getFavorites(
         @Path(value = "idLoggedUser") idLoggedUser: Int,
-
     ): Response<List<Recipe>>
+
+
+
+
 }
