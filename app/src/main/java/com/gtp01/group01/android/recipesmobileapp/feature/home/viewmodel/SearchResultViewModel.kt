@@ -6,14 +6,11 @@ import android.net.ConnectivityManager
 import android.net.Network
 import android.net.NetworkRequest
 import android.util.Log
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.gtp01.group01.android.recipesmobileapp.constant.ConstantResponseCode.EXCEPTION
+import com.gtp01.group01.android.recipesmobileapp.constant.ConstantResponseCode
 import com.gtp01.group01.android.recipesmobileapp.feature.my_profile.repository.RecipeManagementRepository
 import com.gtp01.group01.android.recipesmobileapp.shared.common.Result
 import com.gtp01.group01.android.recipesmobileapp.shared.common.viewmodel.SharedViewModel
@@ -28,19 +25,18 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 /**
- * ViewModel responsible for managing data related to recipes on the Home screen.
+ * ViewModel responsible for managing search results and network connectivity in the search feature.
  *
- * This ViewModel provides functionality to fetch and manage recipes based on various criteria,
- * such as cooking time, calorie count, and user preferences. It also handles network connectivity
- * and user input for searching recipes.
+ * This ViewModel facilitates searching for recipes based on the recipe name entered by the user.
+ * It also monitors network connectivity to ensure proper handling of network-related operations.
  *
- * @property recipeManagementRepository The repository for fetching recipe data.
- * @property connectivityManager The manager for network connectivity monitoring.
+ * @param connectivityManager The system service for managing network connectivity.
+ * @param recipeManagementRepository The repository for fetching recipe data.
  * @property sharedViewModel The shared view model holding logged-in user information.
  */
 @HiltViewModel
-class HomeViewModel @Inject constructor(
-    private val connectivityManager: ConnectivityManager,
+class SearchResultViewModel @Inject constructor(
+    connectivityManager: ConnectivityManager,
     private val recipeManagementRepository: RecipeManagementRepository,
     private val sharedViewModel: SharedViewModel
 ) : ViewModel() {
@@ -54,25 +50,18 @@ class HomeViewModel @Inject constructor(
     // StateFlow for holding logged-in user from Shared view model
     val savedUser: StateFlow<User> = sharedViewModel.savedUser
 
-    // StateFlow for holding time-based recipe list state
-    private val _timeBasedRecipeListState = MutableStateFlow<Result<List<Recipe>>>(Result.Loading)
-    val timeBasedRecipeListState: StateFlow<Result<List<Recipe>>> = _timeBasedRecipeListState
-
-    // StateFlow for holding calorie-based recipe list state
-    private val _calorieBasedRecipeListState =
+    // StateFlow for holding searched recipe list state
+    private val _searchResultRecipeListState =
         MutableStateFlow<Result<List<Recipe>>>(Result.Loading)
-    val calorieBasedRecipeListState: StateFlow<Result<List<Recipe>>> = _calorieBasedRecipeListState
+    val searchResultRecipeListState: StateFlow<Result<List<Recipe>>> = _searchResultRecipeListState
 
-    // MutableState for holding search keyword
-    var searchKeyword by mutableStateOf("")
-
+    /**
+     * Initializes the network monitoring functionality for this ViewModel.
+     *
+     * This block creates a network callback to track network availability changes and
+     * registers the network callback with the ConnectivityManager.
+     */
     init {
-        /**
-         * Initializes the network monitoring functionality for this ViewModel.
-         *
-         * This block creates a network callback to track network availability changes and
-         * registers the network callback with the ConnectivityManager.
-         */
         val networkCallback = object : ConnectivityManager.NetworkCallback() {
             override fun onAvailable(network: Network) {
                 _networkAvailable.postValue(true)
@@ -87,95 +76,47 @@ class HomeViewModel @Inject constructor(
     }
 
     /**
-     * Fetches and updates recipes filtered by cooking time and calorie count asynchronously,
-     * using the logged-in user's preferences for filtering.
-     *
-     * This method retrieves the logged-in user's preferred duration and calorie count from
-     * the `sharedViewModel` and then calls the `filterRecipesByDuration` and
-     * `filterRecipesByCalorie` methods to fetch recipes based on those preferences.
-     */
-    fun updateFilters(loggedUserId: Int, maxDuration: Int, maxCalorie: Int) {
-        filterRecipesByDuration(
-            loggedUserId = loggedUserId,
-            maxDuration = maxDuration
-        )
-        filterRecipesByCalorie(
-            loggedUserId = loggedUserId,
-            maxCalorie = maxCalorie
-        )
-    }
-
-    /**
-     * Fetches recipes filtered by cooking time asynchronously.
+     * Fetches recipes filtered by recipe name asynchronously.
      *
      * @param loggedUserId The ID of the logged-in user.
-     * @param maxDuration The maximum cooking time of the recipes to filter.
+     * @param recipeName The name of the recipes to filter.
      */
-    fun filterRecipesByDuration(loggedUserId: Int, maxDuration: Int) {
+    fun filterRecipesByName(loggedUserId: Int, recipeName: String) {
         viewModelScope.launch {
             try {
-                recipeManagementRepository.filterRecipesByDuration(loggedUserId, maxDuration)
+                _searchResultRecipeListState.value = Result.Loading
+                recipeManagementRepository.filterRecipesByName(loggedUserId, recipeName.trim())
                     .flowOn(Dispatchers.IO)
-                    .collect { recipeListResult ->
-                        _timeBasedRecipeListState.value = recipeListResult
+                    .collect { recipeList ->
+                        _searchResultRecipeListState.value = recipeList
                     }
             } catch (ex: Exception) {
-                _timeBasedRecipeListState.value = Result.Failure(EXCEPTION)
+                _searchResultRecipeListState.value = Result.Failure(ConstantResponseCode.EXCEPTION)
                 Log.e(TAG, ex.message ?: "An error occurred", ex)
             }
         }
     }
 
     /**
-     * Fetches recipes filtered by calorie count asynchronously.
+     * Fetches recipes filtered by recipe category asynchronously.
      *
      * @param loggedUserId The ID of the logged-in user.
-     * @param maxCalorie The maximum calorie count of the recipes to filter.
+     * @param categoryId The category of the recipes to filter.
      */
-    fun filterRecipesByCalorie(loggedUserId: Int, maxCalorie: Int) {
+    fun filterRecipesByCategory(loggedUserId: Int, categoryId: Int) {
         viewModelScope.launch {
             try {
-                recipeManagementRepository.filterRecipesByCalorie(loggedUserId, maxCalorie)
+                _searchResultRecipeListState.value = Result.Loading
+                recipeManagementRepository.filterRecipesByCategory(loggedUserId, categoryId)
                     .flowOn(Dispatchers.IO)
-                    .collect { recipeListResult ->
-                        _calorieBasedRecipeListState.value = recipeListResult
+                    .collect { recipeList ->
+                        _searchResultRecipeListState.value = recipeList
                     }
             } catch (ex: Exception) {
-                _calorieBasedRecipeListState.value = Result.Failure(EXCEPTION)
+                _searchResultRecipeListState.value = Result.Failure(ConstantResponseCode.EXCEPTION)
                 Log.e(TAG, ex.message ?: "An error occurred", ex)
             }
         }
-    }
-
-    /**
-     * Updates the search keyword.
-     *
-     * @param enteredKeyword The new search keyword entered by the user.
-     */
-    fun updateSearchKeyword(enteredKeyword: String) {
-        searchKeyword = enteredKeyword
-    }
-
-    /**
-     * Checks the validity of the entered keyword.
-     *
-     * A valid keyword contains only letters (both uppercase and lowercase) and numbers,
-     * and it is trimmed (i.e., no leading or trailing whitespace characters).
-     *
-     * @param enteredKeyword The keyword entered by the user to be validated.
-     * @return `true` if the entered keyword is valid, `false` otherwise.
-     */
-    fun isValidKeyword(enteredKeyword: String): Boolean {
-        // regular expression pattern that matches letters and numbers only
-        val pattern = Regex("[a-zA-Z0-9]+")
-        return enteredKeyword.trim().matches(pattern)
-    }
-
-    /**
-     * Clear the search keyword.
-     */
-    fun clearSearchKeyword() {
-        searchKeyword = ""
     }
 
     /**

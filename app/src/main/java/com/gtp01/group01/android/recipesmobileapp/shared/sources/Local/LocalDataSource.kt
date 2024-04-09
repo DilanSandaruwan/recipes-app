@@ -18,10 +18,9 @@ class LocalDataSource @Inject constructor(private val sharePreferences: SharedPr
      * @param userId The user ID to be saved.
      */
     fun saveUserId(userId: Int) {
-
         sharePreferences.edit().putInt("USERID", userId).commit()
-
     }
+
     /**
      * Retrieves the user ID from SharedPreferences. Return 0 by default.
      *
@@ -29,8 +28,8 @@ class LocalDataSource @Inject constructor(private val sharePreferences: SharedPr
      */
     fun getUserId(): Int {
         return sharePreferences.getInt("USERID", 0)
-
     }
+
     /**
      * Deletes the user ID from SharedPreferences.
      * commit() guarantees synchronous data persistence, meaning it waits for the data to be deleted
@@ -38,9 +37,6 @@ class LocalDataSource @Inject constructor(private val sharePreferences: SharedPr
      * to the next screen. A slight UI freeze is acceptable.
      */
     fun deleteUserId() {
-
         sharePreferences.edit().remove("USERID").commit()
-
     }
-
 }

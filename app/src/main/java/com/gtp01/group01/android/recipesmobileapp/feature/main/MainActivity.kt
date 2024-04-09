@@ -61,9 +61,8 @@ class MainActivity : AppCompatActivity() {
                     val userIdInt = it.toIntOrNull()
                         ?: return@let  // Convert to Int, or return if conversion fails
                     localDataSource.saveUserId(userIdInt)
-                }  // Call the saveUser and getUserId functions
+                }  // Call the saveUser function
                 viewModel.saveUser()
-                viewModel.getUserId()
             } else {
                 // Sign-in failed or cancelled
                 // Handle the failure or cancellation
