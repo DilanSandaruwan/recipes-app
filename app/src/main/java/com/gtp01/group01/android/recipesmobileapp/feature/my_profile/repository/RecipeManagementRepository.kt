@@ -393,6 +393,108 @@ class RecipeManagementRepository @Inject constructor(
         }
     }
 
+    /**
+     * Adds a recipe to my favorites asynchronously.
+     *
+     * @param loggedUserId The ID of the logged-in user.
+     * @param recipeId The RECIPE ID of the recipe.
+     * @return A flow emitting [Boolean] value to confirm whether recipe was added to my favorites in backend.
+     */
+    suspend fun addFavoriteRecipe(
+        loggedUserId: Int,
+        recipeId: Int
+    ): Flow<Result<Boolean>> {
+        return withContext(Dispatchers.IO) {
+            return@withContext flow {
+                emit(Result.Loading) // Indicate loading state
+                try {
+                    val response = recipeManagementApiService.addFavoriteRecipe(
+                        idLoggedUser = loggedUserId,
+                        recipeId = recipeId
+                    )
+                    if (response.isSuccessful) {
+                        // Emit a successful result with value TRUE
+                        emit(Result.Success(true))
+                    } else {
+                        // Emit a failure result with the HTTP error code
+                        emit(Result.Failure(response.code().toString()))
+                        val errorMessage =
+                            "Failed to add favorite for user $loggedUserId, recipe $recipeId: ${
+                                response.errorBody()?.string()
+                            }"
+                        Log.e(TAG, errorMessage)
+                    }
+                } catch (ex: IOException) {
+                    // Emit a failure result for network errors
+                    emit(Result.Failure(ConstantResponseCode.IOEXCEPTION))
+                    val errorMessage = "Network error occurred: ${ex.message}"
+                    Log.e(TAG, errorMessage, ex)
+                } catch (ex: SocketTimeoutException) {
+                    // Emit a failure result for connection timeout errors
+                    emit(Result.Failure(ConstantResponseCode.TIMEOUT_EXCEPTION))
+                    val errorMessage = "Connection timed out: ${ex.message}"
+                    Log.e(TAG, errorMessage, ex)
+                } catch (ex: Exception) {
+                    // Emit a failure result for unexpected errors
+                    emit(Result.Failure(ConstantResponseCode.EXCEPTION))
+                    val errorMessage = "An unexpected error occurred: ${ex.message}"
+                    Log.e(TAG, errorMessage, ex)
+                }
+            }
+        }
+    }
+
+    /**
+     * Removes a recipe from favorites asynchronously.
+     *
+     * @param loggedUserId The ID of the logged-in user.
+     * @param recipeId The RECIPE ID of the recipe.
+     * @return A flow emitting [Boolean] value to confirm whether recipe was removed from my favorites in backend.
+     */
+    suspend fun removeFavoriteRecipe(
+        loggedUserId: Int,
+        recipeId: Int
+    ): Flow<Result<Boolean>> {
+        return withContext(Dispatchers.IO) {
+            return@withContext flow {
+                emit(Result.Loading) // Indicate loading state
+                try {
+                    val response = recipeManagementApiService.removeFavoriteRecipe(
+                        idLoggedUser = loggedUserId,
+                        recipeId = recipeId
+                    )
+                    if (response.isSuccessful) {
+                        // Emit a successful result with value TRUE
+                        emit(Result.Success(true))
+                    } else {
+                        // Emit a failure result with the HTTP error code
+                        emit(Result.Failure(response.code().toString()))
+                        val errorMessage =
+                            "Failed to unfavorite recipe for user $loggedUserId, recipe $recipeId: ${
+                                response.errorBody()?.string()
+                            }"
+                        Log.e(TAG, errorMessage)
+                    }
+                } catch (ex: IOException) {
+                    // Emit a failure result for network errors
+                    emit(Result.Failure(ConstantResponseCode.IOEXCEPTION))
+                    val errorMessage = "Network error occurred: ${ex.message}"
+                    Log.e(TAG, errorMessage, ex)
+                } catch (ex: SocketTimeoutException) {
+                    // Emit a failure result for connection timeout errors
+                    emit(Result.Failure(ConstantResponseCode.TIMEOUT_EXCEPTION))
+                    val errorMessage = "Connection timed out: ${ex.message}"
+                    Log.e(TAG, errorMessage, ex)
+                } catch (ex: Exception) {
+                    // Emit a failure result for unexpected errors
+                    emit(Result.Failure(ConstantResponseCode.EXCEPTION))
+                    val errorMessage = "An unexpected error occurred: ${ex.message}"
+                    Log.e(TAG, errorMessage, ex)
+                }
+            }
+        }
+    }
+
     suspend fun updateRecipe(idLoggedUser: Int, recipe: Recipe): Recipe? {
         return withContext(Dispatchers.IO) {
             return@withContext updateRecipeResponseFromRemoteService(idLoggedUser, recipe)

@@ -3,6 +3,7 @@ package com.gtp01.group01.android.recipesmobileapp.di
 import android.app.Application
 import android.content.Context
 import android.net.ConnectivityManager
+import android.net.NetworkRequest
 import android.util.Log
 import com.gtp01.group01.android.recipesmobileapp.constant.ConstantNetworkService
 import com.gtp01.group01.android.recipesmobileapp.feature.my_profile.repository.AuthRepository
@@ -208,6 +209,17 @@ object NetworkModule {
     @Provides
     fun provideSharedViewModel(): SharedViewModel {
         return SharedViewModel()
+    }
+
+    /**
+     * Provides a singleton instance of [NetworkRequest] directly.
+     *
+     * @return A singleton instance of [NetworkRequest].
+     */
+    @Singleton
+    @Provides
+    fun provideNetworkRequest(): NetworkRequest {
+        return NetworkRequest.Builder().build()
     }
 
     /**

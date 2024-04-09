@@ -125,6 +125,8 @@ fun HomeScreen(
                     decodeImageToBitmap = { homeViewModel.decodeImageToBitmap(it) },
                     onLikeClicked = homeViewModel::likeRecipe,
                     onRemoveLikeClicked = homeViewModel::removeLikeRecipe,
+                    onFavoriteClicked = homeViewModel::addFavoriteRecipe,
+                    onRemoveFavoriteClicked = homeViewModel::removeFavoriteRecipe,
                     onSuccessfulRecipeUpdate = {
                         homeViewModel.filterRecipesByCalorie(
                             savedUser.idUser,
@@ -142,6 +144,8 @@ fun HomeScreen(
                     decodeImageToBitmap = { homeViewModel.decodeImageToBitmap(it) },
                     onLikeClicked = homeViewModel::likeRecipe,
                     onRemoveLikeClicked = homeViewModel::removeLikeRecipe,
+                    onFavoriteClicked = homeViewModel::addFavoriteRecipe,
+                    onRemoveFavoriteClicked = homeViewModel::removeFavoriteRecipe,
                     onSuccessfulRecipeUpdate = {
                         homeViewModel.filterRecipesByDuration(
                             savedUser.idUser,
