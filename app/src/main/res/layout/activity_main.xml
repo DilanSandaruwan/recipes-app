@@ -12,6 +12,10 @@
         android:layout_height="match_parent"
         tools:context=".feature.main.MainActivity">
 
+        <include
+            android:id="@+id/lyt_loading_screen_included"
+            layout="@layout/layout_loading_screen_common" />
+
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/nav_view"
             android:layout_width="0dp"
@@ -39,5 +43,6 @@
         <include
             android:id="@+id/lyt_popup_included"
             layout="@layout/layout_top_popup" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

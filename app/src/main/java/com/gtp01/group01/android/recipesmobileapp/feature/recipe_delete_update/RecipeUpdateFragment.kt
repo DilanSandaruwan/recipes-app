@@ -33,9 +33,11 @@ import com.gtp01.group01.android.recipesmobileapp.feature.main.MainActivity
 import com.gtp01.group01.android.recipesmobileapp.feature.recipe_add_update.FoodCategoriesAdapter
 import com.gtp01.group01.android.recipesmobileapp.shared.model.FoodCategory
 import com.gtp01.group01.android.recipesmobileapp.shared.model.FoodCategoryApp
+import com.gtp01.group01.android.recipesmobileapp.shared.sources.Local.LocalDataSource
 import com.gtp01.group01.android.recipesmobileapp.shared.utils.RecipeMappers
 import dagger.hilt.android.AndroidEntryPoint
 import java.io.ByteArrayOutputStream
+import javax.inject.Inject
 
 /**
  * Fragment for updating a recipe.
@@ -43,6 +45,9 @@ import java.io.ByteArrayOutputStream
  */
 @AndroidEntryPoint
 class RecipeUpdateFragment : Fragment() {
+
+    @Inject
+    lateinit var localDataSource: LocalDataSource // Inject LocalDataSource
 
     // View binding for the fragment
     private var _binding: FragmentRecipeUpdateBinding? = null
@@ -234,7 +239,7 @@ class RecipeUpdateFragment : Fragment() {
         val args: RecipeUpdateFragmentArgs by navArgs()
         initObservers()
         viewModel.getOneRecipe(
-            10,
+            localDataSource.getUserId(),
             args.recipeId
         )
     }

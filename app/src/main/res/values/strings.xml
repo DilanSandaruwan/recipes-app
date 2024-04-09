@@ -150,6 +150,7 @@
     <string name="error_occured_while_getting_the_recipe">Error occured when retrieving the recipe</string>
     <string name="got_recipe">Received recipe</string>
     <string name="update_my_recipe_title">Update My Recipe</string>
+    <string name="info">Info!</string>
 
     <!-- Error messages -->
     <string name="error_400">There seems to be a problem with your request. Please double-check your information and try again.</string>
