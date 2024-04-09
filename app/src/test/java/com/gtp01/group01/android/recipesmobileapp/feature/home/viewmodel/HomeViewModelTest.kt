@@ -263,4 +263,288 @@ class HomeViewModelTest {
         // Verify that isValidKeyword returns false for an invalid keyword
         assert(!isValid)
     }
+
+    /**
+     * Test case to verify that likeRecipe executes onSuccess callback correctly on success.
+     */
+    @Test
+    fun `likeRecipe executes onSuccess callback correctly on success`() = runTest {
+        // Given a logged-in user ID and a recipe ID
+        val userId = 1
+        val recipeId = 1
+
+        // Mock repository response
+        Mockito.`when`(recipeManagementRepository.likeRecipe(userId, recipeId))
+            .thenReturn(MutableStateFlow(Result.Success(true)))
+
+        // Initialize variables to track the callbacks
+        var onSuccessCalled = false
+        var onFailureCalled = false
+        var onLoadingCalled = false
+
+        // When likeRecipe is called with the logged-in user ID and recipe ID
+        viewModel.likeRecipe(
+            userId,
+            recipeId,
+            onSuccess = { onSuccessCalled = true },
+            onFailure = { onFailureCalled = true },
+            onLoading = { onLoadingCalled = true }
+        )
+
+        // Ensure that onSuccess callback was invoked
+        assertTrue(onSuccessCalled)
+
+        // Ensure that onFailure and onLoading callbacks were not invoked
+        assertFalse(onFailureCalled)
+        assertFalse(onLoadingCalled)
+    }
+
+    /**
+     * Test case to verify that likeRecipe executes onFailure callback correctly on failure.
+     */
+    @Test
+    fun `likeRecipe executes onFailure callback correctly on failure`() = runTest {
+        // Given a logged-in user ID and a recipe ID
+        val userId = 1
+        val recipeId = 1
+        val errorMessage = "Failed to like recipe"
+
+        // Mock repository response
+        Mockito.`when`(recipeManagementRepository.likeRecipe(userId, recipeId))
+            .thenReturn(MutableStateFlow(Result.Failure(errorMessage)))
+
+        // Initialize variables to track the callbacks
+        var onSuccessCalled = false
+        var onFailureCalled = false
+        var onLoadingCalled = false
+
+        // When likeRecipe is called with the logged-in user ID and recipe ID
+        viewModel.likeRecipe(
+            userId,
+            recipeId,
+            onSuccess = { onSuccessCalled = true },
+            onFailure = { onFailureCalled = true },
+            onLoading = { onLoadingCalled = true }
+        )
+
+        // Ensure that onFailure callback was invoked
+        assertTrue(onFailureCalled)
+
+        // Ensure that onSuccess and onLoading callbacks were not invoked
+        assertFalse(onSuccessCalled)
+        assertFalse(onLoadingCalled)
+    }
+
+    /**
+     * Test case to verify that removeLikeRecipe executes onSuccess callback correctly on success.
+     */
+    @Test
+    fun `removeLikeRecipe executes onSuccess callback correctly on success`() = runTest {
+        // Given a logged-in user ID and a recipe ID
+        val userId = 1
+        val recipeId = 1
+
+        // Mock repository response
+        Mockito.`when`(recipeManagementRepository.removeLikeRecipe(userId, recipeId))
+            .thenReturn(MutableStateFlow(Result.Success(true)))
+
+        // Initialize variables to track the callbacks
+        var onSuccessCalled = false
+        var onFailureCalled = false
+        var onLoadingCalled = false
+
+        // When removeLikeRecipe is called with the logged-in user ID and recipe ID
+        viewModel.removeLikeRecipe(
+            userId,
+            recipeId,
+            onSuccess = { onSuccessCalled = true },
+            onFailure = { onFailureCalled = true },
+            onLoading = { onLoadingCalled = true }
+        )
+
+        // Ensure that onSuccess callback was invoked
+        assertTrue(onSuccessCalled)
+
+        // Ensure that onFailure and onLoading callbacks were not invoked
+        assertFalse(onFailureCalled)
+        assertFalse(onLoadingCalled)
+    }
+
+    /**
+     * Test case to verify that removeLikeRecipe executes onFailure callback correctly on failure.
+     */
+    @Test
+    fun `removeLikeRecipe executes onFailure callback correctly on failure`() = runTest {
+        // Given a logged-in user ID and a recipe ID
+        val userId = 1
+        val recipeId = 1
+        val errorMessage = "Failed to like recipe"
+
+        // Mock repository response
+        Mockito.`when`(recipeManagementRepository.removeLikeRecipe(userId, recipeId))
+            .thenReturn(MutableStateFlow(Result.Failure(errorMessage)))
+
+        // Initialize variables to track the callbacks
+        var onSuccessCalled = false
+        var onFailureCalled = false
+        var onLoadingCalled = false
+
+        // When removeLikeRecipe is called with the logged-in user ID and recipe ID
+        viewModel.removeLikeRecipe(
+            userId,
+            recipeId,
+            onSuccess = { onSuccessCalled = true },
+            onFailure = { onFailureCalled = true },
+            onLoading = { onLoadingCalled = true }
+        )
+
+        // Ensure that onFailure callback was invoked
+        assertTrue(onFailureCalled)
+
+        // Ensure that onSuccess and onLoading callbacks were not invoked
+        assertFalse(onSuccessCalled)
+        assertFalse(onLoadingCalled)
+    }
+
+    /**
+     * Test case to verify that addFavoriteRecipe executes onSuccess callback correctly on success.
+     */
+    @Test
+    fun `addFavoriteRecipe executes onSuccess callback correctly on success`() = runTest {
+        // Given a logged-in user ID and a recipe ID
+        val userId = 1
+        val recipeId = 1
+
+        // Mock repository response
+        Mockito.`when`(recipeManagementRepository.addFavoriteRecipe(userId, recipeId))
+            .thenReturn(MutableStateFlow(Result.Success(true)))
+
+        // Initialize variables to track the callbacks
+        var onSuccessCalled = false
+        var onFailureCalled = false
+        var onLoadingCalled = false
+
+        // When addFavoriteRecipe is called with the logged-in user ID and recipe ID
+        viewModel.addFavoriteRecipe(
+            userId,
+            recipeId,
+            onSuccess = { onSuccessCalled = true },
+            onFailure = { onFailureCalled = true },
+            onLoading = { onLoadingCalled = true }
+        )
+
+        // Ensure that onSuccess callback was invoked
+        assertTrue(onSuccessCalled)
+
+        // Ensure that onFailure and onLoading callbacks were not invoked
+        assertFalse(onFailureCalled)
+        assertFalse(onLoadingCalled)
+    }
+
+    /**
+     * Test case to verify that addFavoriteRecipe executes onFailure callback correctly on failure.
+     */
+    @Test
+    fun `addFavoriteRecipe executes onFailure callback correctly on failure`() = runTest {
+        // Given a logged-in user ID and a recipe ID
+        val userId = 1
+        val recipeId = 1
+        val errorMessage = "Failed to like recipe"
+
+        // Mock repository response
+        Mockito.`when`(recipeManagementRepository.addFavoriteRecipe(userId, recipeId))
+            .thenReturn(MutableStateFlow(Result.Failure(errorMessage)))
+
+        // Initialize variables to track the callbacks
+        var onSuccessCalled = false
+        var onFailureCalled = false
+        var onLoadingCalled = false
+
+        // When addFavoriteRecipe is called with the logged-in user ID and recipe ID
+        viewModel.addFavoriteRecipe(
+            userId,
+            recipeId,
+            onSuccess = { onSuccessCalled = true },
+            onFailure = { onFailureCalled = true },
+            onLoading = { onLoadingCalled = true }
+        )
+
+        // Ensure that onFailure callback was invoked
+        assertTrue(onFailureCalled)
+
+        // Ensure that onSuccess and onLoading callbacks were not invoked
+        assertFalse(onSuccessCalled)
+        assertFalse(onLoadingCalled)
+    }
+
+    /**
+     * Test case to verify that removeFavoriteRecipe executes onSuccess callback correctly on success.
+     */
+    @Test
+    fun `removeFavoriteRecipe executes onSuccess callback correctly on success`() = runTest {
+        // Given a logged-in user ID and a recipe ID
+        val userId = 1
+        val recipeId = 1
+
+        // Mock repository response
+        Mockito.`when`(recipeManagementRepository.removeFavoriteRecipe(userId, recipeId))
+            .thenReturn(MutableStateFlow(Result.Success(true)))
+
+        // Initialize variables to track the callbacks
+        var onSuccessCalled = false
+        var onFailureCalled = false
+        var onLoadingCalled = false
+
+        // When removeFavoriteRecipe is called with the logged-in user ID and recipe ID
+        viewModel.removeFavoriteRecipe(
+            userId,
+            recipeId,
+            onSuccess = { onSuccessCalled = true },
+            onFailure = { onFailureCalled = true },
+            onLoading = { onLoadingCalled = true }
+        )
+
+        // Ensure that onSuccess callback was invoked
+        assertTrue(onSuccessCalled)
+
+        // Ensure that onFailure and onLoading callbacks were not invoked
+        assertFalse(onFailureCalled)
+        assertFalse(onLoadingCalled)
+    }
+
+    /**
+     * Test case to verify that removeFavoriteRecipe executes onFailure callback correctly on failure.
+     */
+    @Test
+    fun `removeFavoriteRecipe executes onFailure callback correctly on failure`() = runTest {
+        // Given a logged-in user ID and a recipe ID
+        val userId = 1
+        val recipeId = 1
+        val errorMessage = "Failed to like recipe"
+
+        // Mock repository response
+        Mockito.`when`(recipeManagementRepository.removeFavoriteRecipe(userId, recipeId))
+            .thenReturn(MutableStateFlow(Result.Failure(errorMessage)))
+
+        // Initialize variables to track the callbacks
+        var onSuccessCalled = false
+        var onFailureCalled = false
+        var onLoadingCalled = false
+
+        // When removeFavoriteRecipe is called with the logged-in user ID and recipe ID
+        viewModel.removeFavoriteRecipe(
+            userId,
+            recipeId,
+            onSuccess = { onSuccessCalled = true },
+            onFailure = { onFailureCalled = true },
+            onLoading = { onLoadingCalled = true }
+        )
+
+        // Ensure that onFailure callback was invoked
+        assertTrue(onFailureCalled)
+
+        // Ensure that onSuccess and onLoading callbacks were not invoked
+        assertFalse(onSuccessCalled)
+        assertFalse(onLoadingCalled)
+    }
 }
