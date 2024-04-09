@@ -72,6 +72,60 @@ class RecipeManagementRepository @Inject constructor(
         }
     }
 
+    /**
+     * Saves a new recipe using flows.
+     *
+     * @param idLoggedUser The ID of the logged-in user.
+     * @param recipe The recipe to be saved.
+     * @return A Flow emitting the result of the saving operation.
+     */
+    suspend fun saveNewRecipeWithFlows(idLoggedUser: Int, recipe: Recipe): Flow<Result<Recipe?>> {
+        return withContext(Dispatchers.IO){
+            return@withContext flow{
+                emit(Result.Loading)
+                try {
+                    val response = recipeManagementApiService.saveNewRecipe(idLoggedUser,recipe)
+                    if(response.isSuccessful){
+                        emit(Result.Success(response.body()))
+                    } else {
+                        emit(Result.Failure(response.code().toString()))
+                    }
+                } catch (ex: IOException){
+                    emit(Result.Failure("IOException"))
+                } catch (ex: Exception){
+                    emit(Result.Failure("Exception"))
+                }
+            }
+        }
+    }
+
+    /**
+     * Saves a new recipe using flows.
+     *
+     * @param idLoggedUser The ID of the logged-in user.
+     * @param recipe The recipe to be saved.
+     * @return A Flow emitting the result of the saving operation.
+     */
+    suspend fun getNutritionsRepoWithFlows(ingredients: String): Flow<Result<List<NutritionModel?>>> {
+        return withContext(Dispatchers.IO){
+            return@withContext flow{
+                emit(Result.Loading)
+                try {
+                    val response = recipeManagementApiService.getNutritions(ingredients)
+                    if(response.isSuccessful){
+                        emit(Result.Success(response.body() ?: emptyList()))
+                    } else {
+                        emit(Result.Failure(response.code().toString()))
+                    }
+                } catch (ex: IOException){
+                    emit(Result.Failure("IOException"))
+                } catch (ex: Exception){
+                    emit(Result.Failure("Exception"))
+                }
+            }
+        }
+    }
+
     suspend fun getCategoryList(): List<FoodCategory>? {
         return withContext(Dispatchers.IO) {
             return@withContext getCategoryListFromRemoteService()

@@ -9,7 +9,7 @@
         <!-- Variable for the associated ViewModel -->
         <variable
             name="addRecipeVM"
-            type="com.gtp01.group01.android.recipesmobileapp.feature.recipe_add_update.RecipeAddUpdateViewModel" />
+            type="com.gtp01.group01.android.recipesmobileapp.feature.recipe_add_update.RecipeAddViewModel" />
     </data>
 
     <!-- Root layout container -->

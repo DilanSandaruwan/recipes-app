@@ -20,15 +20,8 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 import kotlin.math.roundToInt
 
-/**
- * ViewModel for adding or updating a recipe.
- *
- * @property recipeManagementRepository The repository for managing recipe data.
- * @property _nutritionList Internal mutable live data for nutrition information.
- * @property nutrition Live data for observing nutrition information changes.
- */
 @HiltViewModel
-class RecipeAddUpdateViewModel @Inject constructor(
+class RecipeAddViewModel @Inject constructor(
     private val recipeManagementRepository: RecipeManagementRepository
 ) : ViewModel() {
 
@@ -56,7 +49,7 @@ class RecipeAddUpdateViewModel @Inject constructor(
     val cookingTime: LiveData<Int> = _cookingTime
 
     // LiveData for nutrition information
-    private val _nutritionList = MutableLiveData<List<NutritionModel>>()
+    private val _nutritionList = MutableLiveData<List<NutritionModel>>(emptyList())
     val nutritionList: LiveData<List<NutritionModel>> = _nutritionList
 
     // LiveData for category list
@@ -74,6 +67,10 @@ class RecipeAddUpdateViewModel @Inject constructor(
     // LiveData for saving recipe response
     private val _saveRecipeResponse = MutableStateFlow<Result<Recipe?>>(Result.Loading)
     val saveRecipeResponse: StateFlow<Result<Recipe?>> = _saveRecipeResponse
+
+    // LiveData for nutrition information
+    private val _nutritionListWithFlows = MutableStateFlow<Result<List<NutritionModel?>>>(Result.Loading)
+    val nutritionListWithFlows: StateFlow<Result<List<NutritionModel?>>> = _nutritionListWithFlows
 
     /**
      * Sets the visibility of the progress wheel.
@@ -93,6 +90,25 @@ class RecipeAddUpdateViewModel @Inject constructor(
         viewModelScope.launch {
             val response = recipeManagementRepository.getNutritionsRepo(ingredients)
             _nutritionList.postValue(response ?: emptyList())
+        }
+    }
+
+    /**
+     * Fetches nutrition information based on the provided ingredients.
+     *
+     * @param ingredients The ingredients to fetch nutrition information for.
+     */
+    fun getNutritionsVmWithFlows(ingredients: String) {
+        viewModelScope.launch {
+            try{
+                recipeManagementRepository.getNutritionsRepoWithFlows(ingredients)
+                    .flowOn(Dispatchers.IO)
+                    .collect { recipeList ->
+                        _nutritionListWithFlows.value = recipeList
+                    }
+            } catch (ex: Exception){
+                _nutritionListWithFlows.value = Result.Failure("Exception")
+            }
         }
     }
 
@@ -229,6 +245,27 @@ class RecipeAddUpdateViewModel @Inject constructor(
                 calorie += e.calories
                 protein += e.proteinG
                 carbs += e.carbohydratesTotalG
+            }
+        }
+        calculatedNutrients.clear()
+        calculatedNutrients.add(calorie.roundToInt())
+        calculatedNutrients.add(protein.roundToInt())
+        calculatedNutrients.add(carbs.roundToInt())
+
+    }
+
+    /**
+     * Calculates the total nutrients from the list of nutrition information.
+     */
+    fun calculateNutrientsWithFlows(result: List<NutritionModel?>) {
+        var calorie = 0.0
+        var protein = 0.0
+        var carbs = 0.0
+        if (result.isNotEmpty()) {
+            for (e in result) {
+                calorie += (e?.calories ?: 0.0)
+                protein += (e?.proteinG ?: 0.0)
+                carbs += (e?.carbohydratesTotalG ?: 0.0)
             }
         }
         calculatedNutrients.clear()

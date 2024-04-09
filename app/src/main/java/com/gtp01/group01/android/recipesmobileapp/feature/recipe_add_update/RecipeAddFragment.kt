@@ -20,6 +20,8 @@ import androidx.core.view.children
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
@@ -28,13 +30,18 @@ import com.gtp01.group01.android.recipesmobileapp.constant.TagConstant
 import com.gtp01.group01.android.recipesmobileapp.databinding.FragmentRecipeAddBinding
 import com.gtp01.group01.android.recipesmobileapp.databinding.LayoutDuplicateIngredientItemBinding
 import com.gtp01.group01.android.recipesmobileapp.feature.main.MainActivity
+import com.gtp01.group01.android.recipesmobileapp.shared.common.Result
+import com.gtp01.group01.android.recipesmobileapp.shared.common.gone
+import com.gtp01.group01.android.recipesmobileapp.shared.common.show
 import com.gtp01.group01.android.recipesmobileapp.shared.model.FoodCategory
 import com.gtp01.group01.android.recipesmobileapp.shared.model.FoodCategoryApp
 import com.gtp01.group01.android.recipesmobileapp.shared.model.Recipe
 import com.gtp01.group01.android.recipesmobileapp.shared.model.User
 import com.gtp01.group01.android.recipesmobileapp.shared.utils.RecipeMappers
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 import java.io.ByteArrayOutputStream
+
 
 /**
  * Fragment for adding a new recipe.
@@ -50,7 +57,9 @@ class RecipeAddFragment : Fragment() {
     private val binding get() = _binding!!
 
     // ViewModel for handling recipe addition/update logic
-    private val viewModel: RecipeAddUpdateViewModel by viewModels()
+    //private val viewModel: RecipeAddUpdateViewModel by viewModels()
+    //private var viewModel: RecipeAddViewModel by viewModels()
+    private lateinit var viewModel: RecipeAddViewModel
 
     // Adapter for displaying food categories
     private lateinit var adapter: FoodCategoriesAdapter
@@ -108,7 +117,6 @@ class RecipeAddFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        viewModel.getCategoryList()
     }
 
     override fun onCreateView(
@@ -128,7 +136,7 @@ class RecipeAddFragment : Fragment() {
                 }
 
             })
-
+        viewModel = ViewModelProvider(this).get(RecipeAddViewModel::class.java)
         return setupUI()
     }
 
@@ -187,7 +195,7 @@ class RecipeAddFragment : Fragment() {
                 openGallery()
             }
             btnSave.setOnClickListener {
-                validateRecipeDetails()
+                validateRecipeDetailsWithFlows()
             }
             ivInfoIngredient.setOnClickListener {
                 if (mtvInfoIngredient.visibility == VISIBLE) {
@@ -220,22 +228,22 @@ class RecipeAddFragment : Fragment() {
     private fun initObservers() {
         viewModel.apply {
             // Observe nutrition data changes
-            nutritionList.observe(viewLifecycleOwner) {
-                viewModel.calculateNutrients()
-                if (viewModel.calculatedNutrients.sum() == 0) {
-                    Toast.makeText(
-                        requireContext(),
-                        getString(R.string.warn_please_add_ingredients_in_correct_format),
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                        binding.lytImportedRecipe.lytDynamicIngredients.focusable
-                    }
-                } else {
-                    callToSaveRecipe()
-
-                }
-            }
+//            nutritionList.observe(viewLifecycleOwner) {
+//                viewModel.calculateNutrients()
+//                if (viewModel.calculatedNutrients.sum() == 0) {
+//                    Toast.makeText(
+//                        requireContext(),
+//                        getString(R.string.warn_please_add_ingredients_in_correct_format),
+//                        Toast.LENGTH_SHORT
+//                    ).show()
+//                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//                        binding.lytImportedRecipe.lytDynamicIngredients.focusable
+//                    }
+//                } else {
+//                    callToSaveRecipe()
+//
+//                }
+//            }
             categoryList.observe(viewLifecycleOwner) {
                 if (it.isNotEmpty()) {
                     viewModel.editableCategoriesList.clear()
@@ -252,22 +260,22 @@ class RecipeAddFragment : Fragment() {
                     viewModel.editableCategoriesList = emptyList<FoodCategoryApp>().toMutableList()
                 }
             }
-            saveRecipeSuccess.observe(viewLifecycleOwner) {
-                if (it != null) {
-                    activity.showPopup(
-                        0,
-                        getString(R.string.success),
-                        message = getString(R.string.recipe_saved_successfully)
-                    )
-                    clearScreenForANewRecipe()
-                } else {
-                    activity.showPopup(
-                        1,
-                        getString(R.string.error),
-                        getString(R.string.error_occured_while_saving_the_recipe)
-                    )
-                }
-            }
+//            saveRecipeSuccess.observe(viewLifecycleOwner) {
+//                if (it != null) {
+//                    activity.showPopup(
+//                        0,
+//                        getString(R.string.success),
+//                        message = getString(R.string.recipe_saved_successfully)
+//                    )
+//                    clearScreenForANewRecipe()
+//                } else {
+//                    activity.showPopup(
+//                        1,
+//                        getString(R.string.error),
+//                        getString(R.string.error_occured_while_saving_the_recipe)
+//                    )
+//                }
+//            }
             serveCount.observe(viewLifecycleOwner) {
                 binding.lytImportedRecipe.metServingCount.text =
                     Editable.Factory.getInstance().newEditable(it.toString())
@@ -276,7 +284,108 @@ class RecipeAddFragment : Fragment() {
                 binding.lytImportedRecipe.metCookingTime.text =
                     Editable.Factory.getInstance().newEditable(it.toString())
             }
+            isPogressWheelVisible.observe(viewLifecycleOwner) {
+                if (it) {
+                    showProgressWheel()
+                } else {
+                    hideProgressWheel()
+                }
+            }
         }
+
+        observeSavingWithFlows()
+    }
+
+    /**
+     * Observes the saving process using flows.
+     * This method collects the save recipe response from the ViewModel and performs actions based on the result.
+     */
+    private fun observeSavingWithFlows() {
+        if(viewModel.cookingTime.value!! > 0){
+            // Observe the save recipe response
+            viewLifecycleOwner.lifecycleScope.launchWhenCreated {
+
+                viewModel.nutritionListWithFlows.collect { it ->
+                    when (it) {
+                        is Result.Loading -> {
+                            // Show progress wheel
+                            if (viewModel.isPogressWheelVisible.value == true) {
+                                viewModel.setIsProgressWheelVisible(true)
+                            }
+                        }
+                        is Result.Success -> {
+                            viewModel.calculateNutrientsWithFlows(it.result)
+                            if (viewModel.calculatedNutrients.sum() == 0) {
+                                Toast.makeText(
+                                    requireContext(),
+                                    getString(R.string.warn_please_add_ingredients_in_correct_format),
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                                    binding.lytImportedRecipe.lytDynamicIngredients.focusable
+                                }
+
+                            } else {
+                                callToSaveRecipe()
+                            }
+                            viewModel.setDefaultCount(TagConstant.TAG_COOKING_TIME)
+                        }
+                        is Result.Failure -> {
+                            // Hide progress wheel
+                            viewModel.setIsProgressWheelVisible(false)
+                            // Show failure snackbar message
+                            showPopupAlert(1, "Failed to get nutrients: ${it.error}")
+                            viewModel.setDefaultCount(TagConstant.TAG_COOKING_TIME)
+                        }
+                    }
+                }
+
+            }
+
+            viewLifecycleOwner.lifecycleScope.launchWhenCreated {
+                viewModel.saveRecipeResponse.collect { result ->
+                    when (result) {
+                        is Result.Loading -> {
+                            // Show progress wheel
+                            if (viewModel.isPogressWheelVisible.value == true) {
+                                viewModel.setIsProgressWheelVisible(true)
+                            }
+                        }
+
+                        is Result.Success -> {
+                            // Hide progress wheel
+                            viewModel.setIsProgressWheelVisible(false)
+                            // Show success snackbar message
+                            showPopupAlert(0, "Recipe saved successfully")
+                            viewModel.setDefaultCount(TagConstant.TAG_COOKING_TIME)
+                        }
+
+                        is Result.Failure -> {
+                            // Hide progress wheel
+                            viewModel.setIsProgressWheelVisible(false)
+                            // Show failure snackbar message
+                            showPopupAlert(1, "Failed to save recipe: ${result.error}")
+                            viewModel.setDefaultCount(TagConstant.TAG_COOKING_TIME)
+                        }
+
+                        else -> {}
+                    }
+                }
+            }
+        }
+
+    }
+
+    private fun showProgressWheel() {
+        activity.binding.lytLoadingScreenIncluded.lytLoadingScreen.show()
+    }
+
+    private fun hideProgressWheel() {
+        activity.binding.lytLoadingScreenIncluded.lytLoadingScreen.gone()
+    }
+
+    private fun showPopupAlert(type: Int, message: String) {
+        activity.showPopup(type, null, message)
     }
 
     /**
@@ -330,7 +439,7 @@ class RecipeAddFragment : Fragment() {
     /**
      * Validates recipe details before saving.
      */
-    private fun validateRecipeDetails() {
+    private fun validateRecipeDetailsWithFlows() {
         val errorString =
             if (binding.lytImportedRecipe.etRecipeName.editText?.text.toString().isBlank()) {
                 getString(R.string.warn_please_add_a_recipe_name)
@@ -359,7 +468,7 @@ class RecipeAddFragment : Fragment() {
             }
 
         if (errorString == null) {
-            callNutrientsApi()
+            callNutrientsApiWithFlows()
         } else {
             Snackbar.make(
                 requireContext(),
@@ -373,7 +482,7 @@ class RecipeAddFragment : Fragment() {
     /**
      * Calls the API to fetch nutrition information based on ingredients.
      */
-    private fun callNutrientsApi() {
+    private fun callNutrientsApiWithFlows() {
         if (binding.lytImportedRecipe.lytDynamicIngredients.childCount > 0) {
             for (i in 0 until binding.lytImportedRecipe.lytDynamicIngredients.childCount) {
                 val childView = binding.lytImportedRecipe.lytDynamicIngredients.getChildAt(i)
@@ -383,12 +492,14 @@ class RecipeAddFragment : Fragment() {
                         .isEmpty() || metInsertIngredients.text.toString().isBlank()
                             )
                 ) {
-                    viewModel.ingredientsList.add(metInsertIngredients.text.toString())
+                    if (!viewModel.ingredientsList.contains(metInsertIngredients.text.toString())) {
+                        viewModel.ingredientsList.add(metInsertIngredients.text.toString())
+                    }
                 }
             }
         }
         val ingredients = viewModel.ingredientsList.joinToString(" and ")
-        viewModel.getNutritionsVm(ingredients)
+        viewModel.getNutritionsVmWithFlows(ingredients)
     }
 
     /**
@@ -414,7 +525,9 @@ class RecipeAddFragment : Fragment() {
                         .isEmpty() || metInsertInstructions.text.toString().isBlank()
                             )
                 ) {
-                    viewModel.instructionsList.add(metInsertInstructions.text.toString())
+                    if (!viewModel.instructionsList.contains(metInsertInstructions.text.toString())) {
+                        viewModel.instructionsList.add(metInsertInstructions.text.toString())
+                    }
                 }
             }
         }
@@ -437,7 +550,9 @@ class RecipeAddFragment : Fragment() {
             hasLike = false,
             hasFavorite = false,
         )
-        viewModel.saveRecipe(10, recipe)
+        viewModel.setIsProgressWheelVisible(true)
+        viewModel.saveRecipeWithFlows(42, recipe)
+
     }
 
     /**
@@ -481,5 +596,14 @@ class RecipeAddFragment : Fragment() {
         super.onDestroy()
         // Nullify the binding to avoid memory leaks
         _binding = null
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+//        viewModel.nutritionList.removeObservers(viewLifecycleOwner)
+//        viewModel.categoryList.removeObservers(viewLifecycleOwner)
+//        viewModel.cookingTime.removeObservers(viewLifecycleOwner)
+//        viewModel.serveCount.removeObservers(viewLifecycleOwner)
+//        viewModel.saveRecipeSuccess.removeObservers(viewLifecycleOwner)
     }
 }

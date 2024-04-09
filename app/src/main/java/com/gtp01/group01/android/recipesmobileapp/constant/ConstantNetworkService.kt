@@ -34,7 +34,7 @@ object ConstantNetworkService {
     const val RECIPE_BASE_NUTRITION_VALUES_URL = "https://nutrition-by-api-ninjas.p.rapidapi.com/"
     const val RECIPE_GET_NUTRITION_VALUES_END_POINT = "v1/nutrition?query="
     const val RECIPE_GET_CATEGORIES_END_POINT = "/api/v1/category/all"
-    const val RECIPE_POST_RECIPE_END_POINT = "/api/v1/reader/{idLoggedUser}/recipe"
+    const val RECIPE_POST_RECIPE_END_POINT = "/api/v1/reader/{idLoggedUser}/re"
 
     /***
      * Endpoints for My Own Recipes
