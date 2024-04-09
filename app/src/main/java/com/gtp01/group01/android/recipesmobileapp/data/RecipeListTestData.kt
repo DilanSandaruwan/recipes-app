@@ -72,7 +72,7 @@ object RecipeListTestData {
                 "recipeName": "Margarita",
                 "ingredients": "Ground beef\\ntomatoes\\nonions\\ngarlic\\npasta",
                 "instruction": "1. Brown the beef\\n2. Add onions and garlic\\n",
-                "preparationTime": 30,
+                "preparationTime": 60,
                 "calory": 100,
                 "protein": 200,
                 "carbs": 50,
