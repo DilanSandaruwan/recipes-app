@@ -21,8 +21,9 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.FavoriteBorder
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.ThumbUp
+import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material.icons.outlined.ThumbUp
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -148,6 +149,8 @@ fun SearchResultScreen(
                     decodeImageToBitmap = { searchResultViewModel.decodeImageToBitmap(it) },
                     onLikeClicked = searchResultViewModel::likeRecipe,
                     onRemoveLikeClicked = searchResultViewModel::removeLikeRecipe,
+                    onFavoriteClicked = searchResultViewModel::addFavoriteRecipe,
+                    onRemoveFavoriteClicked = searchResultViewModel::removeFavoriteRecipe,
                     navigateToViewRecipe = navigateToViewRecipe
                 )
             }
@@ -211,6 +214,15 @@ private fun UnavailableNetworkErrorSection(
  *        - onLoading: Function to execute while the like operation is ongoing.
  * @param onRemoveLikeClicked [Function() -> Unit)]: Callback function for removing a like from a recipe.
  *      - Takes the same arguments as `onLikeClicked`.
+ * @param onFavoriteClicked [Function<Int, Int, () -> Unit, (String) -> Unit, () -> Unit>]: Callback function for adding a recipe to favorites.
+ *     - Takes:
+ *        - loggedUserId: The ID of the logged-in user.
+ *        - recipeId: The ID of the recipe to add to favorites.
+ *        - onSuccess: Function to execute upon successful add favorite operation.
+ *        - onFailure: Function to execute upon add favorite operation failure.
+ *        - onLoading: Function to execute while add favorite operation is ongoing.
+ * @param onRemoveFavoriteClicked [Function() -> Unit)]: Callback function for removing a recipe from favorites.
+ *     - Takes the same arguments as `onFavoriteClicked`.
  * @param navigateToViewRecipe Function: Callback to navigate to the recipe details screen.
  * @param modifier Modifier: The modifier for styling the layout. Default is [Modifier].
  */
@@ -221,6 +233,8 @@ fun SearchRecipeGrid(
     decodeImageToBitmap: (String) -> Bitmap?,
     onLikeClicked: (loggedUserId: Int, recipeId: Int, onSuccess: () -> Unit, onFailure: (String) -> Unit, onLoading: () -> Unit) -> Unit,
     onRemoveLikeClicked: (loggedUserId: Int, recipeId: Int, onSuccess: () -> Unit, onFailure: (String) -> Unit, onLoading: () -> Unit) -> Unit,
+    onFavoriteClicked: (loggedUserId: Int, recipeId: Int, onSuccess: () -> Unit, onFailure: (String) -> Unit, onLoading: () -> Unit) -> Unit,
+    onRemoveFavoriteClicked: (loggedUserId: Int, recipeId: Int, onSuccess: () -> Unit, onFailure: (String) -> Unit, onLoading: () -> Unit) -> Unit,
     navigateToViewRecipe: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -237,6 +251,8 @@ fun SearchRecipeGrid(
                 loggedUserId = loggedUserId,
                 onLikeClicked = onLikeClicked,
                 onRemoveLikeClicked = onRemoveLikeClicked,
+                onFavoriteClicked = onFavoriteClicked,
+                onRemoveFavoriteClicked = onRemoveFavoriteClicked,
                 decodeImageToBitmap = decodeImageToBitmap,
                 navigateToViewRecipe = navigateToViewRecipe
             )
@@ -258,6 +274,10 @@ fun SearchRecipeGrid(
  *        - onLoading: Function to execute while the like operation is ongoing.
  * @param onRemoveLikeClicked [Function() -> Unit)]: Callback function for removing a like from a recipe.
  *      - Takes the same arguments as `onLikeClicked`.
+ * @param onFavoriteClicked [Function<Int, Int, () -> Unit, (String) -> Unit, () -> Unit>]: Callback function for adding a recipe to favorites.
+ *     - Takes the same arguments as in `SearchRecipeGrid`.
+ * @param onRemoveFavoriteClicked [Function() -> Unit)]: Callback function for removing a recipe from favorites.
+ *     - Takes the same arguments as in `SearchRecipeGrid`.
  * @param decodeImageToBitmap Function: Function to decode recipe images to Bitmap.
  * @param navigateToViewRecipe Function: Callback to navigate to the recipe details screen.
  * @param modifier Modifier: The modifier for styling the layout. Default is [Modifier].
@@ -268,16 +288,21 @@ fun SearchRecipeCard(
     loggedUserId: Int,
     onLikeClicked: (loggedUserId: Int, recipeId: Int, onSuccess: () -> Unit, onFailure: (String) -> Unit, onLoading: () -> Unit) -> Unit,
     onRemoveLikeClicked: (loggedUserId: Int, recipeId: Int, onSuccess: () -> Unit, onFailure: (String) -> Unit, onLoading: () -> Unit) -> Unit,
+    onFavoriteClicked: (loggedUserId: Int, recipeId: Int, onSuccess: () -> Unit, onFailure: (String) -> Unit, onLoading: () -> Unit) -> Unit,
+    onRemoveFavoriteClicked: (loggedUserId: Int, recipeId: Int, onSuccess: () -> Unit, onFailure: (String) -> Unit, onLoading: () -> Unit) -> Unit,
     decodeImageToBitmap: (String) -> Bitmap?,
     navigateToViewRecipe: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
     var likeCount by remember { mutableIntStateOf(0) }
     var isLiked by remember { mutableStateOf(false) }
-    var isLoading by remember { mutableStateOf(false) } // Track loading state
+    var isFavorite by remember { mutableStateOf(false) }
+    var isLikeResponseLoading by remember { mutableStateOf(false) } // Track loading state
+    var isFavoriteResponseLoading by remember { mutableStateOf(false) } // Track loading state
 
     isLiked = recipe.hasLike
     likeCount = recipe.likeCount
+    isFavorite = recipe.hasFavorite
 
     Surface(
         color = colorResource(id = R.color.md_theme_surfaceContainer)
@@ -335,23 +360,74 @@ fun SearchRecipeCard(
                 }
             }
 
-            // favorite icon placed on top of the image
-            Box(
-                modifier = Modifier
-                    .align(Alignment.TopEnd)
-                    .size(dimensionResource(id = R.dimen.search_favorite_icon_box_size))
-                    .clip(RoundedCornerShape(dimensionResource(id = R.dimen.search_favorite_icon_box_corner_radius)))
-                    .background(colorResource(id = R.color.md_theme_outlineVariant))
-                    .zIndex(2f),
-            ) {
-                Icon(
-                    imageVector = Icons.Filled.FavoriteBorder,
-                    contentDescription = null,
-                    tint = colorResource(id = R.color.md_theme_outline),
+            // favorite icon placed on top of the image for registered users
+            if (loggedUserId != UserDefaultConstant.GUEST_USER_ID) {
+                Box(
                     modifier = Modifier
-                        .size(dimensionResource(id = R.dimen.search_favorite_icon_size))
-                        .align(Alignment.Center)
-                )
+                        .align(Alignment.TopEnd)
+                        .size(dimensionResource(id = R.dimen.search_favorite_icon_box_size))
+                        .clip(RoundedCornerShape(dimensionResource(id = R.dimen.search_favorite_icon_box_corner_radius)))
+                        .background(colorResource(id = R.color.md_theme_outlineVariant))
+                        .zIndex(2f),
+                ) {
+                    Icon(
+                        imageVector = if (isFavorite) Icons.Filled.Favorite else Icons.Outlined.FavoriteBorder,
+                        contentDescription = null,
+                        tint = colorResource(id = R.color.md_theme_onPrimaryContainer),
+                        modifier = Modifier
+                            .size(dimensionResource(id = R.dimen.search_favorite_icon_size))
+                            .align(Alignment.Center)
+                            .clickable {
+                                // Only allow favorite operation when not loading
+                                if (!isFavoriteResponseLoading) {
+                                    isFavorite = !isFavorite
+                                    if (isFavorite) {
+                                        // Call to favorite a recipe
+                                        onFavoriteClicked(
+                                            loggedUserId,
+                                            recipe.idRecipe,
+                                            {
+                                                // Reset loading state on success
+                                                isFavoriteResponseLoading = false
+                                            },
+                                            {
+                                                // Reset loading state on failure
+                                                isFavoriteResponseLoading = false
+
+                                                // Revert the favorite status on failure
+                                                isFavorite = !isFavorite
+                                            },
+                                            {
+                                                // Set loading state on loading
+                                                isFavoriteResponseLoading = true
+                                            }
+                                        )
+                                    } else {
+                                        // Call to remove a favorite
+                                        onRemoveFavoriteClicked(
+                                            loggedUserId,
+                                            recipe.idRecipe,
+                                            {
+                                                // Reset loading state on success
+                                                isFavoriteResponseLoading = false
+                                            },
+                                            {
+                                                // Reset loading state on failure
+                                                isFavoriteResponseLoading = false
+
+                                                // Revert the favorite status on failure
+                                                isFavorite = !isFavorite
+                                            },
+                                            {
+                                                // Set loading state on loading
+                                                isFavoriteResponseLoading = true
+                                            }
+                                        )
+                                    }
+                                }
+                            }
+                    )
+                }
             }
 
             //section for displaying recipe details
@@ -426,7 +502,7 @@ fun SearchRecipeCard(
                                     .size(dimensionResource(id = R.dimen.search_like_icon_size))
                                     .clickable {
                                         // Only allow liking when not loading
-                                        if (!isLoading) {
+                                        if (!isLikeResponseLoading) {
                                             isLiked = !isLiked
                                             if (isLiked) {
                                                 // Call to like a recipe
@@ -435,11 +511,11 @@ fun SearchRecipeCard(
                                                     recipe.idRecipe,
                                                     {
                                                         // Reset loading state on success
-                                                        isLoading = false
+                                                        isLikeResponseLoading = false
                                                     },
                                                     {
                                                         // Reset loading state on failure
-                                                        isLoading = false
+                                                        isLikeResponseLoading = false
 
                                                         // Revert the like status and like count on failure
                                                         isLiked = !isLiked
@@ -447,7 +523,7 @@ fun SearchRecipeCard(
                                                     },
                                                     {
                                                         // Set loading state on loading
-                                                        isLoading = true
+                                                        isLikeResponseLoading = true
                                                     }
                                                 )
                                                 // Increment like count
@@ -459,11 +535,11 @@ fun SearchRecipeCard(
                                                     recipe.idRecipe,
                                                     {
                                                         // Reset loading state on success
-                                                        isLoading = false
+                                                        isLikeResponseLoading = false
                                                     },
                                                     {
                                                         // Reset loading state on failure
-                                                        isLoading = false
+                                                        isLikeResponseLoading = false
 
                                                         // Revert the like status and like count on failure
                                                         isLiked = !isLiked
@@ -471,7 +547,7 @@ fun SearchRecipeCard(
                                                     },
                                                     {
                                                         // Set loading state on loading
-                                                        isLoading = true
+                                                        isLikeResponseLoading = true
                                                     }
                                                 )
                                                 // Decrement like count
