@@ -1,6 +1,8 @@
 package com.gtp01.group01.android.recipesmobileapp.feature.my_favourites
 
 import android.content.SharedPreferences
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.gtp01.group01.android.recipesmobileapp.shared.model.Recipe
@@ -18,7 +20,16 @@ class FavoriteRepository @Inject constructor(private val recipeManagementApiServ
 
             if (response.isSuccessful) {
                 // Extract the list of favorite recipes from the response body
-                response.body() ?: emptyList()
+                val recipes = response.body() ?: emptyList()
+
+                // Decode images from binary data and update bitmap property of each recipe
+                recipes.forEach { recipe ->
+                    recipe.photo?.let { binaryData ->
+                        recipe.bitmap = decodeImage(binaryData as String)
+                    }
+                }
+
+                recipes // Return the updated list of recipes
             } else {
                 // Handle unsuccessful response, e.g., server error
                 emptyList()
@@ -26,6 +37,16 @@ class FavoriteRepository @Inject constructor(private val recipeManagementApiServ
         } catch (e: Exception) {
             // Handle exceptions, logging, or return an empty list
             emptyList()
+        }
+    }
+
+    // Decode image function
+    private fun decodeImage(imageData: String): Bitmap? {
+        return try {
+            val decodedBytes = android.util.Base64.decode(imageData, android.util.Base64.DEFAULT)
+            BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.size)
+        } catch (e: Exception) {
+            null
         }
     }
     private val gson = Gson()

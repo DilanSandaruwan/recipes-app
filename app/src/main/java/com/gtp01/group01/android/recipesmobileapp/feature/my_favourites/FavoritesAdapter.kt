@@ -9,15 +9,8 @@ import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.gtp01.group01.android.recipesmobileapp.R
 import com.gtp01.group01.android.recipesmobileapp.shared.model.Recipe
-
-/**
- * Adapter for displaying favorite recipes in a RecyclerView.
- *
- * @property favoriteRecipes List of favorite recipes to display.
- * @property listener Listener for item click events.
- */
 class FavoritesAdapter(
-   
+
     var favoriteRecipes: List<Recipe>,
     private val listener: OnItemClickListener
 ) : RecyclerView.Adapter<FavoritesAdapter.ViewHolder>() {
@@ -48,35 +41,32 @@ class FavoritesAdapter(
          * @param recipe The recipe to bind.
          */
         fun bind(recipe: Recipe) {
-
-
             recipeTitle.text = recipe.recipeName
             recipeDescription.text = recipe.instruction
             articleDateTime.text = "Preparation time: ${recipe.preparationTime} mins"
 
-
-            recipe.photo?.let { imageUrl ->
-                recipeImage.load(imageUrl) {
-                    placeholder(R.drawable.placeholder_image) // Placeholder image while loading
-                    error(R.drawable.error_image) // Error image if the load fails
-                }
-
-                itemView.setOnClickListener { listener.onItemClick(recipe) }
-                // Load the bitmap into ImageView if it's not null
-
+            // Load the bitmap into ImageView if it's not null
+            recipe.bitmap?.let { bitmap ->
+                recipeImage.setImageBitmap(bitmap)
             }
+
+            // Set click listener
+            itemView.setOnClickListener { listener.onItemClick(recipe) }
         }
+
     }
 
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-            val inflater = LayoutInflater.from(parent.context)
-            val itemView = inflater.inflate(R.layout.item_recipes_favourite, parent, false)
-            return ViewHolder(itemView)
-        }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val inflater = LayoutInflater.from(parent.context)
+        val itemView = inflater.inflate(R.layout.item_recipes_favourite, parent, false)
+        return ViewHolder(itemView)
+    }
 
-        override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-            holder.bind(favoriteRecipes[position])
-        }
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        holder.bind(favoriteRecipes[position])
+    }
 
-        override fun getItemCount(): Int = favoriteRecipes.size
+    override fun getItemCount(): Int = favoriteRecipes.size
+
+
     }
