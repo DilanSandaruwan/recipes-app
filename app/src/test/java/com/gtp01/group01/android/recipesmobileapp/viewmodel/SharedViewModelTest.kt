@@ -1,24 +1,15 @@
 package com.gtp01.group01.android.recipesmobileapp.viewmodel
 
-import android.net.ConnectivityManager
-import android.net.Network
-import android.net.NetworkRequest
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.gtp01.group01.android.recipesmobileapp.constant.UserDefaultConstant
 import com.gtp01.group01.android.recipesmobileapp.constant.UserDefaultConstant.GUEST_CALORIE_PREFERENCE
 import com.gtp01.group01.android.recipesmobileapp.constant.UserDefaultConstant.GUEST_DURATION_PREFERENCE
 import com.gtp01.group01.android.recipesmobileapp.constant.UserDefaultConstant.GUEST_USER_ID
-import com.gtp01.group01.android.recipesmobileapp.data.RecipeListTestData
-import com.gtp01.group01.android.recipesmobileapp.feature.my_profile.repository.RecipeManagementRepository
-import com.gtp01.group01.android.recipesmobileapp.shared.common.Result
 import com.gtp01.group01.android.recipesmobileapp.shared.common.viewmodel.SharedViewModel
-import com.gtp01.group01.android.recipesmobileapp.shared.model.FoodCategory
 import com.gtp01.group01.android.recipesmobileapp.shared.model.FoodCategoryApp
 import com.gtp01.group01.android.recipesmobileapp.shared.model.User
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.ObsoleteCoroutinesApi
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
@@ -27,13 +18,14 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.ArgumentCaptor
-import org.mockito.Captor
 import org.mockito.Mock
 import org.mockito.Mockito
 import org.mockito.MockitoAnnotations
 import org.mockito.junit.MockitoJUnitRunner
 
+/**
+ * Unit tests for the SharedViewModel class.
+ */
 @RunWith(MockitoJUnitRunner::class)
 class SharedViewModelTest {
     /**
@@ -54,6 +46,9 @@ class SharedViewModelTest {
 
     private lateinit var viewModel: SharedViewModel
 
+    /**
+     * Setup method executed before each test to initialize required objects.
+     */
     @Before
     fun setUp() {
         Dispatchers.setMain(testDispatcher)
@@ -61,6 +56,9 @@ class SharedViewModelTest {
         viewModel = SharedViewModel()
     }
 
+    /**
+     * Test case to verify that setCurrentUser updates savedUser with default values for a guest user.
+     */
     @Test
     fun `setCurrentUser updates savedUser with default values for guest user`() = runTest {
         // Given a guest user
@@ -76,13 +74,22 @@ class SharedViewModelTest {
         assertEquals(GUEST_CALORIE_PREFERENCE, savedUser.preferCalorie)
     }
 
+    /**
+     * Test case to verify that setCurrentUser updates savedUser with provided user data for a logged-in user.
+     */
     @Test
     fun `setCurrentUser updates savedUser with provided user data`() = runTest {
         // Given a logged-in user with custom preferences
         val userId = 123
         val email = "test@example.com"
         val fullName = "John Doe"
-        val preferCategories = listOf(FoodCategoryApp(idFoodCategory = 1, categoryName = "bread", categoryImageId = 1),)
+        val preferCategories = listOf(
+            FoodCategoryApp(
+                idFoodCategory = 1,
+                categoryName = "bread",
+                categoryImageId = 1
+            ),
+        )
         val preferDuration = 45
         val preferCalorie = 500
         Mockito.`when`(user.idUser).thenReturn(userId)
