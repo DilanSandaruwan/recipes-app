@@ -1,6 +1,7 @@
 package com.gtp01.group01.android.recipesmobileapp.feature.home.compose.views
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -27,11 +28,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.gtp01.group01.android.recipesmobileapp.R
 
 /**
- * Composable function to display a section of food categories.
- * Each category is represented by an image and category name label.
+ * Displays a section for food categories, allowing users to filter content based on their selection.
+ *
+ * @param onFilterByCategory A callback function that will be invoked when a category is selected.
  */
 @Composable
-fun CategorySection() {
+fun CategorySection(
+    onFilterByCategory: (Int) -> Unit
+) {
     // List of food categories with their corresponding image resources and string resource IDs for category name labels
     val foodCategories = listOf(
         Pair(R.drawable.fc_1, R.string.bread),
@@ -49,22 +53,34 @@ fun CategorySection() {
         Pair(R.drawable.fc_13, R.string.soup),
         Pair(R.drawable.fc_14, R.string.vegetarian)
     )
-    CategoryList(foodCategories)
+    CategoryList(
+        foodCategories = foodCategories,
+        onFilterByCategory = onFilterByCategory
+    )
 }
 
 /**
- * Composable function to display a list of food categories.
+ * Composes a horizontally scrollable list of food categories, where each category is displayed with an image and text.
  *
- * @param foodCategories List<Pair<Int, Int>>: The list of food categories with image and string resources.
+ * @param foodCategories List<Pair<Int, Int>>: A list of food categories where each item is a pair of:
+ *      - Image drawable resource ID for the category's icon.
+ *      - String resource ID for the category's name label.
+ * @param onFilterByCategory (Int) -> Unit: A callback function invoked when a category is selected.
  */
 @Composable
-fun CategoryList(foodCategories: List<Pair<Int, Int>>) {
+fun CategoryList(
+    foodCategories: List<Pair<Int, Int>>,
+    onFilterByCategory: (Int) -> Unit
+) {
     LazyRow(
         horizontalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.home_category_space_between)),
         content = {
             items(foodCategories) {
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier.clickable {
+                        onFilterByCategory(foodCategories.indexOf(it) + 1)
+                    }
                 ) {
                     ImageItem(imageRes = it.first)
                     Spacer(Modifier.height(dimensionResource(id = R.dimen.home_category_space)))
@@ -128,6 +144,6 @@ fun CategoryName(categoryName: Int) {
 @Preview(showBackground = true, showSystemUi = true)
 fun PreviewCategorySection() {
     MaterialTheme {
-        CategorySection()
+        CategorySection(onFilterByCategory = { null })
     }
 }

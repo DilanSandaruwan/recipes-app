@@ -8,19 +8,19 @@ import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.gtp01.group01.android.recipesmobileapp.feature.home.compose.views.HomeScreen
+import androidx.navigation.fragment.navArgs
+import com.gtp01.group01.android.recipesmobileapp.feature.home.compose.views.SearchResultScreen
 
 /**
- * A Fragment representing the home screen of the Recipes Mobile App.
- * This Fragment displays a search bar, filter by category criteria and a list of recipe previews using Jetpack Compose.
+ * A Fragment representing the search results screen of the Recipes Mobile App.
+ * This Fragment displays a list of recipe previews using Jetpack Compose.
  */
-class HomeFragment : Fragment() {
+class SearchResultFragment : Fragment() {
 
     private val navController by lazy { findNavController() }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-        }
+        arguments?.let {}
     }
 
     override fun onCreateView(
@@ -28,23 +28,24 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         return ComposeView(requireContext()).apply {
+            // Extracts recipe name and category ID from navigation arguments.
+            val args: SearchResultFragmentArgs by navArgs()
+            val recipeName = args.recipeName
+            val categoryId = args.categoryId
+
             // Dispose of the Composition when the view's LifecycleOwner is destroyed
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
 
             /**
-             * Sets the content of the ComposeView with the HomeScreen composable as the main layout of the home screen.
-             * Passes the navigation callbacks.
+             * Sets the content of the ComposeView with the SearchResultScreen composable.
+             * Passes the extracted search criteria and navigation callback.
              */
             setContent {
-                HomeScreen(
+                SearchResultScreen(
+                    recipeName = recipeName,
+                    categoryId = categoryId,
                     navigateToViewRecipe = { recipeId ->
                         navController.navigate("com.gtp01.group01.android.recipesmobileapp.feature.view_recipe.recipe_details.ViewRecipe/$recipeId")
-                    },
-                    onKeyboardSearch = { recipeName ->
-                        navController.navigate("com.gtp01.group01.android.recipesmobileapp.feature.home.SearchResultFragment/$recipeName")
-                    },
-                    onFilterByCategory = { categoryId ->
-                        navController.navigate("com.gtp01.group01.android.recipesmobileapp.feature.home.SearchResultFragment/category/$categoryId")
                     }
                 )
             }
