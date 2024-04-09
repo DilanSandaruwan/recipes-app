@@ -17,6 +17,8 @@ import com.gtp01.group01.android.recipesmobileapp.R
 import com.gtp01.group01.android.recipesmobileapp.constant.AuthProviders.providers
 import com.gtp01.group01.android.recipesmobileapp.constant.ConstantRequestCode.MY_REQUEST_CODE
 import com.gtp01.group01.android.recipesmobileapp.databinding.ActivityMainBinding
+import com.gtp01.group01.android.recipesmobileapp.shared.common.gone
+import com.gtp01.group01.android.recipesmobileapp.shared.common.show
 import com.gtp01.group01.android.recipesmobileapp.shared.sources.Local.LocalDataSource
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -78,7 +80,7 @@ class MainActivity : AppCompatActivity() {
     private fun eventListeners() {
         binding.lytPopupIncluded.ivPopupClose.setOnClickListener {
             setBottomNavVisibility(true)
-            binding.lytPopupIncluded.lytPopupScreen.visibility = View.GONE
+            binding.lytPopupIncluded.lytPopupScreen.gone()
         }
     }
 
@@ -147,26 +149,36 @@ class MainActivity : AppCompatActivity() {
     /**
      * Displays a popup message.
      */
-    fun showPopup(type: Int, title: String, message: String) {
+    fun showPopup(type: Int, title: String?, message: String) {
 
+        var popupTitle = title
         var icon: Int = R.drawable.ic_info_popup
         when (type) {
             0 -> {
                 icon = R.drawable.ico_selected_item
+                if(title==null){
+                    popupTitle = getString(R.string.success)
+                }
             }
 
             1 -> {
                 icon = R.drawable.ic_error_popup
+                if(title==null){
+                    popupTitle = getString(R.string.error)
+                }
             }
 
             2 -> {
                 icon = R.drawable.ic_info_popup
+                if(title==null){
+                    popupTitle = getString(R.string.info)
+                }
             }
         }
         binding.lytPopupIncluded.ivPopupIcon.setImageResource(icon)
-        binding.lytPopupIncluded.mtvPopupTitle.text = title
+        binding.lytPopupIncluded.mtvPopupTitle.text = popupTitle
         binding.lytPopupIncluded.mtvPopupDescription.text = message
-        binding.lytPopupIncluded.lytPopupScreen.visibility = View.VISIBLE
+        binding.lytPopupIncluded.lytPopupScreen.show()
         binding.navView.visibility = View.GONE
     }
 }

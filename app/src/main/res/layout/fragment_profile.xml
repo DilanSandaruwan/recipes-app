@@ -34,7 +34,8 @@
                     android:layout_height="@dimen/height_app_bar_button"
                     android:background="@drawable/bg_app_tool_bar_btn_back"
                     android:contentDescription="@string/desc_back_button"
-                    android:src="@drawable/ic_img_btn_back" />
+                    android:src="@drawable/ic_img_btn_back"
+                    android:visibility="invisible" />
 
                 <!-- Title -->
                 <TextView

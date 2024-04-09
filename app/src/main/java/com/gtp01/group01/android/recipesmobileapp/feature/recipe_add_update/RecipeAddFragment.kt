@@ -10,6 +10,7 @@ import android.text.Editable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
+import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.Toast
@@ -28,13 +29,17 @@ import com.gtp01.group01.android.recipesmobileapp.constant.TagConstant
 import com.gtp01.group01.android.recipesmobileapp.databinding.FragmentRecipeAddBinding
 import com.gtp01.group01.android.recipesmobileapp.databinding.LayoutDuplicateIngredientItemBinding
 import com.gtp01.group01.android.recipesmobileapp.feature.main.MainActivity
+import com.gtp01.group01.android.recipesmobileapp.shared.common.gone
+import com.gtp01.group01.android.recipesmobileapp.shared.common.show
 import com.gtp01.group01.android.recipesmobileapp.shared.model.FoodCategory
 import com.gtp01.group01.android.recipesmobileapp.shared.model.FoodCategoryApp
 import com.gtp01.group01.android.recipesmobileapp.shared.model.Recipe
 import com.gtp01.group01.android.recipesmobileapp.shared.model.User
+import com.gtp01.group01.android.recipesmobileapp.shared.sources.Local.LocalDataSource
 import com.gtp01.group01.android.recipesmobileapp.shared.utils.RecipeMappers
 import dagger.hilt.android.AndroidEntryPoint
 import java.io.ByteArrayOutputStream
+import javax.inject.Inject
 
 /**
  * Fragment for adding a new recipe.
@@ -43,6 +48,10 @@ import java.io.ByteArrayOutputStream
  */
 @AndroidEntryPoint
 class RecipeAddFragment : Fragment() {
+
+    @Inject
+    lateinit var localDataSource: LocalDataSource // Inject LocalDataSource
+
     // View binding for the fragment
     private var _binding: FragmentRecipeAddBinding? = null
 
@@ -108,7 +117,6 @@ class RecipeAddFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        viewModel.getCategoryList()
     }
 
     override fun onCreateView(
@@ -153,12 +161,14 @@ class RecipeAddFragment : Fragment() {
                 getString(R.string.instructions_html),
                 HtmlCompat.FROM_HTML_MODE_LEGACY
             )
+            lytImportedRecipe.btnNavigateBack.visibility = INVISIBLE
 
             eventListeners()
 
         }
         return binding.root
     }
+
 
     /**
      * Sets up event listeners for UI components.
@@ -276,7 +286,26 @@ class RecipeAddFragment : Fragment() {
                 binding.lytImportedRecipe.metCookingTime.text =
                     Editable.Factory.getInstance().newEditable(it.toString())
             }
+            isPogressWheelVisible.observe(viewLifecycleOwner) {
+                if (it) {
+                    showProgressWheel()
+                } else {
+                    hideProgressWheel()
+                }
+            }
         }
+    }
+
+    private fun showProgressWheel() {
+        activity.binding.lytLoadingScreenIncluded.lytLoadingScreen.show()
+    }
+
+    private fun hideProgressWheel() {
+        activity.binding.lytLoadingScreenIncluded.lytLoadingScreen.gone()
+    }
+
+    private fun showPopupAlert(type: Int, message: String) {
+        activity.showPopup(type, null, message)
     }
 
     /**
@@ -383,7 +412,9 @@ class RecipeAddFragment : Fragment() {
                         .isEmpty() || metInsertIngredients.text.toString().isBlank()
                             )
                 ) {
-                    viewModel.ingredientsList.add(metInsertIngredients.text.toString())
+                    if (!viewModel.ingredientsList.contains(metInsertIngredients.text.toString())) {
+                        viewModel.ingredientsList.add(metInsertIngredients.text.toString())
+                    }
                 }
             }
         }
@@ -395,7 +426,7 @@ class RecipeAddFragment : Fragment() {
      * Initiates the process of saving the recipe.
      */
     private fun callToSaveRecipe() {
-        val user = User(idUser = 10)
+        val user = User(localDataSource.getUserId())
         val foodCategories = ArrayList<FoodCategory>().toMutableList()
         for (i in viewModel.editableCategoriesList) {
             if (i.isSelected) {
@@ -414,7 +445,9 @@ class RecipeAddFragment : Fragment() {
                         .isEmpty() || metInsertInstructions.text.toString().isBlank()
                             )
                 ) {
-                    viewModel.instructionsList.add(metInsertInstructions.text.toString())
+                    if (!viewModel.instructionsList.contains(metInsertInstructions.text.toString())) {
+                        viewModel.instructionsList.add(metInsertInstructions.text.toString())
+                    }
                 }
             }
         }
@@ -437,7 +470,7 @@ class RecipeAddFragment : Fragment() {
             hasLike = false,
             hasFavorite = false,
         )
-        viewModel.saveRecipe(10, recipe)
+        viewModel.saveRecipe(localDataSource.getUserId(), recipe)
     }
 
     /**
@@ -481,5 +514,14 @@ class RecipeAddFragment : Fragment() {
         super.onDestroy()
         // Nullify the binding to avoid memory leaks
         _binding = null
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        viewModel.nutritionList.removeObservers(viewLifecycleOwner)
+        viewModel.categoryList.removeObservers(viewLifecycleOwner)
+        viewModel.cookingTime.removeObservers(viewLifecycleOwner)
+        viewModel.serveCount.removeObservers(viewLifecycleOwner)
+        viewModel.saveRecipeSuccess.removeObservers(viewLifecycleOwner)
     }
 }
