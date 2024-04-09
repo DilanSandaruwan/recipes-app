@@ -42,7 +42,8 @@ import javax.inject.Inject
 class HomeViewModel @Inject constructor(
     private val connectivityManager: ConnectivityManager,
     private val recipeManagementRepository: RecipeManagementRepository,
-    private val sharedViewModel: SharedViewModel
+    private val sharedViewModel: SharedViewModel,
+    private val networkRequest: NetworkRequest
 ) : ViewModel() {
     // Logging tag for this class
     private val TAG = this::class.java.simpleName
@@ -82,7 +83,6 @@ class HomeViewModel @Inject constructor(
                 _networkAvailable.postValue(false)
             }
         }
-        val networkRequest = NetworkRequest.Builder().build()
         connectivityManager.registerNetworkCallback(networkRequest, networkCallback)
     }
 
