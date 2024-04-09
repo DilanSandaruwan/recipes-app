@@ -5,6 +5,7 @@ import com.gtp01.group01.android.recipesmobileapp.constant.ConstantNetworkServic
 import com.gtp01.group01.android.recipesmobileapp.feature.my_profile.repository.AuthRepository
 import com.gtp01.group01.android.recipesmobileapp.feature.my_profile.repository.GetUserIdRepository
 import com.gtp01.group01.android.recipesmobileapp.feature.my_profile.repository.RecipeManagementRepository
+import com.gtp01.group01.android.recipesmobileapp.shared.common.Logger
 import com.gtp01.group01.android.recipesmobileapp.shared.sources.AuthApiService
 import com.gtp01.group01.android.recipesmobileapp.shared.sources.RecipeManagementApiService
 import com.gtp01.group01.android.recipesmobileapp.shared.sources.UserIdApiService
@@ -178,5 +179,14 @@ object NetworkModule {
 
         return GetUserIdRepository(userIdApiService)
 
+    }
+
+    /**
+     * Provides a singleton instance of [Logger].
+     */
+    @Singleton
+    @Provides
+    fun provideLogger():Logger{
+        return Logger()
     }
 }

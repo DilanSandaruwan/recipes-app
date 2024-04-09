@@ -2,15 +2,12 @@ package com.gtp01.group01.android.recipesmobileapp.feature.my_recipes
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.gtp01.group01.android.recipesmobileapp.feature.my_profile.repository.RecipeManagementRepository
+import com.gtp01.group01.android.recipesmobileapp.shared.common.Logger
 import com.gtp01.group01.android.recipesmobileapp.shared.common.Result
 import com.gtp01.group01.android.recipesmobileapp.shared.model.Recipe
-import com.gtp01.group01.android.recipesmobileapp.shared.model.User
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -25,7 +22,8 @@ import javax.inject.Inject
  */
 @HiltViewModel
 class MyRecipesViewModel @Inject constructor(
-    private val recipeManagementRepository: RecipeManagementRepository
+    private val recipeManagementRepository: RecipeManagementRepository,
+    private val logger: Logger
 ) : ViewModel() {
 
     var userId: Int = 0
@@ -53,7 +51,7 @@ class MyRecipesViewModel @Inject constructor(
                     }
             } catch (ex: Exception) {
                 _myRecipesList.value = Result.Failure("Exception")
-                Log.e("MyRecipesViewModel", ex.message ?: "An error occurred", ex)
+                logger.error("MyRecipesViewModel", ex.message ?: "An error occurred", ex)
             }
         }
     }
@@ -73,7 +71,7 @@ class MyRecipesViewModel @Inject constructor(
             // Attempt to create a Bitmap from the decoded bytes.
             BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.size)
         } catch (e: Exception) {
-            Log.e("MyRecipes", "Error decoding image from Base64 string: $e")
+            logger.error("MyRecipes", "Error decoding image from Base64 string: $e", e)
             null
         }
     }
