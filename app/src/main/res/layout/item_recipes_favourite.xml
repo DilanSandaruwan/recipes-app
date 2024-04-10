@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="16dp">
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/lytMatCardCategoryItem"
+        android:layout_width="150dp"
+        android:layout_height="100dp"
+        android:elevation="@dimen/elevation_rv_category_card"
+        android:paddingLeft="5dp"
+        android:theme="@style/Theme.RecipesMobileApp"
+        app:cardBackgroundColor="@color/white"
+        app:cardCornerRadius="10dp"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="16dp">
+
+
+        <!-- ImageView to display the recipe image -->
+        <ImageView
+            android:id="@+id/recipeImage"
+            android:layout_width="215dp"
+            android:layout_height="100dp"
+            android:background="@drawable/rounded_corner"
+            android:scaleType="centerCrop"
+            android:src="@drawable/placeholder_image"
+
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </com.google.android.material.card.MaterialCardView>
+
+
+    <!-- TextView to display the title of the recipe -->
+
+    <!-- TextView to display the description of the recipe -->
+
+    <TextView
+        android:id="@+id/recipeTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:ellipsize="end"
+        android:maxLines="2"
+        android:text="Recipe Title"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/lytMatCardCategoryItem"
+        app:layout_constraintTop_toTopOf="@+id/recipeImage" />
+
+    <TextView
+        android:id="@+id/recipeDescription"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:ellipsize="end"
+        android:maxLines="3"
+        android:text="Recipe Description"
+        android:textColor="@color/grey"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/lytMatCardCategoryItem"
+        app:layout_constraintTop_toBottomOf="@+id/recipeTitle" />
+
+    <!-- TextView to display the date and time of the recipe -->
+    <TextView
+        android:id="@+id/articleDateTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Date and Time"
+        android:textColor="@color/grey"
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="@id/recipeDescription"
+        app:layout_constraintTop_toBottomOf="@id/recipeDescription" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
