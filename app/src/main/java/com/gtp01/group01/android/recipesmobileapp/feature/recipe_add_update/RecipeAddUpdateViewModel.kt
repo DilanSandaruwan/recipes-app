@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.gtp01.group01.android.recipesmobileapp.constant.TagConstant
 import com.gtp01.group01.android.recipesmobileapp.shared.model.FoodCategory
 import com.gtp01.group01.android.recipesmobileapp.shared.model.FoodCategoryApp
@@ -62,6 +63,19 @@ class RecipeAddUpdateViewModel @Inject constructor(
     private val _saveRecipeSuccess = MutableLiveData<Recipe?>()
     val saveRecipeSuccess: LiveData<Recipe?> = _saveRecipeSuccess
 
+    // LiveData for category list
+    private val _isPogressWheelVisible = MutableLiveData<Boolean>(false)
+    val isPogressWheelVisible: LiveData<Boolean> = _isPogressWheelVisible
+
+    /**
+     * Sets the visibility of the progress wheel.
+     *
+     * @param isVisible True to make the progress wheel visible, false otherwise.
+     */
+    fun setIsProgressWheelVisible(isVisible: Boolean) {
+        _isPogressWheelVisible.value = isVisible
+    }
+
     /**
      * Fetches nutrition information based on the provided ingredients.
      *
@@ -91,8 +105,10 @@ class RecipeAddUpdateViewModel @Inject constructor(
      * @param recipe The recipe to be saved.
      */
     fun saveRecipe(idLoggedUser: Int, recipe: Recipe) {
+        setIsProgressWheelVisible(true)
         viewModelScope.launch {
             val response = recipeManagementRepository.saveNewRecipe(idLoggedUser, recipe)
+            setIsProgressWheelVisible(false)
             if (response == null) {
                 _saveRecipeSuccess.postValue(null)
             } else {
@@ -191,5 +207,13 @@ class RecipeAddUpdateViewModel @Inject constructor(
         calculatedNutrients.add(protein.roundToInt())
         calculatedNutrients.add(carbs.roundToInt())
 
+    }
+
+    /**
+     * Initializes the ViewModel.
+     * Invokes the [getCategoryList] method to fetch the category list.
+     */
+    init {
+        getCategoryList()
     }
 }

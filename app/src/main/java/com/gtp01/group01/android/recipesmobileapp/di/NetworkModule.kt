@@ -1,10 +1,16 @@
 package com.gtp01.group01.android.recipesmobileapp.di
 
+import android.app.Application
+import android.content.Context
+import android.net.ConnectivityManager
+import android.net.NetworkRequest
 import android.util.Log
 import com.gtp01.group01.android.recipesmobileapp.constant.ConstantNetworkService
 import com.gtp01.group01.android.recipesmobileapp.feature.my_profile.repository.AuthRepository
 import com.gtp01.group01.android.recipesmobileapp.feature.my_profile.repository.GetUserIdRepository
 import com.gtp01.group01.android.recipesmobileapp.feature.my_profile.repository.RecipeManagementRepository
+import com.gtp01.group01.android.recipesmobileapp.shared.common.viewmodel.SharedViewModel
+import com.gtp01.group01.android.recipesmobileapp.shared.common.Logger
 import com.gtp01.group01.android.recipesmobileapp.shared.sources.AuthApiService
 import com.gtp01.group01.android.recipesmobileapp.shared.sources.RecipeManagementApiService
 import com.gtp01.group01.android.recipesmobileapp.shared.sources.UserIdApiService
@@ -162,7 +168,6 @@ object NetworkModule {
      */
     @Provides
     fun provideUserIdApiService(retrofit: Retrofit): UserIdApiService {
-
         return retrofit.create(UserIdApiService::class.java)
     }
 
@@ -178,5 +183,51 @@ object NetworkModule {
 
         return GetUserIdRepository(userIdApiService)
 
+    }
+
+    /**
+     * Provides an instance of [ConnectivityManager].
+     *
+     * This method is used to provide the ConnectivityManager object to components
+     * that require network connectivity checks. It retrieves the ConnectivityManager
+     * service from the application context.
+     *
+     * @param application The application context used to access system services.
+     * @return An instance of ConnectivityManager for network connectivity management.
+     */
+    @Provides
+    fun provideConnectivityManager(application: Application): ConnectivityManager {
+        return application.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+    }
+
+    /**
+     * Provides a singleton instance of SharedViewModel.
+     *
+     * @return SharedViewModel instance.
+     */
+    @Singleton
+    @Provides
+    fun provideSharedViewModel(): SharedViewModel {
+        return SharedViewModel()
+    }
+
+    /**
+     * Provides a singleton instance of [NetworkRequest] directly.
+     *
+     * @return A singleton instance of [NetworkRequest].
+     */
+    @Singleton
+    @Provides
+    fun provideNetworkRequest(): NetworkRequest {
+        return NetworkRequest.Builder().build()
+    }
+
+    /**
+     * Provides a singleton instance of [Logger].
+     */
+    @Singleton
+    @Provides
+    fun provideLogger():Logger{
+        return Logger()
     }
 }

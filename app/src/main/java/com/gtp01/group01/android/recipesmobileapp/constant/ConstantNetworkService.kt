@@ -37,6 +37,17 @@ object ConstantNetworkService {
     const val RECIPE_POST_RECIPE_END_POINT = "/api/v1/reader/{idLoggedUser}/recipe"
 
     /***
+     * Endpoints for My Own Recipes
+     */
+    const val RECIPE_GET_MY_RECIPES_END_POINT = "/api/v1/reader/{idLoggedUser}/recipe/own"
+    /***
+     * Endpoints for Update Recipe
+     */
+    const val RECIPE_PUT_RECIPE_END_POINT = "/api/v1/reader/{idLoggedUser}/recipe"
+    const val RECIPE_GET_SPECIFIC_RECIPE_END_POINT =
+        "/api/v1/reader/{idLoggedUser}/recipe/id/{idrecipe}"
+
+    /***
      * Endpoints for retrieving recipes within time duration
      */
     const val FILTER_RECIPE_BY_DURATION_ENDPOINT =
@@ -47,10 +58,45 @@ object ConstantNetworkService {
      */
     const val FILTER_RECIPE_BY_CALORIE_ENDPOINT =
         "/api/v1/reader/{idLoggedUser}/recipe/filterby/calory/{maxcalory}"
+
+    /***
+     * Endpoints for retrieving recipes containing matching recipe name
+     */
+    const val FILTER_RECIPE_BY_NAME_ENDPOINT =
+        "/api/v1/reader/{idLoggedUser}/recipe/filterby/name/{recipename}"
+
+    /***
+     * Endpoint for retrieving recipes filtered by category
+     */
+    const val FILTER_RECIPE_BY_CATEGORY_ENDPOINT =
+        "/api/v1/reader/{idLoggedUser}/recipe/filterby/category/{categoryids}"
+
     /**
      * Endpoint for searching a user by email.
      */
-    const val SEARCH_USER_BY_EMAIL_ENDPOINT= "api/v1/user/email/{useremail}"
+    const val SEARCH_USER_BY_EMAIL_ENDPOINT = "api/v1/user/email/{useremail}"
+
+    /***
+     * Endpoint for liking a recipe
+     */
+    const val LIKE_RECIPE_ENDPOINT = "/api/v1/reader/{idLoggedUser}/likes/recipe/{idrecipe}"
+
+    /***
+     * Endpoint for removing a like
+     */
+    const val REMOVE_LIKE_RECIPE_ENDPOINT = "/api/v1/reader/{idLoggedUser}/likes/recipe/{idrecipe}"
+
+    /***
+     * Endpoint for adding a recipe to my favorites
+     */
+    const val ADD_FAVORITE_RECIPE_ENDPOINT =
+        "/api/v1/reader/{idLoggedUser}/favorite/recipe/{idrecipe}"
+
+    /***
+     * Endpoint for removing a recipe from my favorites
+     */
+    const val REMOVE_FAVORITE_RECIPE_ENDPOINT =
+        "/api/v1/reader/{idLoggedUser}/favorite/recipe/{idrecipe}"
 
     /**
      * Endpoint for favorites

@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/lytNotForGuestUsers"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        android:fitsSystemWindows="true">
+
+        <!-- App toolbar -->
+        <LinearLayout
+            android:id="@+id/app_tool_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_app_toolbar"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <!-- Back button -->
+            <ImageButton
+                android:id="@+id/btnNavigateBack"
+                android:layout_width="@dimen/width_app_bar_button"
+                android:layout_height="@dimen/height_app_bar_button"
+                android:background="@drawable/bg_app_tool_bar_btn_back"
+                android:contentDescription="@string/desc_back_button"
+                android:src="@drawable/ic_img_btn_back" />
+
+            <!-- Title -->
+            <TextView
+                android:id="@+id/appBarTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/title_add_new_recipe"
+                android:textColor="@color/white"
+                android:textSize="@dimen/dimen_text_size_title"
+                android:textStyle="bold" />
+
+            <!-- Placeholder button -->
+            <ImageButton
+                android:layout_width="@dimen/width_app_bar_button"
+                android:layout_height="@dimen/height_app_bar_button"
+                android:background="@color/bg_img_btn_back"
+                android:contentDescription="@string/desc_back_button"
+                android:src="@drawable/ic_img_btn_back"
+                android:visibility="invisible" />
+        </LinearLayout>
+
+        <RelativeLayout
+            style="@style/TopHalfRoundedWhiteBackground"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="@dimen/margin_top_bg_half_rounded"
+            android:paddingBottom="@dimen/bottom_navigation_height"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/app_tool_bar">
+
+            <!-- Scrollable content -->
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fillViewport="true"
+                android:padding="@dimen/padding_scroll_view">
+
+                <!-- Content container -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_gravity="center"
+                    android:gravity="center">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/mtvNotForGuestUsers"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:gravity="center"
+                        android:elegantTextHeight="true"
+                        tools:text="@string/you_must_first_sign_up"
+                        android:layout_marginBottom="@dimen/dimen_mtv_margin_bottom_not_for_guest_users"
+                        android:textStyle="bold"
+                        android:textSize="16sp"/>
+
+                    <ImageView
+                        android:id="@+id/ivNotForGuestUsers"
+                        android:layout_width="@dimen/dimen_img_width_not_for_guest_users"
+                        android:layout_height="@dimen/dimen_img_height_not_for_guest_users"
+                        android:src="@drawable/ico_need_to_login"
+                        tools:ignore="ContentDescription" />
+                </LinearLayout>
+            </ScrollView>
+        </RelativeLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

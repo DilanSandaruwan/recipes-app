@@ -12,7 +12,7 @@ import com.gtp01.group01.android.recipesmobileapp.feature.home.compose.views.Hom
 
 /**
  * A Fragment representing the home screen of the Recipes Mobile App.
- * This Fragment displays a list of recipe previews using Jetpack Compose.
+ * This Fragment displays a search bar, filter by category criteria and a list of recipe previews using Jetpack Compose.
  */
 class HomeFragment : Fragment() {
 
@@ -30,11 +30,21 @@ class HomeFragment : Fragment() {
         return ComposeView(requireContext()).apply {
             // Dispose of the Composition when the view's LifecycleOwner is destroyed
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
+
+            /**
+             * Sets the content of the ComposeView with the HomeScreen composable as the main layout of the home screen.
+             * Passes the navigation callbacks.
+             */
             setContent {
-                // Display the HomeScreen Composable as the main layout of the home screen
                 HomeScreen(
                     navigateToViewRecipe = { recipeId ->
                         navController.navigate("com.gtp01.group01.android.recipesmobileapp.feature.view_recipe.recipe_details.ViewRecipe/$recipeId")
+                    },
+                    onKeyboardSearch = { recipeName ->
+                        navController.navigate("com.gtp01.group01.android.recipesmobileapp.feature.home.SearchResultFragment/$recipeName")
+                    },
+                    onFilterByCategory = { categoryId ->
+                        navController.navigate("com.gtp01.group01.android.recipesmobileapp.feature.home.SearchResultFragment/category/$categoryId")
                     }
                 )
             }

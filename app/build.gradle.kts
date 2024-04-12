@@ -136,8 +136,10 @@ dependencies {
     // ——— Coroutine Test ——— //
     implementation(libs.kotlinx.coroutines.test)
 
-    //  ———  Compose Test ——— //
+    // ———  Compose Test ——— //
     androidTestImplementation(platform(libs.androidx.compose.bom))
+    testImplementation(libs.kotlinx.coroutines.core)
+    testImplementation(libs.kotlinx.coroutines.test)
 
     //services for handling user authentication
     implementation(libs.firebase.ui.auth)
