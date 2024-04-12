@@ -11,14 +11,14 @@ import android.graphics.PorterDuffXfermode
 import android.graphics.Rect
 import android.graphics.drawable.BitmapDrawable
 import android.util.AttributeSet
-import android.widget.ImageView
+import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.graphics.drawable.DrawableCompat
 
-class RoundedImageView : ImageView {
-    constructor(context: Context?) : super(context) {}
+class RoundedImageView : AppCompatImageView {
+    constructor(context: Context) : super(context) {}
 
-    constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs) {}
-    constructor(context: Context?, attrs: AttributeSet?, defStyle: Int) : super(
+    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {}
+    constructor(context: Context, attrs: AttributeSet?, defStyle: Int) : super(
         context,
         attrs,
         defStyle
