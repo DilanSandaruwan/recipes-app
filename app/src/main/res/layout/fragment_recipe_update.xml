@@ -1,31 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Data binding variables -->
     <data>
-
         <!-- Variable for the associated ViewModel -->
         <variable
-            name="addRecipeVM"
-            type="com.gtp01.group01.android.recipesmobileapp.feature.recipe_add_update.RecipeAddUpdateViewModel" />
+            name="updateRecipeVM"
+            type="com.gtp01.group01.android.recipesmobileapp.feature.recipe_delete_update.RecipeUpdateViewModel" />
     </data>
 
     <!-- Root layout container -->
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".feature.recipe_add_update.RecipeAddFragment">
+        tools:context=".feature.recipe_delete_update.RecipeUpdateFragment">
 
         <!-- Main layout content -->
         <include
-            android:id="@+id/lytImportedRecipe"
+            android:id="@+id/lytImportedRecipeUpdate"
             layout="@layout/layout_add_update_delete_recipe" />
-
-        <!--    Not for guest users    -->
-        <include
-            android:id="@+id/lytImportedNotForGuestUsers"
-            layout="@layout/layout_not_for_guest_users"/>
     </FrameLayout>
 </layout>

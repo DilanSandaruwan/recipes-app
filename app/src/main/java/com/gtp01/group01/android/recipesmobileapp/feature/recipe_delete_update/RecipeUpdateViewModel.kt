@@ -1,30 +1,22 @@
-package com.gtp01.group01.android.recipesmobileapp.feature.recipe_add_update
+package com.gtp01.group01.android.recipesmobileapp.feature.recipe_delete_update
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.gtp01.group01.android.recipesmobileapp.constant.TagConstant
+import com.gtp01.group01.android.recipesmobileapp.feature.my_profile.repository.RecipeManagementRepository
 import com.gtp01.group01.android.recipesmobileapp.shared.model.FoodCategory
 import com.gtp01.group01.android.recipesmobileapp.shared.model.FoodCategoryApp
 import com.gtp01.group01.android.recipesmobileapp.shared.model.Recipe
 import com.gtp01.group01.android.recipesmobileapp.shared.models.NutritionModel
-import com.gtp01.group01.android.recipesmobileapp.feature.my_profile.repository.RecipeManagementRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import kotlin.math.roundToInt
 
-/**
- * ViewModel for adding or updating a recipe.
- *
- * @property recipeManagementRepository The repository for managing recipe data.
- * @property _nutritionList Internal mutable live data for nutrition information.
- * @property nutrition Live data for observing nutrition information changes.
- */
 @HiltViewModel
-class RecipeAddUpdateViewModel @Inject constructor(
+class RecipeUpdateViewModel @Inject constructor(
     private val recipeManagementRepository: RecipeManagementRepository
 ) : ViewModel() {
 
@@ -44,11 +36,11 @@ class RecipeAddUpdateViewModel @Inject constructor(
     var instructionsList: MutableList<String> = mutableListOf()
 
     // LiveData for serving count
-    private val _serveCount = MutableLiveData(0)
+    private val _serveCount = MutableLiveData<Int>(0)
     val serveCount: LiveData<Int> = _serveCount
 
     // LiveData for cooking time
-    private val _cookingTime = MutableLiveData(0)
+    private val _cookingTime = MutableLiveData<Int>(0)
     val cookingTime: LiveData<Int> = _cookingTime
 
     // LiveData for nutrition information
@@ -60,21 +52,19 @@ class RecipeAddUpdateViewModel @Inject constructor(
     val categoryList: LiveData<List<FoodCategory>> = _categoryList
 
     // LiveData for successful recipe save
-    private val _saveRecipeSuccess = MutableLiveData<Recipe?>()
-    val saveRecipeSuccess: LiveData<Recipe?> = _saveRecipeSuccess
+    private val _updateRecipeSuccess = MutableLiveData<Recipe?>()
+    val updateRecipeSuccess: LiveData<Recipe?> = _updateRecipeSuccess
 
-    // LiveData for category list
-    private val _isPogressWheelVisible = MutableLiveData<Boolean>(false)
-    val isPogressWheelVisible: LiveData<Boolean> = _isPogressWheelVisible
+    // LiveData for successful recipe save
+    private val _nothingToUpdate = MutableLiveData<Boolean>()
+    val nothingToUpdate: LiveData<Boolean> = _nothingToUpdate
 
-    /**
-     * Sets the visibility of the progress wheel.
-     *
-     * @param isVisible True to make the progress wheel visible, false otherwise.
-     */
-    fun setIsProgressWheelVisible(isVisible: Boolean) {
-        _isPogressWheelVisible.value = isVisible
-    }
+    // LiveData for successful recipe save
+    private val _gotRequestedRecipe = MutableLiveData<Recipe?>()
+    val gotRequestedRecipe: LiveData<Recipe?> = _gotRequestedRecipe
+
+    // Get Recipe received from NavArgs
+    var recipeFromArgs: Recipe? = null
 
     /**
      * Fetches nutrition information based on the provided ingredients.
@@ -98,22 +88,25 @@ class RecipeAddUpdateViewModel @Inject constructor(
         }
     }
 
-    /**
-     * Saves a new recipe.
-     *
-     * @param idLoggedUser The ID of the logged-in user.
-     * @param recipe The recipe to be saved.
-     */
-    fun saveRecipe(idLoggedUser: Int, recipe: Recipe) {
-        setIsProgressWheelVisible(true)
+    fun getOneRecipe(idLoggedUser: Int, idRecipe: Int) {
         viewModelScope.launch {
-            val response = recipeManagementRepository.saveNewRecipe(idLoggedUser, recipe)
-            setIsProgressWheelVisible(false)
-            if (response == null) {
-                _saveRecipeSuccess.postValue(null)
-            } else {
-                _saveRecipeSuccess.postValue(response)
+            val response = recipeManagementRepository.getOneRecipe(idLoggedUser, idRecipe)
+            _gotRequestedRecipe.postValue(response)
+        }
+    }
+
+    fun updateRecipe(idLoggedUser: Int, recipeFromArgs: Recipe?) {
+        if (recipeFromArgs != null) {
+            viewModelScope.launch {
+                val response = recipeManagementRepository.updateRecipe(idLoggedUser, recipeFromArgs)
+                if (response == null) {
+                    _updateRecipeSuccess.postValue(null)
+                } else {
+                    _updateRecipeSuccess.postValue(response)
+                }
             }
+        } else {
+            _nothingToUpdate.postValue(true)
         }
     }
 
@@ -122,17 +115,17 @@ class RecipeAddUpdateViewModel @Inject constructor(
      *
      * @param tag The tag indicating whether to reset serving count or cooking time.
      */
-    fun setDefaultCount(tag: Int) {
+    fun setDefaultCount(tag: Int, count: Int) {
         when (tag) {
             TagConstant.TAG_SERVE_COUNT -> {
                 _serveCount.value?.let {
-                    _serveCount.postValue(0)
+                    _serveCount.value = count
                 }
             }
 
             TagConstant.TAG_COOKING_TIME -> {
                 _cookingTime.value?.let {
-                    _cookingTime.postValue(0)
+                    _cookingTime.value = count
                 }
             }
         }
@@ -209,11 +202,4 @@ class RecipeAddUpdateViewModel @Inject constructor(
 
     }
 
-    /**
-     * Initializes the ViewModel.
-     * Invokes the [getCategoryList] method to fetch the category list.
-     */
-    init {
-        getCategoryList()
-    }
 }

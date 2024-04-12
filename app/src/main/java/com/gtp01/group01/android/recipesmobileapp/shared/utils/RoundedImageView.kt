@@ -1,4 +1,4 @@
-package com.gtp01.group01.android.recipesmobileapp.shared.utils.ui
+package com.gtp01.group01.android.recipesmobileapp.shared.utils
 
 import android.annotation.SuppressLint
 import android.content.Context

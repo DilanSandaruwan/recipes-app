@@ -16,6 +16,7 @@ import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Headers
 import retrofit2.http.POST
+import retrofit2.http.PUT
 import retrofit2.http.Path
 import retrofit2.http.Query
 
@@ -44,6 +45,20 @@ interface RecipeManagementApiService {
         @Query("idLoggedUser") idLoggedUser: Int,
         @Body recipe: Recipe
     ): Response<Recipe>
+
+
+    @PUT(ConstantNetworkService.RECIPE_PUT_RECIPE_END_POINT)
+    suspend fun updateRecipe(
+        @Query("idLoggedUser") idLoggedUser: Int,
+        @Body recipe: Recipe
+    ): Response<Recipe>
+
+    @GET(ConstantNetworkService.RECIPE_GET_SPECIFIC_RECIPE_END_POINT)
+    suspend fun getOneRecipe(
+        @Path(value = "idLoggedUser") idLoggedUser: Int,
+        @Path(value = "idrecipe") idrecipe: Int
+    ): Response<Recipe>
+
 
     /**
      * Filters a list of active recipes by preparation time.
@@ -116,6 +131,11 @@ interface RecipeManagementApiService {
         @Path(value = "idLoggedUser") idLoggedUser: Int,
         @Path(value = "idrecipe") recipeId: Int
     ): Response<Recipe>
+
+    @GET(ConstantNetworkService.RECIPE_GET_MY_RECIPES_END_POINT)
+    suspend fun getMyRecipes(
+        @Path(value = "idLoggedUser") idLoggedUser: Int,
+    ): Response<List<Recipe>>
 
     /**
      * Adds a recipe to my favorites.

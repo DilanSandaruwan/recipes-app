@@ -494,4 +494,88 @@ class RecipeManagementRepository @Inject constructor(
             }
         }
     }
+
+    suspend fun updateRecipe(idLoggedUser: Int, recipe: Recipe): Recipe? {
+        return withContext(Dispatchers.IO) {
+            return@withContext updateRecipeResponseFromRemoteService(idLoggedUser, recipe)
+        }
+    }
+
+    private suspend fun updateRecipeResponseFromRemoteService(
+        idLoggedUser: Int,
+        recipe: Recipe
+    ): Recipe? {
+        val response = recipeManagementApiService.updateRecipe(idLoggedUser, recipe)
+        return if (response.isSuccessful) {
+            response.body()
+        } else {
+            null
+        }
+    }
+
+    suspend fun getOneRecipe(idLoggedUser: Int, idRecipe: Int): Recipe? {
+        return withContext(Dispatchers.IO) {
+            return@withContext getOneRecipeResponseFromRemoteService(idLoggedUser, idRecipe)
+        }
+    }
+
+    private suspend fun getOneRecipeResponseFromRemoteService(
+        idLoggedUser: Int,
+        idRecipe: Int
+    ): Recipe? {
+        val response = recipeManagementApiService.getOneRecipe(idLoggedUser, idRecipe)
+        return if (response.isSuccessful) {
+            var bitmap: ByteArray?
+            response.body().let {
+                bitmap = if (it != null) {
+                    run {
+                        val imageData =
+                            android.util.Base64.decode(
+                                it.photo as String,
+                                android.util.Base64.DEFAULT
+                            )
+                        imageData
+                        //BitmapFactory.decodeByteArray(imageData,0,imageData.size)
+                    }
+                } else {
+                    null
+                }
+                response.body()?.photo = bitmap as ByteArray
+            }
+            response.body()
+        } else {
+            null
+        }
+    }
+
+    suspend fun getMyRecipes(idLoggedUser: Int): Flow<Result<List<Recipe>>> {
+        return withContext(Dispatchers.IO) {
+            return@withContext flow {
+                emit(Result.Loading)
+                try {
+                    val response = recipeManagementApiService.getMyRecipes(idLoggedUser)
+                    if (response.isSuccessful) {
+                        emit(Result.Success(response.body() ?: emptyList()))
+                    } else {
+                        emit(Result.Failure(response.code().toString()))
+                        val errorMessage =
+                            "Failed to get recipes for user $idLoggedUser due to: ${
+                                response.errorBody().toString()
+                            }"
+                        Log.e("MyRecipes", errorMessage)
+                    }
+                } catch (ex: IOException) {
+                    // Emit a failure result for network errors
+                    emit(Result.Failure("IOException"))
+                    val errorMessage = "Network error occurred: ${ex.message}"
+                    Log.e("MyRecipes", errorMessage, ex)
+                } catch (ex: Exception) {
+                    // Emit a failure result for unexpected errors
+                    emit(Result.Failure("Exception"))
+                    val errorMessage = "An unexpected error occurred: ${ex.message}"
+                    Log.e("MyRecipes", errorMessage, ex)
+                }
+            }
+        }
+    }
 }

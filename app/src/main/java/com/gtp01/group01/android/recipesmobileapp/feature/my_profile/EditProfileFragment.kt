@@ -6,14 +6,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.text.HtmlCompat
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.gtp01.group01.android.recipesmobileapp.R
 import com.gtp01.group01.android.recipesmobileapp.databinding.FragmentEditProfileBinding
-import com.gtp01.group01.android.recipesmobileapp.databinding.FragmentRecipeAddBinding
-import com.gtp01.group01.android.recipesmobileapp.feature.main.MainActivity
 import com.gtp01.group01.android.recipesmobileapp.shared.model.FoodCategoryApp
-import com.gtp01.group01.android.recipesmobileapp.shared.utils.ui.RecipeMappers
+import com.gtp01.group01.android.recipesmobileapp.shared.utils.RecipeMappers
 import dagger.hilt.android.AndroidEntryPoint
 
 /**
