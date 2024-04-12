@@ -140,4 +140,14 @@ interface RecipeManagementApiService {
         @Path(value = "idLoggedUser") idLoggedUser: Int,
         @Path(value = "idrecipe") recipeId: Int
     ): Response<Recipe>
+
+
+    @GET(ConstantNetworkService.FAVORITES_RECIPES_ENDPOINT)
+    suspend fun getFavorites(
+        @Path(value = "idLoggedUser") idLoggedUser: Int,
+    ): Response<List<Recipe>>
+
+
+
+
 }

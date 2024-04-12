@@ -86,4 +86,9 @@ object ConstantNetworkService {
      */
     const val REMOVE_FAVORITE_RECIPE_ENDPOINT =
         "/api/v1/reader/{idLoggedUser}/favorite/recipe/{idrecipe}"
+
+    /**
+     * Endpoint for favorites
+     */
+    const val FAVORITES_RECIPES_ENDPOINT="/api/v1/reader/{idLoggedUser}/favorite/all"
 }
