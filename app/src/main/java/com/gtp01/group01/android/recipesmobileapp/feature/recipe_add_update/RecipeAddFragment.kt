@@ -16,6 +16,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.text.HtmlCompat
 import androidx.core.view.children
 import androidx.databinding.DataBindingUtil
@@ -221,6 +222,24 @@ class RecipeAddFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         activity = requireActivity() as MainActivity
+
+        // limitation for guest users so that different layout is visible.
+        if (localDataSource.getUserId() == 0) {
+            binding.lytImportedRecipe.lytAddUpdateDelete.gone()
+            binding.lytImportedNotForGuestUsers.lytNotForGuestUsers.show()
+            binding.lytImportedNotForGuestUsers.appBarTitle.text =
+                getString(R.string.title_add_new_recipe)
+            binding.lytImportedNotForGuestUsers.btnNavigateBack.visibility = INVISIBLE
+            binding.lytImportedNotForGuestUsers.ivNotForGuestUsers.setImageDrawable(
+                ContextCompat.getDrawable(
+                    activity,
+                    R.drawable.ico_need_to_login
+                )
+            )
+            binding.lytImportedNotForGuestUsers.mtvNotForGuestUsers.text =
+                getString(R.string.you_must_first_sign_up)
+        }
+
         initObservers()
     }
 

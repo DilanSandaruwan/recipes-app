@@ -166,4 +166,5 @@
     <string name="error_ioexception">Oops! Network error. Please check your internet connection and try again.</string>
     <string name="error_connection_timeout">Connection timed out. Please check your internet connection and try again.</string>
     <string name="generic_error_exception">Oops! Something unexpected occurred. Please try again.</string>
+    <string name="you_must_first_sign_up">You must first Sign up\nto add new recipes</string>
 </resources>

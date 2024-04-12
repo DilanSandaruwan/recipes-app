@@ -22,5 +22,10 @@
         <include
             android:id="@+id/lytImportedRecipe"
             layout="@layout/layout_add_update_delete_recipe" />
+
+        <!--    Not for guest users    -->
+        <include
+            android:id="@+id/lytImportedNotForGuestUsers"
+            layout="@layout/layout_not_for_guest_users"/>
     </FrameLayout>
 </layout>

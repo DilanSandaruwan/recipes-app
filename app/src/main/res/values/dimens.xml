@@ -215,4 +215,7 @@
     <dimen name="no_data_img_height">500dp</dimen>
     <dimen name="no_data_img_width">500dp</dimen>
     <dimen name="no_data_text_padding_top">40dp</dimen>
+    <dimen name="dimen_img_width_not_for_guest_users">300dp</dimen>
+    <dimen name="dimen_img_height_not_for_guest_users">300dp</dimen>
+    <dimen name="dimen_mtv_margin_bottom_not_for_guest_users">50dp</dimen>
 </resources>
