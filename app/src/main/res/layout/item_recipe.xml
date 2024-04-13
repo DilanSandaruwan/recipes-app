@@ -31,7 +31,7 @@
                 android:contentDescription="@string/category_image"
                 android:src="@drawable/fc_1" />
 
-            <com.gtp01.group01.android.recipesmobileapp.shared.utils.ui.RoundedImageView
+            <com.gtp01.group01.android.recipesmobileapp.shared.utils.RoundedImageView
                 android:id="@+id/rimSelectedOrNot"
                 android:layout_width="@dimen/tick_rv_category_card"
                 android:layout_height="@dimen/tick_rv_category_card"
